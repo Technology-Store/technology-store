@@ -9,8 +9,6 @@ import lombok.*;
 @DiscriminatorValue("LAPTOP")
 public class LaptopEntity extends ProductEntity implements MyProduct {
 
-
-
     // @Column(name = "size", nullable = false)
     // private Double size;
 

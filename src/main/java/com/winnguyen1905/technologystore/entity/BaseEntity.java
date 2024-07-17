@@ -29,19 +29,19 @@ public class BaseEntity implements Serializable {
     @Column(columnDefinition = "BINARY(16)")
     private UUID id;
 
-    @Column(name = "createddate")
+    @Column(name = "created_date")
     @CreatedDate
     private Date createdDate;
 
-    @Column(name = "createdby")
+    @Column(name = "created_by")
     @CreatedBy
     private String createdBy;
 
-    @Column(name = "modifieddate")
+    @Column(name = "modified_date")
     @LastModifiedDate
     private Date modifiedDate;
 
-    @Column(name = "modifiedby")
+    @Column(name = "modified_by")
     @LastModifiedBy
     private String modifiedBy;
 

@@ -7,10 +7,19 @@ import lombok.*;
 @Getter
 @Setter
 @DiscriminatorValue("SMARTPHONE")
-public class SmartPhoneEntity extends ProductEntity implements MyProduct { 
+public class SmartPhoneEntity extends ProductEntity implements MyProduct {
 
-    @Column(name = "size", nullable = false)
-    private Double size;
+    @Column(name = "x_size", nullable = true)
+    private Double xSize;
+
+    @Column(name = "y_size", nullable = true)
+    private Double ySize;
+
+    @Column(name = "panel_type", nullable = false)
+    private String panelType;
+
+    @Column(name = "resolution", nullable = true)
+    private String resolution;
 
     @Column(name = "os", nullable = false)
     private String os;

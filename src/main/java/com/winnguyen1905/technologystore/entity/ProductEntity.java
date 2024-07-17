@@ -4,7 +4,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.winnguyen1905.technologystore.common.ProductType;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -21,7 +20,7 @@ import lombok.*;
 @JsonSubTypes({
     @JsonSubTypes.Type(value = SmartPhoneEntity.class, name = "SMARTPHONE"),
     @JsonSubTypes.Type(value = LaptopEntity.class, name = "LAPTOP"),
-    // @JsonSubTypes.Type(value = SmartWatchEntity.class, name = "SMARTWATCH")
+    @JsonSubTypes.Type(value = SmartWatchEntity.class, name = "SMARTWATCH")
 })
 public abstract class ProductEntity extends BaseEntity {
     @Column(name = "name", nullable = false)
@@ -36,9 +35,9 @@ public abstract class ProductEntity extends BaseEntity {
     @Column(name = "price", nullable = false)
     private Double price;
 
-    @Enumerated(EnumType.STRING)    
+    // @Enumerated(EnumType.STRING)
     @Column(insertable = false, updatable = false, name = "type", nullable = true)
-    private ProductType type;
+    private String productType;
 
     @Column(name = "brand", nullable = false)
     private String brand;
