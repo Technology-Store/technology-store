@@ -7,5 +7,5 @@ import lombok.*;
 @Getter
 @Setter
 @Table(name = "smartwatch")
-@DiscriminatorValue("SMARTWATCH")
+@DiscriminatorValue("smartwatch")
 public class SmartWatchEntity extends ProductEntity implements MyProduct {}

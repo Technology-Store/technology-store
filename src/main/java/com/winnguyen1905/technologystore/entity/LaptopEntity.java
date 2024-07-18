@@ -7,7 +7,7 @@ import lombok.*;
 @Getter
 @Setter
 @Table(name = "laptop")
-@DiscriminatorValue("LAPTOP")
+@DiscriminatorValue("laptop")
 public class LaptopEntity extends ProductEntity implements MyProduct {
 
     // @Column(name = "size", nullable = false)

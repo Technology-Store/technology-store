@@ -17,9 +17,9 @@ import lombok.*;
 @DiscriminatorColumn(name = "p_type", discriminatorType = DiscriminatorType.STRING)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonSubTypes({
-    @JsonSubTypes.Type(value = SmartPhoneEntity.class, name = "SMARTPHONE"),
-    @JsonSubTypes.Type(value = LaptopEntity.class, name = "LAPTOP"),
-    @JsonSubTypes.Type(value = SmartWatchEntity.class, name = "SMARTWATCH")
+    @JsonSubTypes.Type(value = SmartPhoneEntity.class, name = "smartphone"),
+    @JsonSubTypes.Type(value = LaptopEntity.class, name = "laptop"),
+    @JsonSubTypes.Type(value = SmartWatchEntity.class, name = "smartwatch")
 })
 public abstract class ProductEntity extends BaseEntity {
     @Column(name = "name", nullable = false)

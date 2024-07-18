@@ -1,7 +1,5 @@
 package com.winnguyen1905.technologystore.model.dto; 
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.*;
 
 @Getter
@@ -9,8 +7,7 @@ import lombok.*;
 @SuppressWarnings("rawtypes")
 public class ProductDTO extends AbstractDTO {
     
-    @JsonProperty("product_type")
-    private String productType; 
+    private String productType;
 
     private String name;
 

@@ -1,12 +1,13 @@
 package com.winnguyen1905.technologystore.model.dto;
 
+import java.util.UUID;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.*;
 
 @Getter
 @Setter
-// @Builder
 public class SmartPhoneDTO extends ProductDTO {
     
     private String os;
@@ -21,15 +22,9 @@ public class SmartPhoneDTO extends ProductDTO {
 
     private String gpu;
 
-    @JsonProperty("x_size")
-    private Double xSize;
+    @JsonProperty("device_size")
+    private String deviceSize;
 
-    @JsonProperty("y_size")
-    private Double ySize;
-
-    @JsonProperty("panel_type")
-    private String panelType;
-
-    private String resolution;
+    private String display;
 
 }

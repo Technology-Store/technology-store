@@ -5,10 +5,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.winnguyen1905.technologystore.builder.ProductSearchBuilder;
 import com.winnguyen1905.technologystore.converter.ProductConverter;
+import com.winnguyen1905.technologystore.converter.ProductSearchBuilderConverter;
 import com.winnguyen1905.technologystore.entity.ProductEntity;
 import com.winnguyen1905.technologystore.model.dto.ProductDTO;
 import com.winnguyen1905.technologystore.model.request.AddProductRequest;
+import com.winnguyen1905.technologystore.model.request.ProductSearchRequest;
 import com.winnguyen1905.technologystore.repository.ProductRepository;
 import com.winnguyen1905.technologystore.service.IProductService;
 
@@ -21,6 +24,9 @@ public class ProductService implements IProductService {
     @Autowired
     private ProductConverter productConverter;
 
+    @Autowired
+    private ProductSearchBuilderConverter productSearchBuilderConverter;
+
     @Override
     public ProductDTO addProduct(AddProductRequest addProductRequest) {
         ProductEntity productEntity = productConverter.toProductEntity(addProductRequest);
@@ -29,8 +35,9 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public List<ProductDTO> findAll() {
-        List<ProductEntity> products = productRepository.findAll();
+    public List<ProductDTO> findAll(ProductSearchRequest productSearchRequest) {
+        ProductSearchBuilder productSearchBuilder = productSearchBuilderConverter.toProductSearchBuilder(productSearchRequest);
+        List<ProductEntity> products = productRepository.findAll(productSearchBuilder);
         return products.stream().map(item -> productConverter.toProductDTO(item)).toList();
     }
 

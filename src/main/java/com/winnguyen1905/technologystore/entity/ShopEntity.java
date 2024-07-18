@@ -23,6 +23,9 @@ public class ShopEntity extends BaseEntity {
     @Column(name = "email", nullable = true)
     private String email;
 
-    @OneToMany(mappedBy = "shop", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
+    @OneToMany(mappedBy = "shop", fetch = FetchType.LAZY, cascade = {
+        CascadeType.PERSIST,
+        CascadeType.MERGE
+    }, orphanRemoval = true)
     private List<ProductEntity> products = new ArrayList<ProductEntity>();
 }

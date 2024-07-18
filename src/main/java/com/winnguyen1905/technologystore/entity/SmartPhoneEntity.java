@@ -1,5 +1,7 @@
 package com.winnguyen1905.technologystore.entity;
 
+import java.util.UUID;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -7,8 +9,8 @@ import lombok.*;
 @Getter
 @Setter
 @Table(name = "smartphone")
-@DiscriminatorValue("SMARTPHONE")
-@PrimaryKeyJoinColumn(name = "id")
+@DiscriminatorValue("smartphone")
+@PrimaryKeyJoinColumn(name = "product_id")
 public class SmartPhoneEntity extends ProductEntity implements MyProduct {
 
     @Column(name = "x_size", nullable = true)
@@ -39,6 +41,5 @@ public class SmartPhoneEntity extends ProductEntity implements MyProduct {
     private String cpu;
 
     @Column(name = "gpu", nullable = false)
-    private String gpu;
-
+    private String gpu; 
 }
