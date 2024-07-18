@@ -6,7 +6,9 @@ import lombok.*;
 @Entity
 @Getter
 @Setter
+@Table(name = "smartphone")
 @DiscriminatorValue("SMARTPHONE")
+@PrimaryKeyJoinColumn(name = "id")
 public class SmartPhoneEntity extends ProductEntity implements MyProduct {
 
     @Column(name = "x_size", nullable = true)

@@ -27,7 +27,9 @@ public class ProductAPI {
     private IProductService productService;
 
     @PostMapping("/")
-    public ResponseEntity<ProductDTO> addProduct(@RequestBody AddProductRequest addProductRequest) {
+    public ResponseEntity<ProductDTO> addProduct(
+        @RequestBody AddProductRequest addProductRequest
+    ) {
         return ResponseEntity.ok(productService.addProduct(addProductRequest));
     }
 

@@ -8,6 +8,7 @@ import lombok.*;
 @Setter
 @SuppressWarnings("rawtypes")
 public class ProductDTO extends AbstractDTO {
+    
     @JsonProperty("product_type")
     private String productType; 
 

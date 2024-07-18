@@ -17,7 +17,7 @@ public class ProductConverter {
     private ModelMapper modelMapper;
 
     public ProductEntity toProductEntity(ProductDTO productDTO) {
-        switch (productDTO.getProductType()) {
+        switch (productDTO.getProductType().toUpperCase()) {
             case ProductTypeConstant.SMARTPHONE:
                 SmartPhoneEntity smartPhoneEntity = modelMapper.map(productDTO, SmartPhoneEntity.class);
                 return smartPhoneEntity;
@@ -31,7 +31,7 @@ public class ProductConverter {
     }
 
     public ProductDTO toProductDTO(ProductEntity productEntity) {
-        switch (productEntity.getProductType()) {
+        switch (productEntity.getProductType().toUpperCase()) {
             case ProductTypeConstant.SMARTPHONE:
                 SmartPhoneDTO smartPhoneDTO = modelMapper.map(productEntity, SmartPhoneDTO.class);
                 return smartPhoneDTO;

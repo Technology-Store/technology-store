@@ -9,18 +9,6 @@ import lombok.*;
 @Setter
 @Builder
 public class AddProductRequest extends ProductDTO {
-    @JsonProperty("product_type")
-    private String productType;
-
-    private String name;
-
-    private String thumb;
-
-    private String description;
-
-    private Double price;
-
-    private String brand;
 
     private String os;
 

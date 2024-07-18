@@ -2,8 +2,7 @@ package com.winnguyen1905.technologystore.entity;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.*;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -14,8 +13,8 @@ import lombok.*;
 @Entity
 @Table(name = "product")
 @EntityListeners(AuditingEntityListener.class)
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "p_type", discriminatorType = DiscriminatorType.STRING)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonSubTypes({
     @JsonSubTypes.Type(value = SmartPhoneEntity.class, name = "SMARTPHONE"),
@@ -36,7 +35,7 @@ public abstract class ProductEntity extends BaseEntity {
     private Double price;
 
     // @Enumerated(EnumType.STRING)
-    @Column(insertable = false, updatable = false, name = "type", nullable = true)
+    @Column(insertable = false, updatable = false, name = "p_type", nullable = true)
     private String productType;
 
     @Column(name = "brand", nullable = false)

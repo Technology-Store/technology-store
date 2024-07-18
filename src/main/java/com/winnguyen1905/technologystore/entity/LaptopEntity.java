@@ -6,6 +6,7 @@ import lombok.*;
 @Entity
 @Getter
 @Setter
+@Table(name = "laptop")
 @DiscriminatorValue("LAPTOP")
 public class LaptopEntity extends ProductEntity implements MyProduct {
 

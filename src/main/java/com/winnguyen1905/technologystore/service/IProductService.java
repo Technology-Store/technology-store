@@ -6,6 +6,6 @@ import com.winnguyen1905.technologystore.model.dto.ProductDTO;
 import com.winnguyen1905.technologystore.model.request.AddProductRequest;
 
 public interface IProductService {
-    ProductDTO addProduct(AddProductRequest pAddProductRequest);
+    ProductDTO addProduct(AddProductRequest addProductRequest);
     List<ProductDTO> findAll();
 }
