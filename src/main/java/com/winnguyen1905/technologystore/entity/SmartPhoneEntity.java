@@ -1,7 +1,5 @@
 package com.winnguyen1905.technologystore.entity;
 
-import java.util.UUID;
-
 import jakarta.persistence.*;
 import lombok.*;
 

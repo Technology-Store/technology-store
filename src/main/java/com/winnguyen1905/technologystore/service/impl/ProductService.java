@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.winnguyen1905.technologystore.builder.ProductSearchBuilder;
+import com.winnguyen1905.technologystore.common.SystemConstant;
 import com.winnguyen1905.technologystore.converter.ProductConverter;
 import com.winnguyen1905.technologystore.converter.ProductSearchBuilderConverter;
 import com.winnguyen1905.technologystore.entity.ProductEntity;
@@ -29,16 +30,16 @@ public class ProductService implements IProductService {
 
     @Override
     public ProductDTO addProduct(AddProductRequest addProductRequest) {
-        ProductEntity productEntity = productConverter.toProductEntity(addProductRequest);
+        ProductEntity productEntity = productConverter.modelConverter(addProductRequest, SystemConstant.TO_ENTITY);
         productEntity = productRepository.save(productEntity);
-        return productConverter.toProductDTO(productEntity);
+        return productConverter.modelConverter(productEntity, SystemConstant.TO_DTO);
     }
 
     @Override
     public List<ProductDTO> findAll(ProductSearchRequest productSearchRequest) {
         ProductSearchBuilder productSearchBuilder = productSearchBuilderConverter.toProductSearchBuilder(productSearchRequest);
         List<ProductEntity> products = productRepository.findAll(productSearchBuilder);
-        return products.stream().map(item -> productConverter.toProductDTO(item)).toList();
+        return products.stream().map(item -> (ProductDTO) productConverter.modelConverter(item, SystemConstant.TO_DTO)).toList();
     }
 
 }

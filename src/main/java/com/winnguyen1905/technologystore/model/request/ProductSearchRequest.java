@@ -2,14 +2,13 @@ package com.winnguyen1905.technologystore.model.request;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.winnguyen1905.technologystore.model.dto.AbstractDTO;
 
 import lombok.*;
 
-@SuppressWarnings("rawtypes")
 @Getter
 @Setter
+@SuppressWarnings("rawtypes")
 public class ProductSearchRequest extends AbstractDTO {
 
     private List<String> typeCode;

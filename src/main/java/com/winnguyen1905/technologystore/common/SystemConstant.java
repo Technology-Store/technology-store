@@ -20,4 +20,7 @@ public class SystemConstant {
     public static final String PASSWORD_DEFAULT = "123456";
     public static final String CHANGE_PASSWORD_FAIL = "change_password_fail";
     public static final String BUILDING_NOT_FOUND = "BUILDING_NOT_FOUND";
+
+    public static final String TO_DTO = "dto";
+    public static final String TO_ENTITY = "entity";
 }

@@ -41,10 +41,10 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
 
     public static Boolean fieldNameChecking(String fieldName) {
         return 
-            fieldName.equals("staffId") || 
+            fieldName.equals("priceFrom") || 
             fieldName.equals("typeCode") || 
-            fieldName.startsWith("area") || 
-            fieldName.startsWith("rentPrice");
+            fieldName.startsWith("priceTo") || 
+            fieldName.startsWith("more");
     }
 
     public static String conditionToString(Field field, ProductSearchBuilder productSearchBuilder) {
