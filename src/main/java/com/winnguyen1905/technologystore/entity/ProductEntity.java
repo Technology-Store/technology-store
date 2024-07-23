@@ -59,5 +59,4 @@ public abstract class ProductEntity extends BaseEntity implements IProductAction
         this.isDraft = true;
         this.isPublished = false;
     }
-
 }

@@ -19,6 +19,8 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Component;
 
+import com.winnguyen1905.technologystore.model.request.LoginRequest;
+
 @Component
 @PropertySource("classpath:application-dev.properties")
 public class SecurityUtil {
