@@ -19,6 +19,7 @@ public class ProductConverter {
 
     private static Map<String, Class<?>> productRegistry;
 
+    // Registry new product type here
     static {
         productRegistry = new HashMap<String, Class<?>>();
         productRegistry.put("smartphonedto", SmartPhoneDTO.class);
@@ -28,42 +29,45 @@ public class ProductConverter {
     @Autowired
     private ModelMapper modelMapper;
 
-    // public ProductEntity toProductEntity(ProductDTO productDTO) {
-    //     switch (productDTO.getProductType()) {
-    //         case ProductTypeConstant.SMARTPHONE:
-    //             SmartPhoneEntity smartPhoneEntity = modelMapper.map(productDTO, SmartPhoneEntity.class);
-    //             return smartPhoneEntity;
-    //         case ProductTypeConstant.LAPTOP:
-    //             return null;
-    //         case ProductTypeConstant.SMARTWATCH:
-    //             return null;
-    //         default:
-    //             return null;
-    //     }
-    // }
-
-    public static Boolean equalsOrChildClass(Class<?> isCheckClass, Class<?> parentClass) {
-        return isCheckClass.getSuperclass().equals(parentClass) || parentClass.isAssignableFrom(isCheckClass);
+    public static Boolean isItOrIsChildClass(Class<?> isChildClass, Class<?> isParentClass) {
+        return isChildClass.getSuperclass().equals(isParentClass) || isParentClass.isAssignableFrom(isChildClass);
     }
 
-    public <S> Class<?> findDestinationClass(S source, String modelType) throws InvalidAlgorithmParameterException {
-        Class<?> tClass = source.getClass();
+    public <S> Class<?> findTheDestinationClass(S source, String modelType) throws InvalidAlgorithmParameterException {
+        Class<?> DClass = source.getClass();
         Boolean toDTO = modelType.equals(SystemConstant.TO_DTO), toEntity = modelType.equals(SystemConstant.TO_ENTITY);
-        if(toEntity && equalsOrChildClass(tClass, ProductDTO.class)) {
-            tClass = productRegistry.get(((ProductDTO) source).getProductType() + modelType);
-        } else if(toDTO && equalsOrChildClass(tClass, ProductEntity.class)) {
-            tClass = productRegistry.get(((ProductEntity) source).getProductType() + modelType);
+        if(toEntity && isItOrIsChildClass(DClass, ProductDTO.class)) {
+            DClass = productRegistry.get(((ProductDTO) source).getProductType() + modelType);
+        } else if(toDTO && isItOrIsChildClass(DClass, ProductEntity.class)) {
+            DClass = productRegistry.get(((ProductEntity) source).getProductType() + modelType);
         } else throw new InvalidAlgorithmParameterException("modelType to convert invalid " + modelType);
-        return tClass;
+        return DClass;
     }
 
-    @SuppressWarnings({ "unchecked" })
-    public <T, S> T modelConverter(S source, String modelType) {
+    /**
+     * @param <D> Destination type 
+     * @param <S> Input type
+     * @param source Converted object
+     * @param modelType Is model <DTO, Entity> that we want to convert to
+     * @return  { 
+     *      Example: 
+     *          <S> ProductDTO
+     *          <D> SmartPhoneEntity
+     * 
+     *          source ProductDTO productDTO;
+     *          modelType String SystemConstant.TO_DTO ("dto") or SystemConstant.TO_Entity ("entity");
+     *      
+     *          Responsability: ProductDTO<SmartPhoneDTO> -> return ProductEntity<SmartPhoneEntity> 
+     *          ...and vice versa
+     * }
+     */
+    @SuppressWarnings("unchecked")
+    public <D, S> D modelConverter(S source, String modelType) {
         try {
-            Class<?> tClass = findDestinationClass(source, modelType);
-            T instance = (T) tClass.getDeclaredConstructor().newInstance();
-            modelMapper.map(source, instance);
-            return instance;
+            Class<?> dClass = findTheDestinationClass(source, modelType);
+            D instanceOfDClass = (D) dClass.getDeclaredConstructor().newInstance();
+            modelMapper.map(source, instanceOfDClass);
+            return instanceOfDClass;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -83,5 +87,19 @@ public class ProductConverter {
     //             break;
     //     }
     //     return null;
+    // }
+
+    // public ProductEntity toProductEntity(ProductDTO productDTO) {
+    //     switch (productDTO.getProductType()) {
+    //         case ProductTypeConstant.SMARTPHONE:
+    //             SmartPhoneEntity smartPhoneEntity = modelMapper.map(productDTO, SmartPhoneEntity.class);
+    //             return smartPhoneEntity;
+    //         case ProductTypeConstant.LAPTOP:
+    //             return null;
+    //         case ProductTypeConstant.SMARTWATCH:
+    //             return null;
+    //         default:
+    //             return null;
+    //     }
     // }
 }

@@ -50,4 +50,5 @@ public class BaseEntity implements Serializable {
         this.modifiedBy = null;
         this.modifiedDate = null;
     }
+
 }

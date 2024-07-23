@@ -1,5 +1,9 @@
 package com.winnguyen1905.technologystore.entity;
 
+import java.util.List;
+
+import com.winnguyen1905.technologystore.utils.SlugUtils;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -8,8 +12,8 @@ import lombok.*;
 @Setter
 @Table(name = "smartphone")
 @DiscriminatorValue("smartphone")
-@PrimaryKeyJoinColumn(name = "product_id")
-public class SmartPhoneEntity extends ProductEntity implements MyProduct {
+@PrimaryKeyJoinColumn(name = "smartphone_id")
+public class SmartPhoneEntity extends ProductEntity {
 
     @Column(name = "x_size", nullable = true)
     private Double xSize;
@@ -39,5 +43,13 @@ public class SmartPhoneEntity extends ProductEntity implements MyProduct {
     private String cpu;
 
     @Column(name = "gpu", nullable = false)
-    private String gpu; 
+    private String gpu;
+
+    @Override
+    @PrePersist
+    public void prePersist() {
+        StringBuilder slg = new StringBuilder(SlugUtils.slugGenerator(this));
+        super.setSlug(slg.toString());
+        super.prePersist();
+    }
 }

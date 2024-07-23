@@ -8,7 +8,8 @@ import lombok.*;
 @Setter
 @Table(name = "laptop")
 @DiscriminatorValue("laptop")
-public class LaptopEntity extends ProductEntity implements MyProduct {
+@PrimaryKeyJoinColumn(name = "laptop_id")
+public class LaptopEntity extends ProductEntity {
 
     // @Column(name = "size", nullable = false)
     // private Double size;

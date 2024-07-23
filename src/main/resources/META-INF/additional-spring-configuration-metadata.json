@@ -1,0 +1,12 @@
+{"properties": [
+  {
+    "name": "winnguyen1905.jwt.base64-secret",
+    "type": "java.lang.String",
+    "description": "A description for 'winnguyen1905.jwt.base64-secret'"
+  },
+  {
+    "name": "winnguyen1905.jwt.token-validity-in-seconds",
+    "type": "java.lang.String",
+    "description": "A description for 'winnguyen1905.jwt.token-validity-in-seconds'"
+  }
+]}

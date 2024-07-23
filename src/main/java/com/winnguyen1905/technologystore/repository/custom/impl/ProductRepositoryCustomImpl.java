@@ -32,7 +32,7 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
         List<String> typeCode = productSearchBuilder.getTypeCode();
         if(typeCode != null && typeCode.size() > 0) {
             String join = typeCode.stream().
-                map(item -> (" right join " + item.toString() + " on " + item.toString() + ".product_id = product.id ")).
+                map(item -> (" right join " + item.toString() + " on " + item.toString() + "." + item.toString() + "_id = product.id ")).
                 collect(Collectors.joining(" "));
             result.append(join);
         }
