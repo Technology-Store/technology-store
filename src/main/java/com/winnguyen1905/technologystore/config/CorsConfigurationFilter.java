@@ -12,7 +12,7 @@ import org.springframework.web.cors.CorsConfiguration;
 public class CorsConfigurationFilter {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
+        CorsConfiguration configuration = new CorsConfiguration(); 
         configuration.setAllowedOrigins(Arrays.asList("https://locolhost:3000.com", "https://locolhost:3001.com"));
         configuration.setAllowedMethods(Arrays.asList("GET","POST", "DELETE", "PUT", "PATCH"));
         configuration.setAllowCredentials(true);
