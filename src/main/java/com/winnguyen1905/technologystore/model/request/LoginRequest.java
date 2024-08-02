@@ -3,16 +3,14 @@ package com.winnguyen1905.technologystore.model.request;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
-@Data
-@Builder    
+@Setter
+@Getter
+@Builder
 public class LoginRequest {
-
-    @Email(message = "email have type example@email.com")
-    @NotBlank(message = "username invalid")
+    @Pattern(regexp = "^[a-zA-Z0-9]{8,20}$", message = "username must be of 8 to 20 length with no special characters")
     private String username;
 
-    @Size(min = 8, max = 20, message = "password's size must >= 8")
     @NotBlank(message = "password invalid")
+    @Size(min = 8, max = 20, message = "password's length must >= 8")
     private String password;
-
 }

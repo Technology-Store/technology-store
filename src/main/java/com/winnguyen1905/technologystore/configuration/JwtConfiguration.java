@@ -1,4 +1,6 @@
-package com.winnguyen1905.technologystore.config;
+package com.winnguyen1905.technologystore.configuration;
+
+import java.util.Optional;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
@@ -14,48 +16,53 @@ import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 
+import com.winnguyen1905.technologystore.exception.CustomRuntimeException;
+import com.winnguyen1905.technologystore.util.JwtUtils;
+import com.winnguyen1905.technologystore.util.SecurityUtils;
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
 import com.nimbusds.jose.util.Base64;
-import com.winnguyen1905.technologystore.utils.SecurityUtil;
 
 @Configuration
-@PropertySource("classpath:application-dev.properties")
 public class JwtConfiguration {
-
-    @Value("${winnguyen1905.jwt.base64-secret}")
+    @Value("${techstore.jwt.base64-secret}")
     private String jwtKey;
 
-    public SecretKey getSecretKey() {
-        byte[] keyBytes = Base64.from(jwtKey).decode();
-        return new SecretKeySpec(keyBytes, 0, keyBytes.length, SecurityUtil.JWT_ALGORITHM.getName());
+    public SecretKey secretKey() {
+        byte[] keyBytes = Base64.from(this.jwtKey).decode();
+        return new SecretKeySpec(keyBytes, 0, keyBytes.length, SecurityUtils.JWT_ALGORITHM.getName());
     }
 
     @Bean
     public JwtEncoder jwtEncoder() {
-        return new NimbusJwtEncoder(new ImmutableSecret<>(getSecretKey()));
+        return new NimbusJwtEncoder(new ImmutableSecret<>(secretKey()));
     }
 
     @Bean
     public JwtDecoder jwtDecoder() {
-        NimbusJwtDecoder jwtDecoder = NimbusJwtDecoder
-            .withSecretKey(getSecretKey())
-            .macAlgorithm(SecurityUtil.JWT_ALGORITHM)
-            .build();
+        NimbusJwtDecoder nimbusJwtDecoder = NimbusJwtDecoder
+                .withSecretKey(secretKey())
+                .macAlgorithm(SecurityUtils.JWT_ALGORITHM)
+                .build();
         return token -> {
             try {
-                return jwtDecoder.decode(token);
+                return nimbusJwtDecoder.decode(token);
             } catch (Exception e) {
                 System.out.println("Token error: " + token);
-                throw e;
+                throw new CustomRuntimeException("refresh token invalid", 401);
             }
         };
+    }
+
+    @Bean
+    JwtUtils jwtUtils() {
+        return new JwtUtils();
     }
 
     @Bean
     public JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter grantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
         grantedAuthoritiesConverter.setAuthorityPrefix("");
-        grantedAuthoritiesConverter.setAuthoritiesClaimName("winnguyen1905");
+        grantedAuthoritiesConverter.setAuthoritiesClaimName("permission");
         JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(grantedAuthoritiesConverter);
         return jwtAuthenticationConverter;

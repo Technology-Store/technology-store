@@ -2,7 +2,7 @@ package com.winnguyen1905.technologystore.entity;
 
 import java.util.List;
 
-import com.winnguyen1905.technologystore.utils.SlugUtils;
+import com.winnguyen1905.technologystore.util.SlugUtils;
 
 import jakarta.persistence.*;
 import lombok.*;

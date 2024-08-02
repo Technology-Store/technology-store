@@ -1,4 +1,4 @@
-package com.winnguyen1905.technologystore.utils;
+package com.winnguyen1905.technologystore.util;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -33,7 +33,7 @@ public class SecurityUtil {
     @Autowired
     private AuthenticationManagerBuilder authenticationManagerBuilder;
 
-    @Value("${winnguyen1905.jwt.token-validity-in-seconds}")
+    @Value("${techstore.jwt.token-validity-in-seconds}")
     private String jwtExpiration;
 
     public String createToken(Authentication authentication) {

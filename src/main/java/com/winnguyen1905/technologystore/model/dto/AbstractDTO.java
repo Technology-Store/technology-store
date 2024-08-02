@@ -1,33 +1,44 @@
 package com.winnguyen1905.technologystore.model.dto;
 
 import java.io.Serializable;
-import java.util.*;
+import java.time.Instant;
+import java.util.List;
+import java.util.UUID;
 
-import lombok.*;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
+@JsonInclude(value = Include.NON_NULL)
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class AbstractDTO<T> implements Serializable {
-
     private static final long serialVersionUID = 7213600440729202783L;
-
     private UUID id;
-    private Date createdDate;
+    // @JsonFormat(pattern = "HH-mm-ss a dd-MM-yyyy", timezone = "GMT+7")
+    private String createdDate;
+    // @JsonFormat(pattern = "HH-mm-ss a dd-MM-yyyy", timezone = "GMT+7")
+    private String updatedDate;
     private String createdBy;
-    private Date modifiedDate;
-    private String modifiedBy;
-    private int maxPageItems = 2;
-    
-    private int page = 1;
-    
-    private List<T> listResult = new ArrayList<>();
-    
-    private int totalItems = 0;
-    
-    private String tableId = "tableList";
-    private Integer limit;
-    private Integer totalPage;
-    private Integer totalItem;
-    private String searchValue;
-
+    private String updatedBy;
+    private Integer maxPageItems;
+    private Integer page;
+    private Integer size;
+    @Order(Ordered.HIGHEST_PRECEDENCE)
+    private List<T> content;
+    private Integer totalElements;
+    private Integer totalPages;
+    // private String tableId;
+    // private Integereger limit;
+    // private Integereger totalItem;
+    // private String searchValue;
 }

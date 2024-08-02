@@ -1,4 +1,4 @@
-package com.winnguyen1905.technologystore.utils;
+package com.winnguyen1905.technologystore.util;
 
 import java.security.SecureRandom;
 import java.text.Normalizer;

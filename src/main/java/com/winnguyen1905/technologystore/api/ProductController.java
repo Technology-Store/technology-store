@@ -12,8 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/products")
-public class ProductAPI {
-
+public class ProductController {
     @Autowired
     private IProductService productService;
 
@@ -30,5 +29,4 @@ public class ProductAPI {
     ) {
         return ResponseEntity.ok(productService.findAll(productSearchRequest));
     }
-
 }

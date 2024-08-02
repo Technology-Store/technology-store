@@ -1,4 +1,4 @@
-package com.winnguyen1905.technologystore.config;
+package com.winnguyen1905.technologystore.configuration;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -18,31 +18,25 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @Component
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
-  
-    private final AuthenticationEntryPoint delegate = new BearerTokenAuthenticationEntryPoint(); 
-
+    private final AuthenticationEntryPoint delegate = new BearerTokenAuthenticationEntryPoint();
     @Autowired
     private ObjectMapper mapper;
 
     @Override
     public void commence(
-        HttpServletRequest request, HttpServletResponse response, AuthenticationException authException
-    ) throws IOException, ServletException {
-        delegate.commence(request, response, authException);
+            HttpServletRequest request, HttpServletResponse response, AuthenticationException authException)
+            throws IOException, ServletException {
+        this.delegate.commence(request, response, authException);
         response.setContentType("application/json;charset=UTF-8");
-
         RestResponse<Object> res = RestResponse
-            .builder()
-            .statusCode(HttpStatus.UNAUTHORIZED.value())
-            .message("Authentication failed please check your token :3")
-            .error(
-                Optional.ofNullable(authException.getCause())
-                    .map(Throwable::getMessage)
-                    .orElse(authException.getMessage())
-            )
-            .build();
-
-        mapper.writeValue(response.getWriter(), res);
+                .builder()
+                .statusCode(HttpStatus.UNAUTHORIZED.value())
+                .message("Authentication failed please check your token")
+                .error(
+                        Optional.ofNullable(authException.getCause())
+                                .map(Throwable::getMessage)
+                                .orElse(authException.getMessage()))
+                .build();
+        this.mapper.writeValue(response.getWriter(), res);
     }
-
 }

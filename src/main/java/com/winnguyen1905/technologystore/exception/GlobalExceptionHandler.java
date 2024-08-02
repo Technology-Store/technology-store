@@ -23,7 +23,6 @@ import com.winnguyen1905.technologystore.model.response.RestResponse;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public ResponseEntity<RestResponse<Object>> validationError(MethodArgumentNotValidException ex) {
         BindingResult result = ex.getBindingResult();
@@ -64,6 +63,28 @@ public class GlobalExceptionHandler {
             .statusCode(HttpStatus.BAD_REQUEST.value())
             .message("Data constraint in your resquest invalid or non-unique")
             .error("Data must be unique but maybe used").build();
+        return ResponseEntity.badRequest().body(restResponse);
+    }
+
+    @ExceptionHandler(value = {
+        CustomRuntimeException.class,
+    })
+    public ResponseEntity<RestResponse<Object>> handldeException(CustomRuntimeException ex) {
+        RestResponse<Object> restResponse = RestResponse
+            .builder()
+            .statusCode(ex.getStatusCode())
+            .message(ex.getMessage())
+            .error(ex.getError().toString()).build();
+        return ResponseEntity.status(ex.getStatusCode()).body(restResponse);
+    }
+
+    @ExceptionHandler(value = RuntimeException.class)
+    public ResponseEntity<RestResponse<Object>> handldeRuntimeException(RuntimeException ex) {
+        RestResponse<Object> restResponse = RestResponse
+            .builder()
+            .statusCode(HttpStatus.BAD_REQUEST.value())
+            .message("Exception occurs")
+            .error(ex.getMessage()).build();
         return ResponseEntity.badRequest().body(restResponse);
     }
     
