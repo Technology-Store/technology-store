@@ -1,4 +1,4 @@
-package com.winnguyen1905.technologystore.api;
+package com.winnguyen1905.technologystore.controller;
 
 import com.winnguyen1905.technologystore.common.SystemConstant;
 import com.winnguyen1905.technologystore.model.dto.ProductDTO;
