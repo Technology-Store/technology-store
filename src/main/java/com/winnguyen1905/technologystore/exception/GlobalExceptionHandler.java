@@ -51,20 +51,20 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(restResponse);
     }
 
-    @ExceptionHandler(value = {
-        DataIntegrityViolationException.class,
-        NonUniqueResultException.class,
-        SQLIntegrityConstraintViolationException.class,
-        InvalidDataAccessResourceUsageException.class
-    })
-    public ResponseEntity<RestResponse<Object>> handleJpaDataConstraint(Exception ex) {
-        RestResponse<Object> restResponse = RestResponse
-            .builder()
-            .statusCode(HttpStatus.BAD_REQUEST.value())
-            .message("Data constraint in your resquest invalid or non-unique")
-            .error("Data must be unique but maybe used").build();
-        return ResponseEntity.badRequest().body(restResponse);
-    }
+    // @ExceptionHandler(value = {
+    //     DataIntegrityViolationException.class,
+    //     NonUniqueResultException.class,
+    //     SQLIntegrityConstraintViolationException.class,
+    //     InvalidDataAccessResourceUsageException.class
+    // })
+    // public ResponseEntity<RestResponse<Object>> handleJpaDataConstraint(Exception ex) {
+    //     RestResponse<Object> restResponse = RestResponse
+    //         .builder()
+    //         .statusCode(HttpStatus.BAD_REQUEST.value())
+    //         .message("Data constraint in your resquest invalid or non-unique")
+    //         .error("Data must be unique but maybe used").build();
+    //     return ResponseEntity.badRequest().body(restResponse);
+    // }
 
     @ExceptionHandler(value = {
         CustomRuntimeException.class,

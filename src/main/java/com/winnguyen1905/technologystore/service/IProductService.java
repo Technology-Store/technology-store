@@ -1,15 +1,17 @@
 package com.winnguyen1905.technologystore.service;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.data.domain.Pageable;
 
 import com.winnguyen1905.technologystore.model.dto.ProductDTO;
-import com.winnguyen1905.technologystore.model.request.AddProductRequest;
+import com.winnguyen1905.technologystore.model.request.ProductRequest;
 import com.winnguyen1905.technologystore.model.request.ProductSearchRequest;
 
 public interface IProductService {
-    ProductDTO handleAddProduct(AddProductRequest addProductRequest);
-    List<ProductDTO> handleGetAllProducts(ProductSearchRequest productSearchRequest, org.springframework.data.domain.Pageable pageable);
-    ProductDTO handleGetDraftProducts(ProductSearchRequest productSearchRequest, Pageable pageable);
+    ProductDTO handleAddProduct(ProductRequest productRequest);
+    ProductDTO handleUpdateProduct(ProductRequest productRequest);
+    ProductDTO handleChangeProductStatus(List<UUID> ids, String shopOwner);
+    ProductDTO handleGetAllProducts(ProductSearchRequest productSearchRequest, Pageable pageable);
 }

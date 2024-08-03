@@ -10,6 +10,7 @@ import org.springframework.core.annotation.Order;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -33,7 +34,9 @@ public class AbstractDTO<T> implements Serializable {
     private Integer maxPageItems;
     private Integer page;
     private Integer size;
+    @JsonProperty("results")
     private List<T> content;
+    private T object;
     private Integer totalElements;
     private Integer totalPages;
     // private String tableId;

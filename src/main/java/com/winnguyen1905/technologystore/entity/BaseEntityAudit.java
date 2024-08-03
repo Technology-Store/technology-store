@@ -25,11 +25,9 @@ import java.util.Optional;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public abstract class BaseEntityAudit extends BaseEntity {
-    @Transient
     @Column(name = "created_by", nullable = true)
     private String createdBy;
 
-    @Transient
     @Column(name = "updated_by", nullable = true)
     private String updatedBy;
 

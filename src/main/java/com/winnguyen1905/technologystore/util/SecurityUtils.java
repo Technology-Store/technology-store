@@ -5,10 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
@@ -17,9 +14,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Component;
-
-import com.winnguyen1905.technologystore.model.dto.PermissionDTO;
-import com.winnguyen1905.technologystore.model.request.LoginRequest;
 
 @Component
 public class SecurityUtils {
@@ -32,6 +26,14 @@ public class SecurityUtils {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         return Optional.ofNullable(securityContext.getAuthentication().getPrincipal() instanceof Jwt jwt 
             ? jwt.getClaimAsStringList("permissions")
+            : null
+        );
+    }
+
+    public static Optional<List<String>> getCurrentUsersId() {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        return Optional.ofNullable(securityContext.getAuthentication().getPrincipal() instanceof Jwt jwt 
+            ? jwt.getClaimAsStringList("id")
             : null
         );
     }

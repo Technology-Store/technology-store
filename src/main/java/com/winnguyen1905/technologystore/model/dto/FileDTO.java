@@ -16,7 +16,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class FileDTO extends AbstractDTO<FileDTO> {
     private String fileName;
-    // @JsonFormat(pattern = "HH-mm-ss a dd-MM-yyyy", timezone = "GMT+7")
+    @JsonFormat(pattern = "HH-mm-ss a dd-MM-yyyy", timezone = "GMT+7")
     @JsonProperty("upload_date")
     private Instant uploadDate;
     private String uri;

@@ -9,7 +9,6 @@ import lombok.*;
 @Getter
 @Setter
 public class SmartPhoneDTO extends ProductDTO {
-    
     private String os;
 
     private Integer ram;
@@ -24,5 +23,4 @@ public class SmartPhoneDTO extends ProductDTO {
     private String deviceSize;
 
     private String display;
-
 }

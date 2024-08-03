@@ -13,7 +13,7 @@ import lombok.*;
 @Setter
 @Entity
 @Table(name = "product")
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "p_type", discriminatorType = DiscriminatorType.STRING)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonSubTypes({
@@ -21,7 +21,7 @@ import lombok.*;
     @JsonSubTypes.Type(value = LaptopEntity.class, name = ProductTypeConstant.LAPTOP),
     @JsonSubTypes.Type(value = SmartWatchEntity.class, name = ProductTypeConstant.SMARTWATCH)
 })
-public class ProductEntity extends BaseEntityAudit {
+public abstract class ProductEntity extends BaseEntityAudit {
     @Column(name = "p_name", nullable = false)
     private String name;
 
@@ -58,5 +58,10 @@ public class ProductEntity extends BaseEntityAudit {
         this.isDraft = true;
         this.isPublished = false;
         super.prePersist();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        super.preUpdate();
     }
 }

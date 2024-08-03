@@ -1,38 +1,69 @@
 package com.winnguyen1905.technologystore.controller;
 
 import com.winnguyen1905.technologystore.common.SystemConstant;
+import com.winnguyen1905.technologystore.exception.CustomRuntimeException;
 import com.winnguyen1905.technologystore.model.dto.ProductDTO;
-import com.winnguyen1905.technologystore.model.request.AddProductRequest;
+import com.winnguyen1905.technologystore.model.request.ProductRequest;
 import com.winnguyen1905.technologystore.model.request.ProductSearchRequest;
-import com.winnguyen1905.technologystore.service.IProductService; 
+import com.winnguyen1905.technologystore.service.IProductService;
+import com.winnguyen1905.technologystore.util.SecurityUtils;
+import com.winnguyen1905.technologystore.util.annotation.MetaMessage;
+
+import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
 @RestController
-@RequestMapping("/api/v1/products")
+@RequestMapping("${release.api.prefix}/products")
 public class ProductController {
     @Autowired
     private IProductService productService;
-
-    @PostMapping("/")
-    public ResponseEntity<ProductDTO> addProduct(@RequestBody AddProductRequest addProductRequest) {
-        return ResponseEntity.created(null).body(this.productService.handleAddProduct(addProductRequest));
-    }
+    
+    // PUBLIC API----------------------------------------------------------------
 
     @GetMapping("/")
-    public ResponseEntity<?> getAllProducts(Pageable pageable,
+    @MetaMessage(message = "get all product with filter success")
+    public ResponseEntity<ProductDTO> getAllProducts(Pageable pageable,
         @ModelAttribute(SystemConstant.MODEL) ProductSearchRequest productSearchRequest
     ) {
+        productSearchRequest.setIsDraft(false);
+        productSearchRequest.setIsPublished(true);
+        productSearchRequest.setCreatedBy(null);
+        productSearchRequest.setUpdatedBy(null);
         return ResponseEntity.ok(this.productService.handleGetAllProducts(productSearchRequest, pageable));
     }
 
-    @GetMapping("/draft")
-    public ResponseEntity<ProductDTO> getDraftProducts(Pageable pageable,
+    // API FOR SHOP OWNER---------------------------------------------------------
+
+    @PostMapping("/")
+    @MetaMessage(message = "add new product success")
+    public ResponseEntity<ProductDTO> addProduct(@RequestBody ProductRequest productRequest) {
+        return ResponseEntity.status(HttpStatus.CREATED.value()).body(this.productService.handleAddProduct(productRequest));
+    }
+
+    @GetMapping("/my-product")
+    @MetaMessage(message = "get all my product with filter success")
+    public ResponseEntity<ProductDTO> getAllMyProducts(Pageable pageable,
         @ModelAttribute(SystemConstant.MODEL) ProductSearchRequest productSearchRequest
     ) {
-        return ResponseEntity.ok(this.productService.handleGetDraftProducts(productSearchRequest, pageable));
+        String shopOwner = SecurityUtils.getCurrentUserLogin()
+                .orElseThrow(() -> new CustomRuntimeException("Not found username", 403));
+        productSearchRequest.setCreatedBy(shopOwner);
+        return ResponseEntity.ok(this.productService.handleGetAllProducts(productSearchRequest, pageable));
     }
+
+    @PatchMapping("/change-status/{ids}")
+    public ResponseEntity<ProductDTO> publishProducts(@PathVariable List<UUID> ids) {
+        String shopOwner = SecurityUtils.getCurrentUserLogin()
+                .orElseThrow(() -> new CustomRuntimeException("Not found username", 403));
+        return ResponseEntity.ok(this.productService.handleChangeProductStatus(ids, shopOwner));
+    }
+
+    // API FOR SHOP ADMIN---------------------------------------------------------
 }

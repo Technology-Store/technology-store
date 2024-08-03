@@ -61,7 +61,6 @@ public class ProductConverter {
      *          ...and vice versa
      * }
      */
-    @SuppressWarnings("unchecked")
     public <D, S> D modelConverter(S source, String modelType) {
         try {
             Class<?> dClass = findTheDestinationClass(source, modelType);

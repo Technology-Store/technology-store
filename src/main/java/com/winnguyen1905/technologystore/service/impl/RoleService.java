@@ -18,7 +18,6 @@ import com.winnguyen1905.technologystore.util.OverwriteUtils;
 
 @Service
 public class RoleService implements IRoleService {
-
     @Autowired
     private RoleRepository roleRepository;
     @Autowired

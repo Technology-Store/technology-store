@@ -52,7 +52,8 @@ public class SecurityConfiguration {
             .authorizeHttpRequests(
                 authz -> authz
                     .requestMatchers(whiteList).permitAll()
-                    .anyRequest().authenticated()
+                    .anyRequest().authenticated() // No division of authority here, 
+                                                  // I use dynamic division of permission at interceptor in "core" folder
             )
             .oauth2ResourceServer(
                 (oauth2) -> oauth2

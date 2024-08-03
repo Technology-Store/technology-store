@@ -1,4 +1,4 @@
-package com.winnguyen1905.technologystore.model.dto; 
+package com.winnguyen1905.technologystore.model.dto;
 
 import lombok.*;
 
@@ -20,5 +20,6 @@ public class ProductDTO extends AbstractDTO<ProductDTO> {
     private String slug;
 
     private Boolean isDraft;
+    
     private Boolean isPublished;
 }

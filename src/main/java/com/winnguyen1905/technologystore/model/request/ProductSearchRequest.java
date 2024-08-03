@@ -8,9 +8,7 @@ import lombok.*;
 
 @Getter
 @Setter
-@SuppressWarnings("rawtypes")
-public class ProductSearchRequest extends AbstractDTO {
-
+public class ProductSearchRequest extends AbstractDTO<ProductSearchRequest> {
     private List<String> typeCode;
 
     private String name;
@@ -45,5 +43,5 @@ public class ProductSearchRequest extends AbstractDTO {
 
     private Boolean isDraft;
 
-    private Boolean isPublic;
+    private Boolean isPublished;
 }

@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
-import com.winnguyen1905.technologystore.builder.ProductSearchBuilder;
 import com.winnguyen1905.technologystore.entity.ProductEntity;
+import com.winnguyen1905.technologystore.model.request.ProductSearchRequest;
 import com.winnguyen1905.technologystore.repository.custom.ProductRepositoryCustom;
 
 import jakarta.persistence.EntityManager;
@@ -27,9 +27,9 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
     @PersistenceContext(type = PersistenceContextType.TRANSACTION)
     private EntityManager entityManager;
 
-    public String joinTable(ProductSearchBuilder productSearchBuilder) {
+    public String joinTable(ProductSearchRequest productSearchRequest) {
         StringBuilder result = new StringBuilder(" select * from product ");
-        List<String> typeCode = productSearchBuilder.getTypeCode();
+        List<String> typeCode = productSearchRequest.getTypeCode();
         if(typeCode != null && typeCode.size() > 0) {
             String join = typeCode.stream().
                 map(item -> (" right join " + item.toString() + " on " + item.toString() + "." + item.toString() + "_id = product.id ")).
@@ -47,11 +47,11 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
             fieldName.startsWith("more");
     }
 
-    public static String conditionToString(Field field, ProductSearchBuilder productSearchBuilder) {
+    public static String conditionToString(Field field, ProductSearchRequest productSearchRequest) {
         String result = "";
         try {
             field.setAccessible(true);
-            Object x = field.get(productSearchBuilder);
+            Object x = field.get(productSearchRequest);
             String fieldName = field.getName();
             if(x == null || fieldNameChecking(fieldName)) result = "";
             else if(x.getClass().getName().equals("java.lang.String")) result = " and p." + field.getName() + " like '%" + x.toString() + "%' "; 
@@ -62,25 +62,25 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
         return result;
     }
 
-    public static void queryNormal(StringBuilder sql, ProductSearchBuilder productSearchBuilder) {
-        Field[] fields = productSearchBuilder.getClass().getDeclaredFields();
+    public static void queryNormal(StringBuilder sql, ProductSearchRequest productSearchRequest) {
+        Field[] fields = productSearchRequest.getClass().getDeclaredFields();
         String normalQuery = Arrays.asList(fields).
             stream().
-            map(item -> conditionToString(item, productSearchBuilder)).
+            map(item -> conditionToString(item, productSearchRequest)).
             collect(Collectors.joining(""));
         sql.append(normalQuery);
     }
 
-    public static void querySpecial(StringBuilder sql, ProductSearchBuilder productSearchBuilder) {
+    public static void querySpecial(StringBuilder sql, ProductSearchRequest productSearchRequest) {
 
     }
 
     @Override
     @Transactional
     @SuppressWarnings("unchecked")
-    public List<ProductEntity> findAll(ProductSearchBuilder productSearchBuilder) {
-        StringBuilder sql = new StringBuilder("select p.* from ( " + joinTable(productSearchBuilder) + " ) as p where 1 = 1 ");
-        queryNormal(sql, productSearchBuilder);
+    public List<ProductEntity> findAll(ProductSearchRequest productSearchRequest) {
+        StringBuilder sql = new StringBuilder("select p.* from ( " + joinTable(productSearchRequest) + " ) as p where 1 = 1 ");
+        queryNormal(sql, productSearchRequest);
         System.out.println(sql);
         Query query = entityManager.createNativeQuery(sql.toString(), ProductEntity.class);
         return query.getResultList();

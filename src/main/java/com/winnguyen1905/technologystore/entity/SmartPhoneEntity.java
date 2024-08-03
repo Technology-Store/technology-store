@@ -54,5 +54,6 @@ public class SmartPhoneEntity extends ProductEntity {
     public void preUpdate() {
         StringBuilder slg = new StringBuilder(SlugUtils.slugGenerator(this));
         super.setSlug(slg.toString());
+        super.preUpdate();
     }
 }
