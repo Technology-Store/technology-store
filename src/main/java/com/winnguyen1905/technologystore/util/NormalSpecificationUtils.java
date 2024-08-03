@@ -15,18 +15,27 @@ public class NormalSpecificationUtils<D> {
         List<Specification<D>> specList = new ArrayList<>();
         Arrays.asList(fields).forEach(field -> {
             try {
-                String fieldName = StringUtils.convertCamelToSnake(field.getName());
+                String fieldName = field.getName();
                 field.setAccessible(true);
                 Object value = field.get(tSearchRequest);
-                if(value == null || fieldName.indexOf("_id") != -1) return;
-                else if(fieldName.endsWith("_from"))
-                    specList.add(CustomSpecification.isGreaterThanOrEqual((Integer) value, fieldName.substring(0, fieldName.length() - 5), null));
-                else if(fieldName.endsWith("_to"))
-                    specList.add(CustomSpecification.isLessThanOrEqual((Integer) value, fieldName.substring(0, fieldName.length() - 3), null));
-                else if(value.getClass().getName().equals("java.lang.String"))
-                    specList.add(CustomSpecification.isValueLike((String) value, fieldName, null));
-                else if(value instanceof Number)
-                    specList.add(CustomSpecification.isEqualValue((Integer) value, fieldName, null));
+                System.out.println(value.getClass().getName());
+                if(value == null || fieldName.indexOf("Id") != -1) return;
+                
+                if(value instanceof Boolean bl) {
+                    if(bl == true) specList.add(CustomSpecification.isTrue((Boolean) value, fieldName, null));
+                    else specList.add(CustomSpecification.isFalse((Boolean) value, fieldName, null));
+                    return;
+                }
+                if(value instanceof String str) {
+                    specList.add(CustomSpecification.isValueLike((String) str, fieldName, null));
+                    return;
+                }
+                if(value instanceof Number num) {
+                    if(fieldName.endsWith("From"))  specList.add(CustomSpecification.isGreaterThanOrEqual((Double) num, fieldName.substring(0, fieldName.length() - 4), null));
+                    else if(fieldName.endsWith("To")) specList.add(CustomSpecification.isLessThanOrEqual((Double) num, fieldName.substring(0, fieldName.length() - 2), null));
+                    specList.add(CustomSpecification.isEqualValue((Integer) num, fieldName, null));
+                    return;
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }

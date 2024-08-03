@@ -51,8 +51,20 @@ public class CustomSpecification<T> {
             (joining != null ? joinTableManager(joining, root) : root)
             .get(col), "%" + stringLike + "%");
     }
+    
+    public static <T, F> Specification<T> isTrue(Boolean value, String col, Pair<Class<F>, String> joining) {
+        return (root, query, builder) -> builder.isTrue(
+            (joining != null ? joinTableManager(joining, root) : root)
+            .get(col));
+    }
 
-    public static <T, F> Specification<T> isWithinValueRange(int min, int max, String col, Pair<Class<F>, String> joining) {
+    public static <T, F> Specification<T> isFalse(Boolean value, String col, Pair<Class<F>, String> joining) {
+        return (root, query, builder) -> builder.isFalse(
+            (joining != null ? joinTableManager(joining, root) : root)
+            .get(col));
+    }
+
+    public static <T, F> Specification<T> isWithinValueRange(Integer min, Integer max, String col, Pair<Class<F>, String> joining) {
         return (root, query, criteriaBuilder) -> criteriaBuilder.between(
             (joining != null ? joinTableManager(joining, root) : root)
             .get(col), min, max);
@@ -64,13 +76,13 @@ public class CustomSpecification<T> {
             .get(col), value);
     }
     
-    public static <T, F> Specification<T> isGreaterThanOrEqual(int value, String col, Pair<Class<F>, String> joining) {
+    public static <T, F> Specification<T> isGreaterThanOrEqual(Double value, String col, Pair<Class<F>, String> joining) {
         return (root, query, criteriaBuilder) -> criteriaBuilder.greaterThanOrEqualTo(
             (joining != null ? joinTableManager(joining, root) : root)
             .get(col), value);
     }
 
-    public static <T, F> Specification<T> isLessThanOrEqual(int value, String col, Pair<Class<F>, String> joining) {
+    public static <T, F> Specification<T> isLessThanOrEqual(Double value, String col, Pair<Class<F>, String> joining) {
         return (root, query, criteriaBuilder) -> criteriaBuilder.lessThanOrEqualTo(
             (joining != null ? joinTableManager(joining, root) : root)
             .get(col), value);

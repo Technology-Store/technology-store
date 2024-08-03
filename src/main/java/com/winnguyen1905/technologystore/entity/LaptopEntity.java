@@ -1,5 +1,7 @@
 package com.winnguyen1905.technologystore.entity;
 
+import com.winnguyen1905.technologystore.common.ProductTypeConstant;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -7,7 +9,7 @@ import lombok.*;
 @Getter
 @Setter
 @Table(name = "laptop")
-@DiscriminatorValue("laptop")
+@DiscriminatorValue(ProductTypeConstant.LAPTOP)
 @PrimaryKeyJoinColumn(name = "laptop_id")
 public class LaptopEntity extends ProductEntity {
 

@@ -47,15 +47,15 @@ public class ApplicationConfiguration implements WebMvcConfigurer {
             .create();
     }
 
-    // @Override
-    // public void addInterceptors(InterceptorRegistry registry) {
-    //     String[] whiteList = {
-    //         "/api/v1/auth/register", "/api/v1/auth/login", "/api/v1/auth/refresh", 
-    //         "/storage/**"
-    //     };
-    //     registry.addInterceptor(getPermissionInterceptor())
-    //             .excludePathPatterns(whiteList);
-    // }
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        String[] whiteList = {
+            "/api/v1/auth/register", "/api/v1/auth/login", "/api/v1/auth/refresh", 
+            "/storage/**"
+        };
+        registry.addInterceptor(getPermissionInterceptor())
+                .excludePathPatterns(whiteList);
+    }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {

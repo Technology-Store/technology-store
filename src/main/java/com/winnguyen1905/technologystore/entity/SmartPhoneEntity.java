@@ -2,6 +2,7 @@ package com.winnguyen1905.technologystore.entity;
 
 import java.util.List;
 
+import com.winnguyen1905.technologystore.common.ProductTypeConstant;
 import com.winnguyen1905.technologystore.util.SlugUtils;
 
 import jakarta.persistence.*;
@@ -11,7 +12,7 @@ import lombok.*;
 @Getter
 @Setter
 @Table(name = "smartphone")
-@DiscriminatorValue("smartphone")
+@DiscriminatorValue(ProductTypeConstant.SMARTPHONE)
 @PrimaryKeyJoinColumn(name = "smartphone_id")
 public class SmartPhoneEntity extends ProductEntity {
 
@@ -39,17 +40,19 @@ public class SmartPhoneEntity extends ProductEntity {
     @Column(name = "pin", nullable = false)
     private Integer pin;
 
-    @Column(name = "cpu", nullable = false)
-    private String cpu;
+    @Column(name = "chipset", nullable = false)
+    private String chipset;
 
-    @Column(name = "gpu", nullable = false)
-    private String gpu;
-
-    @Override
     @PrePersist
     public void prePersist() {
         StringBuilder slg = new StringBuilder(SlugUtils.slugGenerator(this));
         super.setSlug(slg.toString());
         super.prePersist();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        StringBuilder slg = new StringBuilder(SlugUtils.slugGenerator(this));
+        super.setSlug(slg.toString());
     }
 }

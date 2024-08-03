@@ -18,9 +18,7 @@ public class SmartPhoneDTO extends ProductDTO {
 
     private Integer pin;
 
-    private String cpu;
-
-    private String gpu;
+    private String chipset;
 
     @JsonProperty("device_size")
     private String deviceSize;

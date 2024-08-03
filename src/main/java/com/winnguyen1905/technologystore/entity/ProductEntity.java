@@ -3,6 +3,7 @@ package com.winnguyen1905.technologystore.entity;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.*;
+import com.winnguyen1905.technologystore.common.ProductTypeConstant;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -12,16 +13,15 @@ import lombok.*;
 @Setter
 @Entity
 @Table(name = "product")
-@EntityListeners(AuditingEntityListener.class)
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "p_type", discriminatorType = DiscriminatorType.STRING)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonSubTypes({
-    @JsonSubTypes.Type(value = SmartPhoneEntity.class, name = "smartphone"),
-    @JsonSubTypes.Type(value = LaptopEntity.class, name = "laptop"),
-    @JsonSubTypes.Type(value = SmartWatchEntity.class, name = "smartwatch")
+    @JsonSubTypes.Type(value = SmartPhoneEntity.class, name = ProductTypeConstant.SMARTPHONE),
+    @JsonSubTypes.Type(value = LaptopEntity.class, name = ProductTypeConstant.LAPTOP),
+    @JsonSubTypes.Type(value = SmartWatchEntity.class, name = ProductTypeConstant.SMARTWATCH)
 })
-public abstract class ProductEntity extends BaseEntity implements IProductAction {
+public class ProductEntity extends BaseEntityAudit {
     @Column(name = "p_name", nullable = false)
     private String name;
 
@@ -53,10 +53,10 @@ public abstract class ProductEntity extends BaseEntity implements IProductAction
     @JoinColumn(name = "shop_id")
     private ShopEntity shop;
 
-    @Override
     @PrePersist
     public void prePersist() {
         this.isDraft = true;
         this.isPublished = false;
+        super.prePersist();
     }
 }

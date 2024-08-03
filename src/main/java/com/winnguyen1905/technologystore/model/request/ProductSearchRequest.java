@@ -33,6 +33,8 @@ public class ProductSearchRequest extends AbstractDTO {
 
     private String gpu;
 
+    private String chipset;
+
     private Double xSize;
 
     private Double ySize;
@@ -40,4 +42,8 @@ public class ProductSearchRequest extends AbstractDTO {
     private String panelType;
 
     private String resolution;
+
+    private Boolean isDraft;
+
+    private Boolean isPublic;
 }

@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.winnguyen1905.technologystore.exception.CustomRuntimeException;
 import com.winnguyen1905.technologystore.model.dto.FileDTO;
 import com.winnguyen1905.technologystore.service.IFileService;
 import com.winnguyen1905.technologystore.util.FileValidationUtils;
@@ -31,7 +30,7 @@ public class FileController {
     @Autowired
     private IFileService fileService;
 
-    @Value("${realestate.upload-file.base-uri}")
+    @Value("${techstore.upload-file.base-uri}")
     private String uri;
 
     @PostMapping

@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 
 @RestController
-@RequestMapping("${release.api.prefix}/auth")
+@RequestMapping("/api/v1/auth")
 public class AuthController {
     @Autowired
     private IAuthService authService;

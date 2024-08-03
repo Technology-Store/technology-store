@@ -21,6 +21,8 @@ public class AddProductRequest extends ProductDTO {
 
     private String gpu;
 
+    private String chipset;
+
     private Double xSize;
 
     private Double ySize;

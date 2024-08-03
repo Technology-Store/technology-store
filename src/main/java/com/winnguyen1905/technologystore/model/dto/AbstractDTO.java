@@ -24,16 +24,15 @@ import lombok.Setter;
 public class AbstractDTO<T> implements Serializable {
     private static final long serialVersionUID = 7213600440729202783L;
     private UUID id;
-    // @JsonFormat(pattern = "HH-mm-ss a dd-MM-yyyy", timezone = "GMT+7")
+    @JsonFormat(pattern = "HH-mm-ss a dd-MM-yyyy", timezone = "GMT+7")
     private String createdDate;
-    // @JsonFormat(pattern = "HH-mm-ss a dd-MM-yyyy", timezone = "GMT+7")
+    @JsonFormat(pattern = "HH-mm-ss a dd-MM-yyyy", timezone = "GMT+7")
     private String updatedDate;
     private String createdBy;
     private String updatedBy;
     private Integer maxPageItems;
     private Integer page;
     private Integer size;
-    @Order(Ordered.HIGHEST_PRECEDENCE)
     private List<T> content;
     private Integer totalElements;
     private Integer totalPages;

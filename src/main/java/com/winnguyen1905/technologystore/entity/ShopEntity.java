@@ -10,7 +10,7 @@ import lombok.*;
 @Getter
 @Setter
 @Table(name = "shop")
-public class ShopEntity extends BaseEntity {
+public class ShopEntity extends BaseEntityAudit {
 
     @Column(name = "username", nullable = false)
     private String userName;

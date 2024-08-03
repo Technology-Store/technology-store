@@ -7,6 +7,7 @@ import com.winnguyen1905.technologystore.model.request.ProductSearchRequest;
 import com.winnguyen1905.technologystore.service.IProductService; 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,16 +18,21 @@ public class ProductController {
     private IProductService productService;
 
     @PostMapping("/")
-    public ResponseEntity<ProductDTO> addProduct(
-        @RequestBody AddProductRequest addProductRequest
-    ) {
-        return ResponseEntity.ok(productService.addProduct(addProductRequest));
+    public ResponseEntity<ProductDTO> addProduct(@RequestBody AddProductRequest addProductRequest) {
+        return ResponseEntity.created(null).body(this.productService.handleAddProduct(addProductRequest));
     }
 
     @GetMapping("/")
-    public ResponseEntity<?> findAllProduct(
+    public ResponseEntity<?> getAllProducts(Pageable pageable,
         @ModelAttribute(SystemConstant.MODEL) ProductSearchRequest productSearchRequest
     ) {
-        return ResponseEntity.ok(productService.findAll(productSearchRequest));
+        return ResponseEntity.ok(this.productService.handleGetAllProducts(productSearchRequest, pageable));
+    }
+
+    @GetMapping("/draft")
+    public ResponseEntity<ProductDTO> getDraftProducts(Pageable pageable,
+        @ModelAttribute(SystemConstant.MODEL) ProductSearchRequest productSearchRequest
+    ) {
+        return ResponseEntity.ok(this.productService.handleGetDraftProducts(productSearchRequest, pageable));
     }
 }

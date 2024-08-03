@@ -1,12 +1,37 @@
 {"properties": [
   {
-    "name": "winnguyen1905.jwt.base64-secret",
+    "name": "techstore.upload-file.base-uri",
     "type": "java.lang.String",
-    "description": "A description for 'winnguyen1905.jwt.base64-secret'"
+    "description": "A description for 'techstore.upload-file.base-uri'"
   },
   {
-    "name": "winnguyen1905.jwt.token-validity-in-seconds",
+    "name": "test.api.prefix",
     "type": "java.lang.String",
-    "description": "A description for 'winnguyen1905.jwt.token-validity-in-seconds'"
+    "description": "A description for 'test.api.prefix'"
+  },
+  {
+    "name": "beta.api.prefix",
+    "type": "java.lang.String",
+    "description": "A description for 'beta.api.prefix'"
+  },
+  {
+    "name": "release.api.prefix",
+    "type": "java.lang.String",
+    "description": "A description for 'release.api.prefix'"
+  },
+  {
+    "name": "techstore.jwt.refresh_token-validity-in-seconds",
+    "type": "java.lang.String",
+    "description": "A description for 'techstore.jwt.refresh_token-validity-in-seconds'"
+  },
+  {
+    "name": "techstore.jwt.access_token-validity-in-seconds",
+    "type": "java.lang.String",
+    "description": "A description for 'techstore.jwt.access_token-validity-in-seconds'"
+  },
+  {
+    "name": "techstore.jwt.base64-secret",
+    "type": "java.lang.String",
+    "description": "A description for 'techstore.jwt.base64-secret'"
   }
 ]}

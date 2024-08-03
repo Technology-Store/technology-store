@@ -1,38 +1,45 @@
 package com.winnguyen1905.technologystore.entity;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
-
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreRemove;
+import jakarta.persistence.PreUpdate;
+import jakarta.persistence.Transient;
 import lombok.Getter;
 import lombok.Setter;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.winnguyen1905.technologystore.util.SecurityUtils;
 
 import java.time.Instant;
 import java.util.Objects;
+import java.util.Optional;
 
 @Getter
 @Setter
 @MappedSuperclass
+@EntityListeners(AuditingEntityListener.class)
 public abstract class BaseEntityAudit extends BaseEntity {
-
+    @Transient
     @Column(name = "created_by", nullable = true)
     private String createdBy;
 
+    @Transient
     @Column(name = "updated_by", nullable = true)
     private String updatedBy;
 
     @CreationTimestamp
-    @JsonFormat(pattern = "ss-mm-HH dd-MM-yyyy a", timezone = "GMT+7")
-    @Column(name = "created_at", updatable = false)
-    private Instant createdAt;
+    @Column(name = "created_date", updatable = false)
+    private Instant createdDate;
 
     @UpdateTimestamp
-    @Column(name = "updated_at")
-    private Instant updatedAt;
+    @Column(name = "updated_date", updatable = true)
+    private Instant updatedDate;
 
     @Override
     public boolean equals(Object o) {
@@ -42,13 +49,34 @@ public abstract class BaseEntityAudit extends BaseEntity {
         BaseEntityAudit that = (BaseEntityAudit) o;
         return createdBy.equals(that.createdBy) &&
                 updatedBy.equals(that.updatedBy) &&
-                createdAt.equals(that.createdAt) &&
-                updatedAt.equals(that.updatedAt);
+                createdDate.equals(that.createdDate) &&
+                updatedDate.equals(that.updatedDate);
     }
 
     @Override
     public int hashCode() {
-        return 
-            Objects.hash(super.hashCode(), createdBy, updatedBy, createdAt, updatedAt);
+        return
+            Objects.hash(super.hashCode(), createdBy, updatedBy, createdDate, updatedDate);
+    }
+
+    public String findSystemUser() {
+        String Identify = SecurityUtils.getCurrentUserLogin()
+                .orElse("Unknown");
+        return Identify;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        this.setCreatedBy(findSystemUser());
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.setUpdatedBy(findSystemUser());
+    }
+
+    @PreRemove
+    public void preRemove() {
+        // this.setUpdatedBy(findSystemUser());
     }
 }

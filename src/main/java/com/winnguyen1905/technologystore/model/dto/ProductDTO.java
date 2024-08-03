@@ -4,9 +4,7 @@ import lombok.*;
 
 @Getter
 @Setter
-@SuppressWarnings("rawtypes")
-public class ProductDTO extends AbstractDTO {
-    
+public class ProductDTO extends AbstractDTO<ProductDTO> {
     private String productType;
 
     private String name;
@@ -20,5 +18,7 @@ public class ProductDTO extends AbstractDTO {
     private String brand;
 
     private String slug;
-    
+
+    private Boolean isDraft;
+    private Boolean isPublished;
 }
