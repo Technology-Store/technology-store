@@ -41,7 +41,7 @@ public class ProductController {
 
     // API FOR SHOP OWNER---------------------------------------------------------
 
-    @PostMapping("/")
+    @PostMapping
     @MetaMessage(message = "add new product success")
     public ResponseEntity<ProductDTO> addProduct(@RequestBody ProductRequest productRequest) {
         return ResponseEntity.status(HttpStatus.CREATED.value()).body(this.productService.handleAddProduct(productRequest));
@@ -58,7 +58,16 @@ public class ProductController {
         return ResponseEntity.ok(this.productService.handleGetAllProducts(productSearchRequest, pageable));
     }
 
+    @PatchMapping
+    @MetaMessage(message = "get all my product with filter success")
+    public ResponseEntity<ProductDTO> updateProducts(@RequestBody List<ProductRequest> productRequests) {
+        String shopOwner = SecurityUtils.getCurrentUserLogin()
+                .orElseThrow(() -> new CustomRuntimeException("Not found username", 403));
+        return ResponseEntity.ok(this.productService.handleUpdateProducts(productRequests, shopOwner));
+    }
+
     @PatchMapping("/change-status/{ids}")
+    @MetaMessage(message = "Change visible products status success")
     public ResponseEntity<ProductDTO> publishProducts(@PathVariable List<UUID> ids) {
         String shopOwner = SecurityUtils.getCurrentUserLogin()
                 .orElseThrow(() -> new CustomRuntimeException("Not found username", 403));

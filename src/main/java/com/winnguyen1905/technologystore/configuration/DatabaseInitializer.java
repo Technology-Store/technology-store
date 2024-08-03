@@ -34,6 +34,8 @@ public class DatabaseInitializer implements CommandLineRunner {
         // district.setCity(city);
         // districtRepository.save(district);
 
+        if(permissionRepository.findAll().size() != 0) return;
+
         final PermissionEntity permission = new PermissionEntity();
         permission.setApiPath("/api/v1/");
         permission.setCode("admin");

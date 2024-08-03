@@ -1,7 +1,11 @@
 package com.winnguyen1905.technologystore.service.impl;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +25,7 @@ import com.winnguyen1905.technologystore.model.request.ProductSearchRequest;
 import com.winnguyen1905.technologystore.repository.ProductRepository;
 import com.winnguyen1905.technologystore.service.IProductService;
 import com.winnguyen1905.technologystore.util.NormalSpecificationUtils;
-import com.winnguyen1905.technologystore.util.OverwriteUtils;
+import com.winnguyen1905.technologystore.util.MergeUtils;
 
 @Service
 public class ProductService implements IProductService {
@@ -36,19 +40,31 @@ public class ProductService implements IProductService {
 
     @Override
     public ProductDTO handleAddProduct(ProductRequest productRequest) {
-        ProductEntity product = productConverter.modelConverter(productRequest, SystemConstant.TO_ENTITY);
+        ProductEntity product = productConverter.toProductEntity(productRequest);
         product = this.productRepository.save(product);
-        return this.productConverter.modelConverter(product, SystemConstant.TO_DTO);
+        return this.productConverter.toProductDTO(product);
     }
 
     @Override
-    public ProductDTO handleUpdateProduct(ProductRequest productRequest) {
-        ProductEntity beModifiedProduct = this.productRepository.findById(productRequest.getId())
-                .orElseThrow(() -> new CustomRuntimeException("Not found product wth id " + productRequest.getId()));
-        ProductEntity newProductData = productConverter.modelConverter(productRequest, SystemConstant.TO_ENTITY);
-        beModifiedProduct = OverwriteUtils.overwrireObject(newProductData, beModifiedProduct);
-        beModifiedProduct = this.productRepository.save(beModifiedProduct);
-        return this.productConverter.modelConverter(beModifiedProduct, SystemConstant.TO_DTO);
+    public ProductDTO handleUpdateProducts(List<ProductRequest> productRequests, String shopOwner) {
+        List<UUID> ids = productRequests.stream().map(item -> item.getId()).toList();
+        List<ProductEntity> products = this.productRepository.findByIdInAndCreatedByAndOrderByIdAsc(ids, shopOwner);
+        if(products.size() != ids.size()) throw new CustomRuntimeException("Cannot update because " + products.size() + " of " + ids.size() + " product be found");
+
+        List<ProductEntity> newDataOfProducts = productRequests.stream()
+                .map(item -> (ProductEntity) this.productConverter.toProductEntity(item))
+                .sorted(Comparator.comparing(ProductEntity::getId)).collect(Collectors.toList());;
+        for (int i = 0; i < products.size(); i++) {
+            ProductEntity oldData = products.get(i);
+            ProductEntity newData = newDataOfProducts.get(i);
+            MergeUtils.mergeObject(newData, oldData);
+            products.set(i, oldData);
+        }
+        
+        products = this.productRepository.saveAll(products);
+        ProductDTO result = new ProductDTO();
+        result.setContent(products.stream().map(item -> (ProductDTO) this.productConverter.toProductDTO(item)).toList());
+        return result;
     }
 
     @Override
@@ -69,7 +85,7 @@ public class ProductService implements IProductService {
         }).toList();
         products = this.productRepository.saveAll(products);
         ProductDTO result = new ProductDTO();
-        result.setContent(products.stream().map(item -> this.modelMapper.map(item, ProductDTO.class)).toList());
+        result.setContent(products.stream().map(item -> (ProductDTO) this.productConverter.toProductDTO(item)).toList());
         return result;
     }
 }

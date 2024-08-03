@@ -14,7 +14,7 @@ import com.winnguyen1905.technologystore.model.dto.RoleDTO;
 import com.winnguyen1905.technologystore.repository.PermissionRepository;
 import com.winnguyen1905.technologystore.repository.RoleRepository;
 import com.winnguyen1905.technologystore.service.IRoleService;
-import com.winnguyen1905.technologystore.util.OverwriteUtils;
+import com.winnguyen1905.technologystore.util.MergeUtils;
 
 @Service
 public class RoleService implements IRoleService {
@@ -46,7 +46,8 @@ public class RoleService implements IRoleService {
         RoleEntity beModifiedRole = this.roleRepository.findById(roleDTO.getId())
                 .orElseThrow(() -> new CustomRuntimeException("Not found role with id " + roleDTO.getId().toString()));
         RoleEntity newRoleData = this.modelMapper.map(roleDTO, RoleEntity.class);
-        beModifiedRole = this.roleRepository.save(OverwriteUtils.overwrireObject(newRoleData, beModifiedRole));
+        MergeUtils.mergeObject(newRoleData, beModifiedRole);
+        beModifiedRole = this.roleRepository.save(beModifiedRole);
         return this.modelMapper.map(beModifiedRole, RoleDTO.class);
     }
 

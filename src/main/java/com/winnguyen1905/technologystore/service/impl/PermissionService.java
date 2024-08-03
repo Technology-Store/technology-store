@@ -21,7 +21,7 @@ import com.winnguyen1905.technologystore.model.request.PermissionSearchRequest;
 import com.winnguyen1905.technologystore.repository.PermissionRepository;
 import com.winnguyen1905.technologystore.repository.specification.CustomSpecification;
 import com.winnguyen1905.technologystore.service.IPermissionService;
-import com.winnguyen1905.technologystore.util.OverwriteUtils;
+import com.winnguyen1905.technologystore.util.MergeUtils;
 
 @Service
 public class PermissionService implements IPermissionService {
@@ -64,9 +64,9 @@ public class PermissionService implements IPermissionService {
         PermissionEntity beModifiedPermission = this.permissionRepository.findById(permissionDTO.getId())
                 .orElseThrow(() -> new CustomRuntimeException("Not found permission by id " + permissionDTO.getId()));
         PermissionEntity permission = this.modelMapper.map(permissionDTO, PermissionEntity.class);
-        permission = OverwriteUtils.overwrireObject(permission, beModifiedPermission);
-        permission = this.permissionRepository.save(permission);
-        return this.modelMapper.map(permission, PermissionDTO.class);
+        MergeUtils.mergeObject(permission, beModifiedPermission);
+        beModifiedPermission = this.permissionRepository.save(beModifiedPermission);
+        return this.modelMapper.map(beModifiedPermission, PermissionDTO.class);
     }
 
     @Override
