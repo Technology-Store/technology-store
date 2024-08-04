@@ -1,6 +1,7 @@
 package com.winnguyen1905.technologystore.entity;
 import java.time.Instant;
 import java.util.List;
+import java.util.Set;
 
 import com.winnguyen1905.technologystore.common.DiscountAppliesType;
 import com.winnguyen1905.technologystore.common.DiscountType;
@@ -11,7 +12,7 @@ import lombok.*;
 @Entity
 @Getter
 @Setter
-@Table(name = "laptop")
+@Table(name = "discounts")
 public class DiscountEntity extends BaseEntityAudit {
     @Column(name = "discount_name")   
     private String name;
@@ -72,7 +73,11 @@ public class DiscountEntity extends BaseEntityAudit {
         joinColumns = @JoinColumn(name = "discount_id"),
         inverseJoinColumns = @JoinColumn(name = "product_id")
     )
-    private List<ProductEntity> products;
+    private Set<ProductEntity> products;
+
+    public void addProduct(ProductEntity product) {
+        this.products.add(product);
+    }
     
     @PrePersist
     public void prePersist() {

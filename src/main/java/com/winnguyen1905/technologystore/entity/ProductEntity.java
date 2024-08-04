@@ -1,6 +1,8 @@
 package com.winnguyen1905.technologystore.entity;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -55,11 +57,11 @@ public abstract class ProductEntity extends BaseEntityAudit {
     @JoinColumn(name = "shop_id")
     private ShopEntity shop;
 
-    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST })
     private List<InventoryEntity> inventories;
 
     @ManyToMany(mappedBy = "products")
-    private List<DiscountEntity> discounts;
+    private Set<DiscountEntity> discounts;
 
     public void addInventory(InventoryEntity inventory) {
         this.inventories.add(inventory);
@@ -69,6 +71,10 @@ public abstract class ProductEntity extends BaseEntityAudit {
     public void removeInventory(InventoryEntity inventory) {
         this.inventories.remove(inventory);
         inventory.setProduct(null);
+    }
+
+    public void addDiscountCode(DiscountEntity discount) {
+        this.discounts.add(discount);
     }
 
     @PrePersist

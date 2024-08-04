@@ -20,13 +20,13 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "user")
-// @Inheritance(strategy = InheritanceType.JOINED)
-// @DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
-// @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-// @JsonSubTypes({
-//     @JsonSubTypes.Type(value = StaffEntity.class, name = "staff"),
-//     @JsonSubTypes.Type(value = CustomerEntity.class, name = "customer"),
-// })
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonSubTypes({
+    @JsonSubTypes.Type(value = ShopEntity.class, name = "shop"),
+    // @JsonSubTypes.Type(value = CustomerEntity.class, name = "customer"),
+})
 public class UserEntity extends BaseEntityAudit {
     @Column(name = "frist_name", nullable = false)
     private String firstName;

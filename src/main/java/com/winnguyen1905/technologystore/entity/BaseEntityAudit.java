@@ -38,6 +38,9 @@ public abstract class BaseEntityAudit extends BaseEntity {
     @Column(name = "updated_date", updatable = true)
     private Instant updatedDate;
 
+    @Column(name = "is_deleted", updatable = true)
+    private Boolean isDeleted;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -64,6 +67,7 @@ public abstract class BaseEntityAudit extends BaseEntity {
 
     @PrePersist
     public void prePersist() {
+        this.setIsDeleted(false);
         this.setCreatedBy(findSystemUser());
     }
 

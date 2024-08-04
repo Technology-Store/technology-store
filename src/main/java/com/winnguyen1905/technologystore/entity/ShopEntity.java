@@ -10,34 +10,11 @@ import lombok.*;
 @Getter
 @Setter
 @Table(name = "shop")
-public class ShopEntity extends BaseEntityAudit {
-    @Column(name = "username", nullable = false)
-    private String userName;
-
-    @Column(name = "last_name", nullable = false)
-    private String lastName;
-
-    @Column(name = "first_name", nullable = false)
-    private String firstName;
-
-    @Column(name = "password", nullable = false)
-    private String password;
-
-    @Column(name = "status", nullable = false)
-    private Integer status;
-
-    @Column(name = "email", nullable = true)
-    private String email;
-
-    @Column(name = "phone", nullable = true)
-    private Integer phone;
-
+@DiscriminatorValue("shop")
+public class ShopEntity extends UserEntity {
     @OneToMany(mappedBy = "shop", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<ProductEntity> products;
 
     @OneToMany(mappedBy = "shop")
     private List<DiscountEntity> discount;
-
-    // @OneToMany(mappedBy = "shop", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    // private List<InventoryEntity> inventories;
 }

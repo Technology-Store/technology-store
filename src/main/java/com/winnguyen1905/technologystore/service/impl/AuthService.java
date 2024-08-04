@@ -32,6 +32,7 @@ import jakarta.transaction.Transactional;
 @Service
 @Transactional
 public class AuthService implements IAuthService {
+
     private final UserRepository userRepository;
     private final UserConverter userConverter;
     private final PasswordEncoder passwordEncoder;
@@ -107,4 +108,5 @@ public class AuthService implements IAuthService {
         this.userRepository.save(user);
         return null;
     }
+    
 }
