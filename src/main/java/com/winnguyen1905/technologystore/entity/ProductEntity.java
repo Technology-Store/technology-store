@@ -55,8 +55,21 @@ public abstract class ProductEntity extends BaseEntityAudit {
     @JoinColumn(name = "shop_id")
     private ShopEntity shop;
 
-    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     private List<InventoryEntity> inventories;
+
+    @ManyToMany(mappedBy = "products")
+    private List<DiscountEntity> discounts;
+
+    public void addInventory(InventoryEntity inventory) {
+        this.inventories.add(inventory);
+        inventory.setProduct(this);
+    }
+
+    public void removeInventory(InventoryEntity inventory) {
+        this.inventories.remove(inventory);
+        inventory.setProduct(null);
+    }
 
     @PrePersist
     public void prePersist() {

@@ -19,8 +19,11 @@ import jakarta.servlet.http.HttpServletResponse;
 @Component
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
     private final AuthenticationEntryPoint delegate = new BearerTokenAuthenticationEntryPoint();
-    @Autowired
-    private ObjectMapper mapper;
+    private final ObjectMapper objectMapper;
+
+    public CustomAuthenticationEntryPoint(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
 
     @Override
     public void commence(
@@ -37,6 +40,6 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
                                 .map(Throwable::getMessage)
                                 .orElse(authException.getMessage()))
                 .build();
-        this.mapper.writeValue(response.getWriter(), res);
+        this.objectMapper.writeValue(response.getWriter(), res);
     }
 }

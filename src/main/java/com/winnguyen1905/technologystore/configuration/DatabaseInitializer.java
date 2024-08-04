@@ -8,8 +8,11 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import com.winnguyen1905.technologystore.entity.CityEntity;
+import com.winnguyen1905.technologystore.entity.DistrictEntity;
 import com.winnguyen1905.technologystore.entity.PermissionEntity;
 import com.winnguyen1905.technologystore.entity.RoleEntity;
+import com.winnguyen1905.technologystore.repository.DistrictRepository;
 import com.winnguyen1905.technologystore.repository.PermissionRepository;
 import com.winnguyen1905.technologystore.repository.RoleRepository;
 
@@ -17,25 +20,28 @@ import com.winnguyen1905.technologystore.repository.RoleRepository;
 @Service
 public class DatabaseInitializer implements CommandLineRunner {
     private final PermissionRepository permissionRepository;
+    private final DistrictRepository districtRepository;
 
-    public DatabaseInitializer(PermissionRepository permissionRepository) {
+    public DatabaseInitializer(PermissionRepository permissionRepository, DistrictRepository districtRepository) {
         this.permissionRepository = permissionRepository;
+        this.districtRepository = districtRepository;
     }
 
     @Override
     public void run(String... args) throws Exception {
-        // final DistrictEntity district = new DistrictEntity();
-        // district.setCode("thu-duc");
-        // district.setName("Thu Duc");
-        // district.setCreatedBy("ADMINSTRATOR");
-        // final CityEntity city = new CityEntity();
-        // city.setName("Ho Chi Minh");
-        // city.setCode("ho-chi-minh");
-        // district.setCity(city);
-        // districtRepository.save(district);
+        
 
         if(permissionRepository.findAll().size() != 0) return;
-
+        final DistrictEntity district = new DistrictEntity();
+        district.setCode("thu-duc");
+        district.setName("Thu Duc");
+        district.setCreatedBy("ADMINSTRATOR");
+        final CityEntity city = new CityEntity();
+        city.setName("Ho Chi Minh");
+        city.setCode("ho-chi-minh");
+        district.setCity(city);
+        districtRepository.save(district);
+        
         final PermissionEntity permission = new PermissionEntity();
         permission.setApiPath("/api/v1/");
         permission.setCode("admin");

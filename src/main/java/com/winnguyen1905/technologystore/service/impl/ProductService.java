@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.winnguyen1905.technologystore.common.SystemConstant;
 import com.winnguyen1905.technologystore.converter.ProductConverter;
+import com.winnguyen1905.technologystore.entity.InventoryEntity;
 import com.winnguyen1905.technologystore.entity.ProductEntity;
 import com.winnguyen1905.technologystore.exception.CustomRuntimeException;
 import com.winnguyen1905.technologystore.model.dto.ProductDTO;
@@ -25,27 +26,28 @@ import com.winnguyen1905.technologystore.model.request.ProductSearchRequest;
 import com.winnguyen1905.technologystore.repository.InventoryRepository;
 import com.winnguyen1905.technologystore.repository.ProductRepository;
 import com.winnguyen1905.technologystore.service.IProductService;
+import com.winnguyen1905.technologystore.util.MergeUtils;
 import com.winnguyen1905.technologystore.util.NormalSpecificationUtils;
 
 @Service
+@Transactional
 public class ProductService implements IProductService {
 
     private final ProductRepository productRepository;
     private final ProductConverter productConverter;
     private final ModelMapper modelMapper;
-    private final InventoryRepository inventoryRepository;
 
-    public ProductService(InventoryRepository inventoryRepository, ProductRepository productRepository,
+    public ProductService(ProductRepository productRepository,
             ProductConverter productConverter, ModelMapper modelMapper) {
         this.productRepository = productRepository;
         this.productConverter = productConverter;
         this.modelMapper = modelMapper;
-        this.inventoryRepository = inventoryRepository;
     }
 
     @Override
     public ProductDTO handleAddProduct(ProductRequest productRequest) {
         ProductEntity product = productConverter.toProductEntity(productRequest);
+        for(InventoryEntity inventory : product.getInventories()) inventory.setProduct(product);
         product = this.productRepository.save(product);
         return this.productConverter.toProductDTO(product);
     }
@@ -55,8 +57,7 @@ public class ProductService implements IProductService {
         List<UUID> ids = productRequests.stream().map(item -> item.getId()).toList();
         List<ProductEntity> products = this.productRepository.findByIdInAndCreatedByAndOrderByIdAsc(ids, shopOwner);
         if (products.size() != ids.size())
-            throw new CustomRuntimeException(
-                    "Cannot update because " + products.size() + " of " + ids.size() + " product be found");
+            throw new CustomRuntimeException("Cannot update because " + products.size() + " of " + ids.size() + " product be found");
 
         List<ProductEntity> newDataOfProducts = productRequests.stream()
                 .map(item -> (ProductEntity) this.productConverter.toProductEntity(item))
@@ -66,6 +67,7 @@ public class ProductService implements IProductService {
             this.modelMapper.map(newData, oldData);
             products.set(i, oldData);
         }
+        products = this.productRepository.saveAll(products);
         return products.stream().map(item -> (ProductDTO) this.productConverter.toProductDTO(item)).toList();
     }
 

@@ -1,10 +1,16 @@
 package com.winnguyen1905.technologystore.converter;
 
+import java.lang.reflect.Field;
 import java.security.InvalidAlgorithmParameterException;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +22,8 @@ import com.winnguyen1905.technologystore.exception.CustomRuntimeException;
 import com.winnguyen1905.technologystore.model.dto.LaptopDTO;
 import com.winnguyen1905.technologystore.model.dto.ProductDTO;
 import com.winnguyen1905.technologystore.model.dto.SmartPhoneDTO;
+
+import io.jsonwebtoken.lang.Arrays;
 
 @Component
 public class ProductConverter {
@@ -62,4 +70,47 @@ public class ProductConverter {
         }
         return (D) this.modelMapper.map(product, ProductDTO.class);
     }
+
+    public List<Field> getAllField(Class<?> dClass) {
+        if(dClass == Object.class) return new ArrayList<>();
+        List<Field> parentFields = getAllField(dClass.getSuperclass());
+        parentFields.addAll(Arrays.asList(dClass.getDeclaredFields()));
+        return parentFields;
+    }
+
+    // public <D> D taget(D object, D target) {
+    //     List<Field> fieldList = getAllField(object.getClass());
+    //     fieldList.stream().forEach(item -> {
+
+    //     });
+        // field.setAccessible(true);
+        // String fieldName = field.getName();
+        // Object value = field.get(object);
+        // if(value instanceof Collection) {
+        //     for(Object val : ) 
+        // } 
+    // }
+
+    // public <D> D mergeNestedProductModel(D object, D target) {
+    //     List<Field> fields = getAllField(object.getClass());
+    //     fields.stream().forEach(item -> {
+    //         item.setAccessible(true);
+    //         Object value = item.get(object);
+    //         if(value instanceof Collection) {
+
+    //         }
+    //     })
+        // Field[] fields = object.getClass().getDeclaredFields();
+        // while(object.getClass().getSuperclass() != Object.class) {
+        //     fieldList.addAll(Arrays.asList(object.getClass().getDeclaredFields()));
+        //     object = (D) object.getClass().getSuperclass();
+        // }
+        // modelMapper.addMappings(new PropertyMap<Product, ProductDTO>() {
+        //     @Override
+        //     protected void configure() {
+        //         map().setInventory(source.getInventory()); // Map nested Inventory
+        //     }
+        // });
+        // return object;
+    // }
 }

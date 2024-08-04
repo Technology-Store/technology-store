@@ -35,6 +35,9 @@ public class ShopEntity extends BaseEntityAudit {
     @OneToMany(mappedBy = "shop", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<ProductEntity> products;
 
-    @OneToMany(mappedBy = "shop", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private List<InventoryEntity> inventories;
+    @OneToMany(mappedBy = "shop")
+    private List<DiscountEntity> discount;
+
+    // @OneToMany(mappedBy = "shop", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    // private List<InventoryEntity> inventories;
 }

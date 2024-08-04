@@ -18,7 +18,6 @@ import com.winnguyen1905.technologystore.entity.RoleEntity;
 import com.winnguyen1905.technologystore.entity.UserEntity;
 import com.winnguyen1905.technologystore.exception.CustomRuntimeException;
 import com.winnguyen1905.technologystore.model.dto.MyUserDetails;
-import com.winnguyen1905.technologystore.model.dto.UserDTO;
 import com.winnguyen1905.technologystore.model.request.LoginRequest;
 import com.winnguyen1905.technologystore.model.request.RegisterRequest;
 import com.winnguyen1905.technologystore.model.response.AuthenResponse;

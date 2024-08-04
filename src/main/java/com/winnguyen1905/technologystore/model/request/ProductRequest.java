@@ -6,7 +6,6 @@ import lombok.*;
 
 @Getter
 @Setter
-@Builder
 public class ProductRequest extends ProductDTO {
     private String os;
 

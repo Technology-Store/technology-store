@@ -43,6 +43,7 @@ public class JwtConfiguration {
                 .withSecretKey(secretKey())
                 .macAlgorithm(SecurityUtils.JWT_ALGORITHM)
                 .build();
+        System.out.println(jwtKey);
         return token -> {
             try {
                 return nimbusJwtDecoder.decode(token);
@@ -62,7 +63,7 @@ public class JwtConfiguration {
     public JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter grantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
         grantedAuthoritiesConverter.setAuthorityPrefix("");
-        grantedAuthoritiesConverter.setAuthoritiesClaimName("permissions");
+        grantedAuthoritiesConverter.setAuthoritiesClaimName("permission");
         JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(grantedAuthoritiesConverter);
         return jwtAuthenticationConverter;

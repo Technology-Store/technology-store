@@ -2,6 +2,7 @@ package com.winnguyen1905.technologystore.entity;
 
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -19,18 +20,18 @@ public class InventoryEntity extends BaseEntityAudit {
     @Column(name = "inven_stock")
     private Integer stock;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "district_id")
     private DistrictEntity district;
 
     @OneToMany(mappedBy = "inventory")
     private List<ReservationEntity> reservations;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "product_id")
     private ProductEntity product;
 
-    @ManyToOne
-    @JoinColumn(name = "shop_id")
-    private ShopEntity shop;
+    // @ManyToOne
+    // @JoinColumn(name = "shop_id")
+    // private ShopEntity shop;
 }
