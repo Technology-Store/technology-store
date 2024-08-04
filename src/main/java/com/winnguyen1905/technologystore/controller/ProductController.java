@@ -34,9 +34,13 @@ public class ProductController {
     ) {
         productSearchRequest.setIsDraft(false);
         productSearchRequest.setIsPublished(true);
-        productSearchRequest.setCreatedBy(null);
-        productSearchRequest.setUpdatedBy(null);
         return ResponseEntity.ok(this.productService.handleGetAllProducts(productSearchRequest, pageable));
+    }
+
+    @GetMapping("/{id}")
+    @MetaMessage(message = "get product with by id success")
+    public ResponseEntity<ProductDTO> getOneProduct(@PathVariable UUID id) {
+        return ResponseEntity.ok(this.productService.handleGetProduct(id));
     }
 
     // API FOR SHOP OWNER---------------------------------------------------------

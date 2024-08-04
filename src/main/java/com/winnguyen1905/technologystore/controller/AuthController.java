@@ -62,7 +62,7 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.CREATED).body(authenResponse);
     }
 
-    @GetMapping("/refresh")
+    @PostMapping("/refresh")
     @MetaMessage(message = "Get user by refresh token success")
     public ResponseEntity<AuthenResponse> getAuthenticationResultByRefreshToken(
         @CookieValue(name = "refresh_token", defaultValue = "Not found any refresh token") String refreshToken

@@ -53,11 +53,10 @@ public class ProductService implements IProductService {
 
         List<ProductEntity> newDataOfProducts = productRequests.stream()
                 .map(item -> (ProductEntity) this.productConverter.toProductEntity(item))
-                .sorted(Comparator.comparing(ProductEntity::getId)).collect(Collectors.toList());;
+                .sorted(Comparator.comparing(ProductEntity::getId)).collect(Collectors.toList());
         for (int i = 0; i < products.size(); i++) {
-            ProductEntity oldData = products.get(i);
-            ProductEntity newData = newDataOfProducts.get(i);
-            MergeUtils.mergeObject(newData, oldData);
+            ProductEntity oldData = products.get(i), newData = newDataOfProducts.get(i);
+            this.modelMapper.map(newData, oldData);
             products.set(i, oldData);
         }
         
@@ -87,5 +86,13 @@ public class ProductService implements IProductService {
         ProductDTO result = new ProductDTO();
         result.setContent(products.stream().map(item -> (ProductDTO) this.productConverter.toProductDTO(item)).toList());
         return result;
+    }
+
+    @Override
+    public ProductDTO handleGetProduct(UUID id) {
+        ProductEntity product = this.productRepository.findById(id)
+                .orElseThrow(() -> new CustomRuntimeException("Not found product id " + id.toString()));
+        if(!product.getIsPublished()) throw new CustomRuntimeException("Not found product id " + id.toString());
+        return this.productConverter.toProductDTO(product);
     }
 }
