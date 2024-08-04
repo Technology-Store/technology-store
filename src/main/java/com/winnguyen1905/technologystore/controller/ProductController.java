@@ -64,7 +64,7 @@ public class ProductController {
 
     @PatchMapping
     @MetaMessage(message = "get all my product with filter success")
-    public ResponseEntity<ProductDTO> updateProducts(@RequestBody List<ProductRequest> productRequests) {
+    public ResponseEntity<List<ProductDTO>> updateProducts(@RequestBody List<ProductRequest> productRequests) {
         String shopOwner = SecurityUtils.getCurrentUserLogin()
                 .orElseThrow(() -> new CustomRuntimeException("Not found username", 403));
         return ResponseEntity.ok(this.productService.handleUpdateProducts(productRequests, shopOwner));
@@ -72,7 +72,7 @@ public class ProductController {
 
     @PatchMapping("/change-status/{ids}")
     @MetaMessage(message = "Change visible products status success")
-    public ResponseEntity<ProductDTO> publishProducts(@PathVariable List<UUID> ids) {
+    public ResponseEntity<List<ProductDTO>> publishProducts(@PathVariable List<UUID> ids) {
         String shopOwner = SecurityUtils.getCurrentUserLogin()
                 .orElseThrow(() -> new CustomRuntimeException("Not found username", 403));
         return ResponseEntity.ok(this.productService.handleChangeProductStatus(ids, shopOwner));

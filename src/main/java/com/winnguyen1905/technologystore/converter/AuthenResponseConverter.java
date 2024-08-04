@@ -16,9 +16,9 @@ public class AuthenResponseConverter {
 
     public AuthenResponse toAuthenResponse(UserEntity user, Pair<String, String> tokenPair) {
         if (tokenPair == null)
-            return AuthenResponse.builder().userDTO(modelMapper.map(user, UserDTO.class)).build();
+            return AuthenResponse.builder().userDTO(this.modelMapper.map(user, UserDTO.class)).build();
         return AuthenResponse.builder()
-                .userDTO(modelMapper.map(user, UserDTO.class))
+                .userDTO(this.modelMapper.map(user, UserDTO.class))
                 .accessToken(tokenPair.getFirst())
                 .refreshToken(tokenPair.getSecond())
                 .build();

@@ -55,7 +55,7 @@ public class ProductConverter {
             Class<?> dClass = this.productRegistry.get(product.getProductType() + "_dto");
             if(dClass == null) throw new CustomRuntimeException("Not found product type " + product.getProductType());
             D instanceOfDClass = (D) dClass.getDeclaredConstructor().newInstance();
-            modelMapper.map(product, instanceOfDClass);
+            this.modelMapper.map(product, instanceOfDClass);
             return instanceOfDClass;
         } catch (Exception e) {
             e.printStackTrace();

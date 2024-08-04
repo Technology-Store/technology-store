@@ -25,7 +25,6 @@ import com.winnguyen1905.technologystore.model.request.ProductSearchRequest;
 import com.winnguyen1905.technologystore.repository.ProductRepository;
 import com.winnguyen1905.technologystore.service.IProductService;
 import com.winnguyen1905.technologystore.util.NormalSpecificationUtils;
-import com.winnguyen1905.technologystore.util.MergeUtils;
 
 @Service
 public class ProductService implements IProductService {
@@ -46,7 +45,7 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public ProductDTO handleUpdateProducts(List<ProductRequest> productRequests, String shopOwner) {
+    public List<ProductDTO> handleUpdateProducts(List<ProductRequest> productRequests, String shopOwner) {
         List<UUID> ids = productRequests.stream().map(item -> item.getId()).toList();
         List<ProductEntity> products = this.productRepository.findByIdInAndCreatedByAndOrderByIdAsc(ids, shopOwner);
         if(products.size() != ids.size()) throw new CustomRuntimeException("Cannot update because " + products.size() + " of " + ids.size() + " product be found");
@@ -54,16 +53,12 @@ public class ProductService implements IProductService {
         List<ProductEntity> newDataOfProducts = productRequests.stream()
                 .map(item -> (ProductEntity) this.productConverter.toProductEntity(item))
                 .sorted(Comparator.comparing(ProductEntity::getId)).collect(Collectors.toList());
-        for (int i = 0; i < products.size(); i++) {
+        for(int i = 0; i < products.size(); i++) {
             ProductEntity oldData = products.get(i), newData = newDataOfProducts.get(i);
             this.modelMapper.map(newData, oldData);
             products.set(i, oldData);
         }
-        
-        products = this.productRepository.saveAll(products);
-        ProductDTO result = new ProductDTO();
-        result.setContent(products.stream().map(item -> (ProductDTO) this.productConverter.toProductDTO(item)).toList());
-        return result;
+        return products.stream().map(item -> (ProductDTO) this.productConverter.toProductDTO(item)).toList();
     }
 
     @Override
@@ -74,7 +69,7 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public ProductDTO handleChangeProductStatus(List<UUID> ids, String shopOwner) {
+    public List<ProductDTO> handleChangeProductStatus(List<UUID> ids, String shopOwner) {
         List<ProductEntity> products = this.productRepository.findByIdInAndCreatedBy(ids, shopOwner);
         if(products.size() != ids.size()) throw new CustomRuntimeException("Cannot update because " + products.size() + " of " + ids.size() + " product be found");
         products = products.stream().map(item -> {
@@ -83,9 +78,7 @@ public class ProductService implements IProductService {
             return item;
         }).toList();
         products = this.productRepository.saveAll(products);
-        ProductDTO result = new ProductDTO();
-        result.setContent(products.stream().map(item -> (ProductDTO) this.productConverter.toProductDTO(item)).toList());
-        return result;
+        return products.stream().map(item -> (ProductDTO) this.productConverter.toProductDTO(item)).toList();
     }
 
     @Override

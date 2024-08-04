@@ -32,7 +32,7 @@ public abstract class ProductEntity extends BaseEntityAudit {
     private String description;
 
     @Column(name = "p_price", nullable = false)
-    private Double price;
+    private Number price;
 
     @Column(name = "p_type", insertable = false, updatable = false)
     private String productType;
