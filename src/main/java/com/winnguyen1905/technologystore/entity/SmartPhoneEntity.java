@@ -15,7 +15,6 @@ import lombok.*;
 @DiscriminatorValue(ProductTypeConstant.SMARTPHONE)
 @PrimaryKeyJoinColumn(name = "smartphone_id")
 public class SmartPhoneEntity extends ProductEntity {
-
     @Column(name = "x_size", nullable = true)
     private Double xSize;
 

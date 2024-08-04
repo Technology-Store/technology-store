@@ -1,5 +1,7 @@
 package com.winnguyen1905.technologystore.entity;
 
+import java.util.List;
+
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.*;
@@ -52,6 +54,9 @@ public abstract class ProductEntity extends BaseEntityAudit {
     @ManyToOne
     @JoinColumn(name = "shop_id")
     private ShopEntity shop;
+
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private List<InventoryEntity> inventories;
 
     @PrePersist
     public void prePersist() {

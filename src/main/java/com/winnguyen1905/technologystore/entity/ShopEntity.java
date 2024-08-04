@@ -11,7 +11,6 @@ import lombok.*;
 @Setter
 @Table(name = "shop")
 public class ShopEntity extends BaseEntityAudit {
-
     @Column(name = "username", nullable = false)
     private String userName;
 
@@ -33,10 +32,9 @@ public class ShopEntity extends BaseEntityAudit {
     @Column(name = "phone", nullable = true)
     private Integer phone;
 
-    @OneToMany(mappedBy = "shop", fetch = FetchType.LAZY, orphanRemoval = true, cascade = {
-        CascadeType.PERSIST,
-        CascadeType.MERGE
-    })
-    private List<ProductEntity> products = new ArrayList<ProductEntity>();
+    @OneToMany(mappedBy = "shop", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private List<ProductEntity> products;
 
+    @OneToMany(mappedBy = "shop", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private List<InventoryEntity> inventories;
 }

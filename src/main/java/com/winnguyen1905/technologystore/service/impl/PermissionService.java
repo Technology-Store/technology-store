@@ -25,14 +25,16 @@ import com.winnguyen1905.technologystore.util.MergeUtils;
 
 @Service
 public class PermissionService implements IPermissionService {
-    @Autowired
-    private ModelMapper modelMapper;
+    
+    private final ModelMapper modelMapper;
+    private final PermissionRepository permissionRepository;
+    private final PermissionConverter permissionConverter;
 
-    @Autowired
-    private PermissionRepository permissionRepository;
-
-    @Autowired
-    private PermissionConverter permissionConverter;
+    public PermissionService(ModelMapper modelMapper, PermissionRepository permissionRepository, PermissionConverter permissionConverter) {
+        this.modelMapper = modelMapper;
+        this.permissionRepository = permissionRepository;
+        this.permissionConverter = permissionConverter;
+    }
 
     @Override
     public PermissionDTO handleGetPermissions(PermissionSearchRequest permissionSearchRequest, Pageable pageable) {

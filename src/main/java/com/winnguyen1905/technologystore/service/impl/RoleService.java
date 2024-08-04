@@ -18,12 +18,16 @@ import com.winnguyen1905.technologystore.util.MergeUtils;
 
 @Service
 public class RoleService implements IRoleService {
-    @Autowired
-    private RoleRepository roleRepository;
-    @Autowired
-    private ModelMapper modelMapper;
-    @Autowired
-    private PermissionRepository permissionRepository;
+
+    private final RoleRepository roleRepository;
+    private final ModelMapper modelMapper;
+    private final PermissionRepository permissionRepository;
+
+    public RoleService(RoleRepository roleRepository, ModelMapper modelMapper, PermissionRepository permissionRepository) {
+        this.roleRepository = roleRepository;
+        this.modelMapper = modelMapper;
+        this.permissionRepository = permissionRepository;
+    }
 
     @Override
     public RoleDTO handleGetRoleById(UUID id) {

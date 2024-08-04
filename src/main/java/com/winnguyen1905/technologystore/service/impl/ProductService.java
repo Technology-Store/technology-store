@@ -22,20 +22,26 @@ import com.winnguyen1905.technologystore.exception.CustomRuntimeException;
 import com.winnguyen1905.technologystore.model.dto.ProductDTO;
 import com.winnguyen1905.technologystore.model.request.ProductRequest;
 import com.winnguyen1905.technologystore.model.request.ProductSearchRequest;
+import com.winnguyen1905.technologystore.repository.InventoryRepository;
 import com.winnguyen1905.technologystore.repository.ProductRepository;
 import com.winnguyen1905.technologystore.service.IProductService;
 import com.winnguyen1905.technologystore.util.NormalSpecificationUtils;
 
 @Service
 public class ProductService implements IProductService {
-    @Autowired
-    private ProductRepository productRepository;
 
-    @Autowired
-    private ProductConverter productConverter;
+    private final ProductRepository productRepository;
+    private final ProductConverter productConverter;
+    private final ModelMapper modelMapper;
+    private final InventoryRepository inventoryRepository;
 
-    @Autowired
-    private ModelMapper modelMapper;
+    public ProductService(InventoryRepository inventoryRepository, ProductRepository productRepository,
+            ProductConverter productConverter, ModelMapper modelMapper) {
+        this.productRepository = productRepository;
+        this.productConverter = productConverter;
+        this.modelMapper = modelMapper;
+        this.inventoryRepository = inventoryRepository;
+    }
 
     @Override
     public ProductDTO handleAddProduct(ProductRequest productRequest) {
@@ -48,12 +54,14 @@ public class ProductService implements IProductService {
     public List<ProductDTO> handleUpdateProducts(List<ProductRequest> productRequests, String shopOwner) {
         List<UUID> ids = productRequests.stream().map(item -> item.getId()).toList();
         List<ProductEntity> products = this.productRepository.findByIdInAndCreatedByAndOrderByIdAsc(ids, shopOwner);
-        if(products.size() != ids.size()) throw new CustomRuntimeException("Cannot update because " + products.size() + " of " + ids.size() + " product be found");
+        if (products.size() != ids.size())
+            throw new CustomRuntimeException(
+                    "Cannot update because " + products.size() + " of " + ids.size() + " product be found");
 
         List<ProductEntity> newDataOfProducts = productRequests.stream()
                 .map(item -> (ProductEntity) this.productConverter.toProductEntity(item))
                 .sorted(Comparator.comparing(ProductEntity::getId)).collect(Collectors.toList());
-        for(int i = 0; i < products.size(); i++) {
+        for (int i = 0; i < products.size(); i++) {
             ProductEntity oldData = products.get(i), newData = newDataOfProducts.get(i);
             this.modelMapper.map(newData, oldData);
             products.set(i, oldData);
@@ -71,9 +79,11 @@ public class ProductService implements IProductService {
     @Override
     public List<ProductDTO> handleChangeProductStatus(List<UUID> ids, String shopOwner) {
         List<ProductEntity> products = this.productRepository.findByIdInAndCreatedBy(ids, shopOwner);
-        if(products.size() != ids.size()) throw new CustomRuntimeException("Cannot update because " + products.size() + " of " + ids.size() + " product be found");
+        if (products.size() != ids.size())
+            throw new CustomRuntimeException(
+                    "Cannot update because " + products.size() + " of " + ids.size() + " product be found");
         products = products.stream().map(item -> {
-            item.setIsDraft(!item.getIsDraft()); 
+            item.setIsDraft(!item.getIsDraft());
             item.setIsPublished(!item.getIsPublished());
             return item;
         }).toList();
@@ -85,7 +95,8 @@ public class ProductService implements IProductService {
     public ProductDTO handleGetProduct(UUID id) {
         ProductEntity product = this.productRepository.findById(id)
                 .orElseThrow(() -> new CustomRuntimeException("Not found product id " + id.toString()));
-        if(!product.getIsPublished()) throw new CustomRuntimeException("Not found product id " + id.toString());
+        if (!product.getIsPublished())
+            throw new CustomRuntimeException("Not found product id " + id.toString());
         return this.productConverter.toProductDTO(product);
     }
 }

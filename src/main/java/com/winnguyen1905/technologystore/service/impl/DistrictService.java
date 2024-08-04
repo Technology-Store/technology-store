@@ -1,14 +1,9 @@
 package com.winnguyen1905.technologystore.service.impl;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
-import javax.naming.NameNotFoundException;
-
-import org.apache.coyote.BadRequestException;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.winnguyen1905.technologystore.entity.DistrictEntity;
@@ -19,11 +14,14 @@ import com.winnguyen1905.technologystore.service.IDistrictService;
 
 @Service
 public class DistrictService implements IDistrictService {
-    @Autowired
-    private DistrictRepository districtRepository;
+    
+    private final DistrictRepository districtRepository;
+    private final ModelMapper modelMapper;
 
-    @Autowired
-    private ModelMapper modelMapper;
+    public DistrictService(DistrictRepository districtRepository, ModelMapper modelMapper) {
+        this.districtRepository = districtRepository;
+        this.modelMapper = modelMapper;
+    }
 
     @Override
     public DistrictDTO handleAddDistrict(DistrictDTO districtDTO) {

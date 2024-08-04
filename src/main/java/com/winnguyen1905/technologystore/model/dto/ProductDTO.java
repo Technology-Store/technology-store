@@ -1,5 +1,7 @@
 package com.winnguyen1905.technologystore.model.dto;
 
+import java.util.List;
+
 import lombok.*;
 
 @Getter
@@ -22,4 +24,6 @@ public class ProductDTO extends AbstractDTO<ProductDTO> {
     private Boolean isDraft;
     
     private Boolean isPublished;
+
+    private List<InventoryDTO> inventories;
 }

@@ -8,7 +8,6 @@ import lombok.*;
 @Setter
 @Builder
 public class ProductRequest extends ProductDTO {
-
     private String os;
 
     private Integer ram;

@@ -25,4 +25,12 @@ public class InventoryEntity extends BaseEntityAudit {
 
     @OneToMany(mappedBy = "inventory")
     private List<ReservationEntity> reservations;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private ProductEntity product;
+
+    @ManyToOne
+    @JoinColumn(name = "shop_id")
+    private ShopEntity shop;
 }
