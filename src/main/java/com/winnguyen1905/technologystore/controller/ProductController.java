@@ -48,7 +48,9 @@ public class ProductController {
     @PostMapping
     @MetaMessage(message = "add new product success")
     public ResponseEntity<ProductDTO> addProduct(@RequestBody ProductRequest productRequest) {
-        return ResponseEntity.status(HttpStatus.CREATED.value()).body(this.productService.handleAddProduct(productRequest));
+        UUID userId = SecurityUtils.getCurrentUserId()
+                .orElseThrow(() -> new CustomRuntimeException("Not found userId", 403));
+        return ResponseEntity.status(HttpStatus.CREATED.value()).body(this.productService.handleAddProduct(productRequest, userId));
     }
 
     @GetMapping("/my-product")
@@ -65,17 +67,17 @@ public class ProductController {
     @PatchMapping
     @MetaMessage(message = "get all my product with filter success")
     public ResponseEntity<List<ProductDTO>> updateProducts(@RequestBody List<ProductRequest> productRequests) {
-        String shopOwner = SecurityUtils.getCurrentUserLogin()
-                .orElseThrow(() -> new CustomRuntimeException("Not found username", 403));
-        return ResponseEntity.ok(this.productService.handleUpdateProducts(productRequests, shopOwner));
+        UUID userId = SecurityUtils.getCurrentUserId()
+                .orElseThrow(() -> new CustomRuntimeException("Not found userId", 403));
+        return ResponseEntity.ok(this.productService.handleUpdateProducts(productRequests, userId));
     }
 
     @PatchMapping("/change-status/{ids}")
     @MetaMessage(message = "Change visible products status success")
     public ResponseEntity<List<ProductDTO>> publishProducts(@PathVariable List<UUID> ids) {
-        String shopOwner = SecurityUtils.getCurrentUserLogin()
-                .orElseThrow(() -> new CustomRuntimeException("Not found username", 403));
-        return ResponseEntity.ok(this.productService.handleChangeProductStatus(ids, shopOwner));
+        UUID userId = SecurityUtils.getCurrentUserId()
+                .orElseThrow(() -> new CustomRuntimeException("Not found userId", 403));
+        return ResponseEntity.ok(this.productService.handleChangeProductStatus(ids, userId));
     }
 
     // API FOR SHOP ADMIN---------------------------------------------------------

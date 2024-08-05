@@ -15,6 +15,7 @@ import com.winnguyen1905.technologystore.repository.UserRepository;
 @Transactional
 @Component("userDetailsService")
 public class CustomUserDetailsService implements UserDetailsService {
+
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
 
@@ -30,4 +31,5 @@ public class CustomUserDetailsService implements UserDetailsService {
             .orElseThrow(() -> new UsernameNotFoundException("Not found user by username " + username));
         return this.modelMapper.map(user, MyUserDetails.class);
     }
+    
 }

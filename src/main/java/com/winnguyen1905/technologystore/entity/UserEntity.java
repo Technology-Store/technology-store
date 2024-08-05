@@ -55,12 +55,12 @@ public class UserEntity extends BaseEntityAudit {
     @Column(columnDefinition = "MEDIUMTEXT", name = "refresh_token", nullable = true)
     private String refreshToken;
 
-    @ManyToMany(mappedBy = "users")
-    private List<DiscountEntity> discounts;
-
     @ManyToOne
     @JoinColumn(name = "role_id")
     private RoleEntity role;
+
+    // @OneToMany(mappedBy = "user")
+    // private List<DiscountEntity> discounts;
 
     @PrePersist
     public void prePersist() {

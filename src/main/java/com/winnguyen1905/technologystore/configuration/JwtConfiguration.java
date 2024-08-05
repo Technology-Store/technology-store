@@ -45,7 +45,7 @@ public class JwtConfiguration {
                 .build();
         System.out.println(jwtKey);
         return token -> {
-            try {
+            try {System.out.println(jwtKey);
                 return nimbusJwtDecoder.decode(token);
             } catch (Exception e) {
                 System.out.println("Token error: " + token);

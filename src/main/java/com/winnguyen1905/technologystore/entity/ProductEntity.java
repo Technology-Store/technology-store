@@ -55,7 +55,7 @@ public abstract class ProductEntity extends BaseEntityAudit {
 
     @ManyToOne
     @JoinColumn(name = "shop_id")
-    private ShopEntity shop;
+    private UserEntity shop;
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST })
     private List<InventoryEntity> inventories;
@@ -65,12 +65,10 @@ public abstract class ProductEntity extends BaseEntityAudit {
 
     public void addInventory(InventoryEntity inventory) {
         this.inventories.add(inventory);
-        inventory.setProduct(this);
     }
 
     public void removeInventory(InventoryEntity inventory) {
         this.inventories.remove(inventory);
-        inventory.setProduct(null);
     }
 
     public void addDiscountCode(DiscountEntity discount) {

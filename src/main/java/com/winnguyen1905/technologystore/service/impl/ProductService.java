@@ -19,12 +19,15 @@ import com.winnguyen1905.technologystore.common.SystemConstant;
 import com.winnguyen1905.technologystore.converter.ProductConverter;
 import com.winnguyen1905.technologystore.entity.InventoryEntity;
 import com.winnguyen1905.technologystore.entity.ProductEntity;
+import com.winnguyen1905.technologystore.entity.ShopEntity;
+import com.winnguyen1905.technologystore.entity.UserEntity;
 import com.winnguyen1905.technologystore.exception.CustomRuntimeException;
 import com.winnguyen1905.technologystore.model.dto.ProductDTO;
 import com.winnguyen1905.technologystore.model.request.ProductRequest;
 import com.winnguyen1905.technologystore.model.request.ProductSearchRequest;
 import com.winnguyen1905.technologystore.repository.InventoryRepository;
 import com.winnguyen1905.technologystore.repository.ProductRepository;
+import com.winnguyen1905.technologystore.repository.UserRepository;
 import com.winnguyen1905.technologystore.service.IProductService;
 import com.winnguyen1905.technologystore.util.MergeUtils;
 import com.winnguyen1905.technologystore.util.NormalSpecificationUtils;
@@ -36,28 +39,34 @@ public class ProductService implements IProductService {
     private final ProductRepository productRepository;
     private final ProductConverter productConverter;
     private final ModelMapper modelMapper;
+    private final UserRepository userRepository;
 
     public ProductService(ProductRepository productRepository,
-            ProductConverter productConverter, ModelMapper modelMapper) {
+            ProductConverter productConverter, ModelMapper modelMapper, UserRepository userRepository) {
         this.productRepository = productRepository;
         this.productConverter = productConverter;
         this.modelMapper = modelMapper;
+        this.userRepository = userRepository;
     }
 
     @Override
-    public ProductDTO handleAddProduct(ProductRequest productRequest) {
+    public ProductDTO handleAddProduct(ProductRequest productRequest, UUID shopId) {
         ProductEntity product = productConverter.toProductEntity(productRequest);
-        for(InventoryEntity inventory : product.getInventories()) inventory.setProduct(product);
+        UserEntity shop = this.userRepository.findById(shopId).orElseThrow(() -> new CustomRuntimeException("not found shop id " + shopId));
+        product.setShop(shop);
+        for(InventoryEntity inventory : product.getInventories()) {
+            inventory.setProduct(product);
+            inventory.setShop(shop);
+        }
         product = this.productRepository.save(product);
         return this.productConverter.toProductDTO(product);
     }
 
     @Override
-    public List<ProductDTO> handleUpdateProducts(List<ProductRequest> productRequests, String shopOwner) {
+    public List<ProductDTO> handleUpdateProducts(List<ProductRequest> productRequests, UUID shopId) {
         List<UUID> ids = productRequests.stream().map(item -> item.getId()).toList();
-        List<ProductEntity> products = this.productRepository.findByIdInAndCreatedByAndOrderByIdAsc(ids, shopOwner);
-        if (products.size() != ids.size())
-            throw new CustomRuntimeException("Cannot update because " + products.size() + " of " + ids.size() + " product be found");
+        List<ProductEntity> products = this.productRepository.findByIdInAndShopIdOrderById(ids, shopId);
+        if(products.size() != ids.size()) throw new CustomRuntimeException("Cannot update because " + products.size() + " of " + ids.size() + " product be found");
 
         List<ProductEntity> newDataOfProducts = productRequests.stream()
                 .map(item -> (ProductEntity) this.productConverter.toProductEntity(item))
@@ -79,8 +88,8 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public List<ProductDTO> handleChangeProductStatus(List<UUID> ids, String shopOwner) {
-        List<ProductEntity> products = this.productRepository.findByIdInAndCreatedBy(ids, shopOwner);
+    public List<ProductDTO> handleChangeProductStatus(List<UUID> ids, UUID shopId) {
+        List<ProductEntity> products = this.productRepository.findByIdInAndShopId(ids, shopId);
         if (products.size() != ids.size())
             throw new CustomRuntimeException(
                     "Cannot update because " + products.size() + " of " + ids.size() + " product be found");

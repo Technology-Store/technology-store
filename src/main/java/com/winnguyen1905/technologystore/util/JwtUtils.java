@@ -37,7 +37,7 @@ public class JwtUtils {
         return JwtClaimsSet.builder()
             .issuedAt(now)
             .expiresAt(validity)
-            .subject(myUserDetails.getUsername())
+            .subject(myUserDetails.getUsername() + "/" + myUserDetails.getId())
             .claim("user", myUserDetails)
             .claim("permissions", permissions)
             .build();

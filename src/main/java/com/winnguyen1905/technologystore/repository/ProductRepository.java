@@ -16,16 +16,16 @@ import com.winnguyen1905.technologystore.entity.ProductEntity;
 import com.winnguyen1905.technologystore.repository.custom.ProductRepositoryCustom;
 
 @Repository
-public interface ProductRepository extends JpaRepository<ProductEntity, UUID>,  ProductRepositoryCustom, JpaSpecificationExecutor<ProductEntity> {
+public interface ProductRepository extends JpaRepository<ProductEntity, UUID>, 
+        ProductRepositoryCustom, JpaSpecificationExecutor<ProductEntity> 
+    {
     void deleteByIdIn(List<UUID> ids);
-    String 
-        publishProductSQL = "update product as p set p.is_published = TRUE, p.is_draft = 0 where p.created_by = :shopOwner and p.id in :ids";
-    @Modifying
-    @Query(value = publishProductSQL, nativeQuery = true)
-    int publishProductsByShop(List<UUID> ids, String shopOwner);
-    List<ProductEntity> findByIdInAndCreatedBy(List<UUID> ids, String shopOwner);
+
     Page<ProductEntity> findAll(Specification<ProductEntity> spec, Pageable pageable);
-    String findByIdInAndCreatedByAndOrderByIdAscSQL = "select p.* from product as p where p.id in :ids and p.created_by = :shopOwner order by p.id asc";
-    @Query(value = findByIdInAndCreatedByAndOrderByIdAscSQL, nativeQuery = true)
-    List<ProductEntity> findByIdInAndCreatedByAndOrderByIdAsc(List<UUID> ids, String shopOwner);
+    
+    List<ProductEntity> findByIdInAndShopId(List<UUID> ids, UUID shopId);
+
+    List<ProductEntity> findByIdInAndShopIdOrderById(List<UUID> ids, UUID shopId);
+
+    List<ProductEntity> findAllByShopIdAndIsPublishedTrue(UUID shopId, Pageable pageable);
 }

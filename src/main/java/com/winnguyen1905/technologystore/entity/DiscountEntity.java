@@ -58,7 +58,7 @@ public class DiscountEntity extends BaseEntityAudit {
 
     @ManyToOne
     @JoinColumn(name = "shop_id")
-    private ShopEntity shop;
+    private UserEntity shop;
 
     @Column(name = "discount_is_active")
     private Boolean isActive;
@@ -81,9 +81,9 @@ public class DiscountEntity extends BaseEntityAudit {
     
     @PrePersist
     public void prePersist() {
-        this.discountType = this.discountType == null ? DiscountType.FIXED_AMOUNT : this.discountType;
-        this.appliesTo = this.appliesTo == null ? DiscountAppliesType.ALL : this.appliesTo;
-        this.isActive = this.isActive == null ? false : this.isActive;
+        this.setDiscountType(this.discountType == null ? DiscountType.FIXED_AMOUNT : this.discountType);
+        this.setAppliesTo(this.appliesTo == null ? DiscountAppliesType.ALL : this.appliesTo);
+        this.setIsActive(this.isActive == null ? false : this.isActive);
         super.prePersist();
     }
 }

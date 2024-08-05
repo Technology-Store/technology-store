@@ -31,7 +31,7 @@ public class InventoryEntity extends BaseEntityAudit {
     @JoinColumn(name = "product_id")
     private ProductEntity product;
 
-    // @ManyToOne
-    // @JoinColumn(name = "shop_id")
-    // private ShopEntity shop;
+    @ManyToOne
+    @JoinColumn(name = "shop_id")
+    private UserEntity shop;
 }

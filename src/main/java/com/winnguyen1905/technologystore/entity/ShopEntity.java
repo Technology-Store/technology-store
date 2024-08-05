@@ -15,6 +15,9 @@ public class ShopEntity extends UserEntity {
     @OneToMany(mappedBy = "shop", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<ProductEntity> products;
 
-    @OneToMany(mappedBy = "shop")
+    @OneToMany(mappedBy = "shop", fetch = FetchType.LAZY)
     private List<DiscountEntity> discount;
+
+    @OneToMany(mappedBy = "shop", fetch = FetchType.LAZY)
+    private List<InventoryEntity> inventories;
 }

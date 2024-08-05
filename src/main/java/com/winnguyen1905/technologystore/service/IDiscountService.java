@@ -5,12 +5,12 @@ import java.util.UUID;
 import org.springframework.data.domain.Pageable;
 
 import com.winnguyen1905.technologystore.model.dto.DiscountDTO;
-import com.winnguyen1905.technologystore.model.request.DiscountSearchRequest;
 
 public interface IDiscountService {
-    DiscountDTO handleCreateDiscountCode(DiscountDTO discountDTO, String username);
+    DiscountDTO handleCreateDiscountCode(DiscountDTO discountDTO, UUID shopId);
     DiscountDTO handleGetDiscount(UUID id);
-    DiscountDTO handleGetAllDiscount(DiscountSearchRequest discountSearchRequest, Pageable pageable);
+    DiscountDTO handleGetAllDiscountCodesByShop(UUID shopId, Pageable pageable);
+    DiscountDTO handleGetAllDiscountCodeWithProducts(String code, UUID shopId, Pageable pageable);
     Boolean handleVerifyDiscountCode(UUID id);
     void handleDeleteDiscountCode(UUID id);
     void handleCancelDiscountCode(UUID id, String username);

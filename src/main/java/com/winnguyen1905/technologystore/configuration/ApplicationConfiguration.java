@@ -22,7 +22,6 @@ import com.nimbusds.jose.shaded.gson.Gson;
 import com.nimbusds.jose.shaded.gson.GsonBuilder;
 
 @Configuration
-@SuppressWarnings("null")
 public class ApplicationConfiguration implements WebMvcConfigurer {
     @Value("${techstore.upload-file.base-uri}")
     private String uri;

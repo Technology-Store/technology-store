@@ -3,6 +3,7 @@ package com.winnguyen1905.technologystore.util;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -30,12 +31,13 @@ public class SecurityUtils {
         );
     }
 
-    public static Optional<List<String>> getCurrentUsersId() {
+    public static Optional<UUID> getCurrentUserId() {
         SecurityContext securityContext = SecurityContextHolder.getContext();
-        return Optional.ofNullable(securityContext.getAuthentication().getPrincipal() instanceof Jwt jwt 
-            ? jwt.getClaimAsStringList("id")
-            : null
-        );
+        if(securityContext.getAuthentication().getPrincipal() instanceof Jwt jwt) {
+            String tmp = jwt.getSubject().substring(jwt.getSubject().indexOf("/") + 1);
+            return Optional.ofNullable(UUID.fromString(tmp));
+        }
+        return null;
     }
 
     public static Optional<String> getCurrentUserLogin() {
@@ -49,7 +51,7 @@ public class SecurityUtils {
         } else if (authentication.getPrincipal() instanceof UserDetails springSecurityUser) {
             return springSecurityUser.getUsername();
         } else if (authentication.getPrincipal() instanceof Jwt jwt) {
-            return jwt.getSubject();
+            return jwt.getSubject().substring(0, jwt.getSubject().indexOf("/"));
         } else if (authentication.getPrincipal() instanceof String str) {
             return str;
         }

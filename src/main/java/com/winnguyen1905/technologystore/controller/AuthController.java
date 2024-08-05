@@ -30,34 +30,38 @@ import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 
-
 @RestController
 @RequestMapping("${release.api.prefix}/auth")
 public class AuthController {
-    @Autowired
-    private IAuthService authService;
 
-    @Autowired
-    private IUserService userService;
+    private final IAuthService authService;
+    private final IUserService userService;
+    private final JwtDecoder jwtDecoder;
+    private final CookieUtils cookieUtils;
 
-    @Autowired
-    private JwtDecoder jwtDecoder;
-
-    @Autowired
-    private CookieUtils cookieUtils;
+    public AuthController(IAuthService authService, IUserService userService, 
+        JwtDecoder jwtDecoder, CookieUtils cookieUtils) {
+        this.authService = authService;
+        this.userService = userService;
+        this.jwtDecoder = jwtDecoder;
+        this.cookieUtils = cookieUtils;
+    }
 
     @PostMapping("/login")
     @MetaMessage(message = "Login success")
-    public ResponseEntity<AuthenResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<AuthenResponse> login(@RequestBody @Valid LoginRequest loginRequest) {
         AuthenResponse authenResponse = this.authService.handleLogin(loginRequest);
-        return ResponseEntity.ok()
-            .header(HttpHeaders.SET_COOKIE, this.cookieUtils.createCookie(SystemConstant.REFRESH_TOKEN, authenResponse.getRefreshToken()).toString())
+        return ResponseEntity
+            .ok()
+            .header(
+                HttpHeaders.SET_COOKIE, 
+                this.cookieUtils.createCookie(SystemConstant.REFRESH_TOKEN, authenResponse.getRefreshToken()).toString())
             .body(authenResponse);
     }
 
     @PostMapping("/register")
     @MetaMessage(message = "Register success")
-    public ResponseEntity<AuthenResponse> register(@Valid @RequestBody RegisterRequest registerRequest) { 
+    public ResponseEntity<AuthenResponse> register(@Valid @RequestBody RegisterRequest registerRequest) {
         AuthenResponse authenResponse = this.authService.handleRegister(registerRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(authenResponse);
     }
@@ -65,29 +69,32 @@ public class AuthController {
     @PostMapping("/refresh")
     @MetaMessage(message = "Get user by refresh token success")
     public ResponseEntity<AuthenResponse> getAuthenticationResultByRefreshToken(
-        @CookieValue(name = "refresh_token", defaultValue = "Not found any refresh token") String refreshToken
+            @CookieValue(name = "refresh_token", defaultValue = "Not found any refresh token") String refreshToken
     ) {
         Jwt jwt = this.jwtDecoder.decode(refreshToken);
         AuthenResponse authenResponse = this.authService.handleGetAuthenResponseByUsernameAndRefreshToken(jwt.getSubject(), refreshToken);
         return ResponseEntity.ok()
-            .header(HttpHeaders.SET_COOKIE, this.cookieUtils.createCookie(SystemConstant.REFRESH_TOKEN, authenResponse.getRefreshToken()).toString())
-            .body(authenResponse);
+                .header(HttpHeaders.SET_COOKIE, this.cookieUtils.createCookie(SystemConstant.REFRESH_TOKEN, authenResponse.getRefreshToken()).toString())
+                .body(authenResponse);
     }
 
     @GetMapping("/account")
     @MetaMessage(message = "Get my account success")
     public ResponseEntity<AuthenResponse> getAccount() {
         String username = SecurityUtils.getCurrentUserLogin()
-            .orElseThrow(() -> new UsernameNotFoundException("Not found username"));
-        AuthenResponse authenResponse = AuthenResponse.builder().userDTO(this.userService.handleGetUserByUsername(username)).build();
+                .orElseThrow(() -> new UsernameNotFoundException("Not found username"));
+        AuthenResponse authenResponse = 
+                AuthenResponse.builder()
+                .userDTO(this.userService.handleGetUserByUsername(username)).build();
         return ResponseEntity.ok().body(authenResponse);
     }
 
     @PostMapping("/logout")
     public ResponseEntity<Void> logout() {
-        String username = SecurityUtils.getCurrentUserLogin().orElseThrow(() -> new UsernameNotFoundException("Not found username"));
+        String username = SecurityUtils.getCurrentUserLogin()
+                .orElseThrow(() -> new UsernameNotFoundException("Not found username"));
         return ResponseEntity.status(HttpStatus.NO_CONTENT)
-            .header(HttpHeaders.SET_COOKIE, this.cookieUtils.deleteCookie(SystemConstant.REFRESH_TOKEN).toString())
-            .body(this.authService.handleLogout(username));
+                .header(HttpHeaders.SET_COOKIE, this.cookieUtils.deleteCookie(SystemConstant.REFRESH_TOKEN).toString())
+                .body(this.authService.handleLogout(username));
     }
 }
