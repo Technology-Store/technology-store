@@ -15,7 +15,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "inventory")
+@Table(name = "inventories")
 public class InventoryEntity extends BaseEntityAudit {
     @Column(name = "inven_stock")
     private Integer stock;

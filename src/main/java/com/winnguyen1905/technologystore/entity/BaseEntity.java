@@ -14,7 +14,9 @@ import java.util.UUID;
 @Getter
 @MappedSuperclass
 public abstract class BaseEntity implements Serializable {
+
     private static final long serialVersionUID = -863164858986274318L;
+
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
@@ -28,4 +30,5 @@ public abstract class BaseEntity implements Serializable {
         BaseEntity that = (BaseEntity) o;
         return id.equals(that.id);
     }
+    
 }

@@ -16,8 +16,9 @@ import lombok.Setter;
 @Setter
 @Getter
 @Entity
-@Table(name = "permission")
+@Table(name = "permissions")
 public class PermissionEntity extends BaseEntityAudit {
+    
     @Column(nullable = true, name = "name")
     private String name;
 
@@ -41,4 +42,5 @@ public class PermissionEntity extends BaseEntityAudit {
         String create = this.apiPath + " " + this.method + " " + this.module;
         this.code = StringUtils.convertCamelToSnake(create);
     }
+
 }

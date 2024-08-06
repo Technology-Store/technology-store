@@ -11,7 +11,7 @@ import lombok.*;
 @Entity
 @Getter
 @Setter
-@Table(name = "smartphone")
+@Table(name = "smartphones")
 @DiscriminatorValue(ProductTypeConstant.SMARTPHONE)
 @PrimaryKeyJoinColumn(name = "smartphone_id")
 public class SmartPhoneEntity extends ProductEntity {

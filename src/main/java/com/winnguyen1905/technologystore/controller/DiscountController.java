@@ -48,7 +48,6 @@ public class DiscountController {
         return ResponseEntity.ok(this.discountService.handleGetAllDiscountCodesByShop(shopId, pageable));
     }
     
-
     // API FOR SHOPOWNER
 
     @PostMapping

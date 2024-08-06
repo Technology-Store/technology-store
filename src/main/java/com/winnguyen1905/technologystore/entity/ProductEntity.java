@@ -4,8 +4,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 import com.fasterxml.jackson.annotation.*;
 import com.winnguyen1905.technologystore.common.ProductTypeConstant;
 
@@ -16,7 +14,7 @@ import lombok.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "product")
+@Table(name = "products")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "p_type", discriminatorType = DiscriminatorType.STRING)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -26,6 +24,7 @@ import lombok.*;
     @JsonSubTypes.Type(value = SmartWatchEntity.class, name = ProductTypeConstant.SMARTWATCH)
 })
 public abstract class ProductEntity extends BaseEntityAudit {
+
     @Column(name = "p_name", nullable = false)
     private String name;
 
@@ -63,8 +62,18 @@ public abstract class ProductEntity extends BaseEntityAudit {
     @ManyToMany(mappedBy = "products")
     private Set<DiscountEntity> discounts;
 
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    private List<CartItemEntity> cartItems;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.PERSIST)
+    private List<VariationEntity> variations;
+
     public void addInventory(InventoryEntity inventory) {
         this.inventories.add(inventory);
+    }
+
+    public void addCartItem(CartItemEntity cartItemEntity) {
+        this.cartItems.add(cartItemEntity);
     }
 
     public void removeInventory(InventoryEntity inventory) {
@@ -86,4 +95,5 @@ public abstract class ProductEntity extends BaseEntityAudit {
     public void preUpdate() {
         super.preUpdate();
     }
+
 }

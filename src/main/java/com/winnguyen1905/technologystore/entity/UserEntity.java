@@ -19,15 +19,16 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonSubTypes({
     @JsonSubTypes.Type(value = ShopEntity.class, name = "shop"),
-    // @JsonSubTypes.Type(value = CustomerEntity.class, name = "customer"),
+    @JsonSubTypes.Type(value = CustomerEntity.class, name = "customer"),
 })
 public class UserEntity extends BaseEntityAudit {
+    
     @Column(name = "frist_name", nullable = false)
     private String firstName;
 
@@ -59,11 +60,9 @@ public class UserEntity extends BaseEntityAudit {
     @JoinColumn(name = "role_id")
     private RoleEntity role;
 
-    // @OneToMany(mappedBy = "user")
-    // private List<DiscountEntity> discounts;
-
     @PrePersist
     public void prePersist() {
         this.status = true;
     }
+
 }

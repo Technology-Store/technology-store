@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "city")
+@Table(name = "cities")
 public class CityEntity extends LocationEntity {
     @OneToMany(mappedBy = "city", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<DistrictEntity> districts;

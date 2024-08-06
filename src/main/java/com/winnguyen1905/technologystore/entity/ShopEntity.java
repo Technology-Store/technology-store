@@ -9,7 +9,7 @@ import lombok.*;
 @Entity
 @Getter
 @Setter
-@Table(name = "shop")
+@Table(name = "shops")
 @DiscriminatorValue("shop")
 public class ShopEntity extends UserEntity {
     @OneToMany(mappedBy = "shop", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})

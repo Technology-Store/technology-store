@@ -23,7 +23,8 @@ import java.util.Objects;
 @Setter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public abstract class BaseEntityAudit extends BaseEntity {
+public abstract class BaseEntityAudit extends BaseEntity implements IBaseAction {
+
     @Column(name = "created_by", nullable = true)
     private String createdBy;
 
@@ -60,9 +61,7 @@ public abstract class BaseEntityAudit extends BaseEntity {
     }
 
     public String findSystemUser() {
-        String Identify = SecurityUtils.getCurrentUserLogin()
-                .orElse("Unknown");
-        return Identify;
+        return SecurityUtils.getCurrentUserLogin().orElse("Unknown");
     }
 
     @PrePersist
@@ -80,4 +79,5 @@ public abstract class BaseEntityAudit extends BaseEntity {
     public void preRemove() {
         // this.setUpdatedBy(findSystemUser());
     }
+
 }

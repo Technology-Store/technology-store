@@ -1,5 +1,4 @@
 package com.winnguyen1905.technologystore.entity;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -10,9 +9,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "reservations")
-public class ReservationEntity extends BaseEntityAudit {
+@Table(name = "variations")
+public class VariationEntity extends BaseEntityAudit {
     @ManyToOne
-    @JoinColumn(name = "inventory_id")
-    private InventoryEntity inventory;
+    @JoinColumn(name = "product_id")
+    private ProductEntity product;
 }

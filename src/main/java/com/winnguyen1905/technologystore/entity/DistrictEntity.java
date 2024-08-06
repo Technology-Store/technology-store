@@ -8,7 +8,7 @@ import lombok.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "district")
+@Table(name = "districts")
 public class DistrictEntity extends LocationEntity {
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     @JoinColumn(name = "city_id")

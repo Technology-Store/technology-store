@@ -13,7 +13,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "role")
+@Table(name = "roles")
 public class RoleEntity extends BaseEntityAudit {
     @Column(name="name", nullable = false)
     private String name;
