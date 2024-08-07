@@ -29,10 +29,10 @@ import lombok.Setter;
 })
 public class UserEntity extends BaseEntityAudit {
     
-    @Column(name = "frist_name", nullable = false)
+    @Column(name = "frist_name", nullable = true)
     private String firstName;
 
-    @Column(name = "last_name", nullable = false)
+    @Column(name = "last_name", nullable = true)
     private String lastName;
 
     @Column(name = "username", unique = true, nullable = false)
@@ -44,7 +44,7 @@ public class UserEntity extends BaseEntityAudit {
     @Column(name = "status", nullable = false)
     private Boolean status;
 
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", nullable = true)
     private String email;
 
     @Column(name = "phone", nullable = true)

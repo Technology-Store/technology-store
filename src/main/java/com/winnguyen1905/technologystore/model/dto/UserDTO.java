@@ -11,7 +11,6 @@ import lombok.Setter;
 @Setter
 @Getter
 public class UserDTO extends AbstractDTO<UserDTO> {
-    private UUID id;
     private String username;
     private String email;
     private String firstName;

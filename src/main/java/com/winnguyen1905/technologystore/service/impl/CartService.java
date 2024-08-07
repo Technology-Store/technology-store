@@ -1,4 +1,4 @@
-package com.winnguyen1905.technologystore.service;
+package com.winnguyen1905.technologystore.service.impl;
 
 import java.util.List;
 import java.util.UUID;
@@ -8,6 +8,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.winnguyen1905.technologystore.converter.UserConverter;
 import com.winnguyen1905.technologystore.entity.CartEntity;
 import com.winnguyen1905.technologystore.entity.CartItemEntity;
 import com.winnguyen1905.technologystore.entity.CustomerEntity;
@@ -21,6 +22,7 @@ import com.winnguyen1905.technologystore.repository.CartItemRepository;
 import com.winnguyen1905.technologystore.repository.CartRepository;
 import com.winnguyen1905.technologystore.repository.ProductRepository;
 import com.winnguyen1905.technologystore.repository.UserRepository;
+import com.winnguyen1905.technologystore.service.ICartService;
 
 @Service
 public class CartService implements ICartService {
@@ -30,55 +32,61 @@ public class CartService implements ICartService {
     private final CartItemRepository cartItemRepository;
     private final ModelMapper modelMapper;
     private final ProductRepository productRepository;
+    private final UserConverter userConverter;
 
     public CartService(CartItemRepository cartItemRepository, CartRepository cartRepository,
-            UserRepository userRepository, ModelMapper modelMapper, ProductRepository productRepository) {
+            UserRepository userRepository, ModelMapper modelMapper, ProductRepository productRepository,
+            UserConverter userConverter) {
         this.cartRepository = cartRepository;
         this.userRepository = userRepository;
         this.cartItemRepository = cartItemRepository;
         this.modelMapper = modelMapper;
         this.productRepository = productRepository;
+        this.userConverter = userConverter;
     }
 
     @Override
     public CartDTO handleAddCart(CartDTO cartDTO, UUID customerId) {
-        ShopEntity shop = (ShopEntity) this.userRepository.findById(cartDTO.getId())
+        // Find shop and customer of this CART
+        UserEntity shop = this.userRepository.findByIdOrUsername(customerId, "baokhung2k4") // Note: changeID cartDTO.getShop().getId()
                 .orElseThrow(() -> new CustomRuntimeException("Not found shop id " + cartDTO.getShop().getId()));
-        CustomerEntity customer = (CustomerEntity) this.userRepository.findById(customerId)
-                .orElseThrow(() -> new CustomRuntimeException("Not found customer id " + customerId));
-        cartDTO.setShop(null);
+        UserEntity customer = this.userRepository.findByIdOrUsername(customerId, "baokhung2k4")
+            .orElseThrow(() -> new CustomRuntimeException("Not found customer id " + customerId));
 
+        // Product is existing ?
         CartItemDTO cartItemDTO = cartDTO.getCartItems().get(0);
+        ProductEntity product = this.productRepository.findById(cartItemDTO.getProduct().getId()).orElseThrow(() -> new CustomRuntimeException("Not found product id " + cartItemDTO.getProduct().getId()));
+
+        // The customer and shopowner has CART together before ?
         cartDTO.setCartItems(null);
-        ProductEntity product = this.productRepository.findById(cartItemDTO.getProduct().getId())
-                .orElseThrow(() -> new CustomRuntimeException("Not found product id " + cartItemDTO.getProduct().getId())); cartItemDTO.setProduct(null);
+        cartItemDTO.setProduct(null);
+            // CartEntity cart = this.cartRepository.findByShopIdAndCustomerId(cartDTO.getShop().getId(), customerId).orElse(null); // REAL
+        CartEntity cart = this.cartRepository.findByCreatedBy("baokhung2k4").orElse(null); // FAKE
 
-        CartItemEntity cartItem = this.cartItemRepository.findByCartIdAndProductId(cartItemDTO.getId(), product.getId()).orElseThrow(null);
-        if(cartItem == null) {
-            cartItem = this.modelMapper.map(cartItemDTO, CartItemEntity.class);
+        // If no we construct new cart and add new product into this cart
+        if (cart == null) {
+            CartItemEntity cartItem = this.modelMapper.map(cartItemDTO, CartItemEntity.class);
             cartItem.setProduct(product);
-            product.addCartItem(cartItem);
-        }
-
-        // Is existing cart ?
-        CartEntity cart = this.cartRepository.findByShopIdAndCustomerId(cartDTO.getShop().getId(), customerId).orElse(null);
-        if(cart == null) { // Yes, we will create new cart
-            // Adding a cart is just a task where the user clicks to add a product from a shop to the cart, Therefore we do not need to traverse a list
-            cartDTO.setCartItems(null);
             cart = this.modelMapper.map(cartDTO, CartEntity.class);
-            cart.setCartItems(List.of(cartItem));
+            cartItem.setCart(cart);
+            cart.addCartItems(cartItem);
             cart.setShop(shop);
             cart.setCustomer(customer);
-        } else { // We have to check product is exist in this cart, if so add one
-            if(cartItem.getCart() == null) {
+        } else {
+        // Else we will check whether this product has exist in any cart-item in this cart
+            CartItemEntity cartItem = this.cartItemRepository.findByCartIdAndProductId(cart.getId(), product.getId()).orElse(null);
+                // CartItemEntity cartItem = this.cartItemRepository.findByCreatedBy("baokhung2k4").orElse(null); // TEST
+            // We will create new cart-item
+            if (cartItem == null) {
+                cartItem = this.modelMapper.map(cartItemDTO, CartItemEntity.class);
+                cartItem.setProduct(product);
                 cartItem.setCart(cart);
-            } else {
-                cartItem.setQuantity(cartItem.getQuantity() + cartItemDTO.getQuantity());
-                this.cartItemRepository.save(cartItem);
+                cart.addCartItems(cartItem);
             }
+            // We adding quantity into cart-item existing
+            else cartItem.setQuantity(cartItem.getQuantity() + cartItemDTO.getQuantity()); 
         }
-
-        this.cartRepository.save(cart);
+        cart = this.cartRepository.save(cart);
         return this.modelMapper.map(cart, CartDTO.class);
     }
 

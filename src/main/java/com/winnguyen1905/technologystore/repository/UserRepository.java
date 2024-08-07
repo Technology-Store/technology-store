@@ -11,5 +11,6 @@ import com.winnguyen1905.technologystore.entity.UserEntity;
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, UUID> {
     Optional<UserEntity> findUserByUsername(String username);
+    Optional<UserEntity> findByIdOrUsername(UUID id, String username);
     Optional<UserEntity> findByUsernameAndRefreshToken(String username, String refreshToken);
 }

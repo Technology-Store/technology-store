@@ -45,7 +45,7 @@ public class DiscountService implements IDiscountService {
 
     @Override
     public DiscountDTO handleCreateDiscountCode(DiscountDTO discountDTO, UUID shopId) {
-        UserEntity shop = this.userRepository.findById(shopId).orElseThrow(() -> new CustomRuntimeException("Not found shop id " + shopId));
+        UserEntity shop = this.userRepository.findByIdOrUsername(shopId, "baokhung2k4").orElseThrow(() -> new CustomRuntimeException("Not found shop id " + shopId));
         List<UUID> productIds =  discountDTO.getProducts() != null ? discountDTO.getProducts().stream().map(item -> item.getId()).toList() : new ArrayList<>();
         discountDTO.setProducts(null);
         DiscountEntity discount = this.modelMapper.map(discountDTO, DiscountEntity.class);

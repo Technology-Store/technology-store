@@ -1,5 +1,6 @@
 package com.winnguyen1905.technologystore.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.*;
@@ -14,13 +15,17 @@ public class CartEntity extends BaseEntityAudit {
     
     @ManyToOne
     @JoinColumn(name = "customer_id")
-    private CustomerEntity customer;
+    private UserEntity customer;
 
     @ManyToOne
     @JoinColumn(name = "shop_id")
-    private ShopEntity shop;
+    private UserEntity shop;
 
-    @OneToMany(mappedBy = "cart")
-    private List<CartItemEntity> cartItems;
+    @OneToMany(mappedBy = "cart", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    private List<CartItemEntity> cartItems = new ArrayList<>();
+
+    public void addCartItems(CartItemEntity cartItemEntity) {
+        this.cartItems.add(cartItemEntity);
+    }
 
 }

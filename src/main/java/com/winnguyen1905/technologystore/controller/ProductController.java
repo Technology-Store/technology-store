@@ -22,13 +22,17 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("${release.api.prefix}/products")
 public class ProductController {
-    @Autowired
-    private IProductService productService;
+    
+    private final IProductService productService;
+
+    public ProductController(IProductService productService) {
+        this.productService = productService;
+    }
     
     // PUBLIC API----------------------------------------------------------------
 
     @GetMapping("/")
-    @MetaMessage(message = "get all product with filter success")
+    @MetaMessage(message = "Get all product with filter success")
     public ResponseEntity<ProductDTO> getAllProducts(Pageable pageable,
         @ModelAttribute(SystemConstant.MODEL) ProductSearchRequest productSearchRequest
     ) {

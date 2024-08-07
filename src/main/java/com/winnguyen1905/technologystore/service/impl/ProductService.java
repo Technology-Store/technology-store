@@ -52,7 +52,7 @@ public class ProductService implements IProductService {
     @Override
     public ProductDTO handleAddProduct(ProductRequest productRequest, UUID shopId) {
         ProductEntity product = productConverter.toProductEntity(productRequest);
-        UserEntity shop = this.userRepository.findById(shopId).orElseThrow(() -> new CustomRuntimeException("not found shop id " + shopId));
+        UserEntity shop = this.userRepository.findByIdOrUsername(shopId, "baokhung2k4").orElseThrow(() -> new CustomRuntimeException("not found shop id " + shopId));
         product.setShop(shop);
         for(InventoryEntity inventory : product.getInventories()) {
             inventory.setProduct(product);

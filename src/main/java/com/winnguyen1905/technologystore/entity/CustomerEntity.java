@@ -10,6 +10,6 @@ import lombok.Setter;
 @Entity
 @Table(name = "customers")
 public class CustomerEntity extends UserEntity {
-    @OneToMany(mappedBy = "customer")
-    private List<CartEntity> carts;
+    // @OneToMany(mappedBy = "customer")
+    // private List<CartEntity> carts;
 }

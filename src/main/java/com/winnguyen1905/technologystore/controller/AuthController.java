@@ -53,15 +53,14 @@ public class AuthController {
         AuthenResponse authenResponse = this.authService.handleLogin(loginRequest);
         return ResponseEntity
             .ok()
-            .header(
-                HttpHeaders.SET_COOKIE, 
+            .header(HttpHeaders.SET_COOKIE, 
                 this.cookieUtils.createCookie(SystemConstant.REFRESH_TOKEN, authenResponse.getRefreshToken()).toString())
             .body(authenResponse);
     }
 
     @PostMapping("/register")
     @MetaMessage(message = "Register success")
-    public ResponseEntity<AuthenResponse> register(@Valid @RequestBody RegisterRequest registerRequest) {
+    public ResponseEntity<AuthenResponse> register(@RequestBody @Valid RegisterRequest registerRequest) {
         AuthenResponse authenResponse = this.authService.handleRegister(registerRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(authenResponse);
     }
@@ -69,7 +68,7 @@ public class AuthController {
     @PostMapping("/refresh")
     @MetaMessage(message = "Get user by refresh token success")
     public ResponseEntity<AuthenResponse> getAuthenticationResultByRefreshToken(
-            @CookieValue(name = "refresh_token", defaultValue = "Not found any refresh token") String refreshToken
+        @CookieValue(name = "refresh_token", defaultValue = "Not found any refresh token") String refreshToken
     ) {
         Jwt jwt = this.jwtDecoder.decode(refreshToken);
         AuthenResponse authenResponse = this.authService.handleGetAuthenResponseByUsernameAndRefreshToken(jwt.getSubject(), refreshToken);
@@ -81,18 +80,14 @@ public class AuthController {
     @GetMapping("/account")
     @MetaMessage(message = "Get my account success")
     public ResponseEntity<AuthenResponse> getAccount() {
-        String username = SecurityUtils.getCurrentUserLogin()
-                .orElseThrow(() -> new UsernameNotFoundException("Not found username"));
-        AuthenResponse authenResponse = 
-                AuthenResponse.builder()
-                .userDTO(this.userService.handleGetUserByUsername(username)).build();
+        String username = SecurityUtils.getCurrentUserLogin().orElseThrow(() -> new UsernameNotFoundException("Not found username"));
+        AuthenResponse authenResponse = AuthenResponse.builder().userDTO(this.userService.handleGetUserByUsername(username)).build();
         return ResponseEntity.ok().body(authenResponse);
     }
 
     @PostMapping("/logout")
     public ResponseEntity<Void> logout() {
-        String username = SecurityUtils.getCurrentUserLogin()
-                .orElseThrow(() -> new UsernameNotFoundException("Not found username"));
+        String username = SecurityUtils.getCurrentUserLogin().orElseThrow(() -> new UsernameNotFoundException("Not found username"));
         return ResponseEntity.status(HttpStatus.NO_CONTENT)
                 .header(HttpHeaders.SET_COOKIE, this.cookieUtils.deleteCookie(SystemConstant.REFRESH_TOKEN).toString())
                 .body(this.authService.handleLogout(username));

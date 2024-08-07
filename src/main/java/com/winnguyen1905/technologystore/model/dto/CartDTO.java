@@ -8,7 +8,6 @@ import lombok.*;
 @Setter
 @Getter
 public class CartDTO extends AbstractDTO<CartDTO> {
-    @NotBlank
     private UserDTO shop;
     private List<CartItemDTO> cartItems;
 }

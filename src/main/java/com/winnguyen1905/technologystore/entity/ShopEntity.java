@@ -12,6 +12,7 @@ import lombok.*;
 @Table(name = "shops")
 @DiscriminatorValue("shop")
 public class ShopEntity extends UserEntity {
+
     @OneToMany(mappedBy = "shop", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<ProductEntity> products;
 
@@ -20,4 +21,11 @@ public class ShopEntity extends UserEntity {
 
     @OneToMany(mappedBy = "shop", fetch = FetchType.LAZY)
     private List<InventoryEntity> inventories;
+
+    // @OneToMany(mappedBy = "shop")
+    // private List<CartEntity> carts;
+
+    // public void addCarts(CartEntity cartEntity) {
+    //     this.carts.add(cartEntity);
+    // }
 }
