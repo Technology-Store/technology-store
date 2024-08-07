@@ -6,7 +6,6 @@ import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.winnguyen1905.technologystore.entity.CartEntity;
 import com.winnguyen1905.technologystore.entity.CartItemEntity;
 
 @Repository

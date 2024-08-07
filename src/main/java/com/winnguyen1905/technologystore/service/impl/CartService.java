@@ -60,7 +60,7 @@ public class CartService implements ICartService {
         // The customer and shopowner has CART together before ?
         cartDTO.setCartItems(null);
         cartItemDTO.setProduct(null);
-            // CartEntity cart = this.cartRepository.findByShopIdAndCustomerId(cartDTO.getShop().getId(), customerId).orElse(null); // REAL
+        // CartEntity cart = this.cartRepository.findByShopIdAndCustomerId(cartDTO.getShop().getId(), customerId).orElse(null); // REAL
         CartEntity cart = this.cartRepository.findByCreatedBy("baokhung2k4").orElse(null); // FAKE
 
         // If no we construct new cart and add new product into this cart
@@ -75,7 +75,6 @@ public class CartService implements ICartService {
         } else {
         // Else we will check whether this product has exist in any cart-item in this cart
             CartItemEntity cartItem = this.cartItemRepository.findByCartIdAndProductId(cart.getId(), product.getId()).orElse(null);
-                // CartItemEntity cartItem = this.cartItemRepository.findByCreatedBy("baokhung2k4").orElse(null); // TEST
             // We will create new cart-item
             if (cartItem == null) {
                 cartItem = this.modelMapper.map(cartItemDTO, CartItemEntity.class);

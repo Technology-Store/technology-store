@@ -14,7 +14,7 @@ import lombok.*;
 @Setter
 @Table(name = "discounts")
 public class DiscountEntity extends BaseEntityAudit {
-    @Column(name = "discount_name")   
+    @Column(name = "discount_name")
     private String name;
 
     @Column(name = "discount_description", columnDefinition = "MEDIUMTEXT")
@@ -25,7 +25,7 @@ public class DiscountEntity extends BaseEntityAudit {
     private DiscountType discountType;
 
     @Column(name = "discount_value")
-    private Number value;
+    private Double value;
 
     @Column(name = "discount_code")
     private String code;
@@ -48,13 +48,13 @@ public class DiscountEntity extends BaseEntityAudit {
         joinColumns = @JoinColumn(name = "discount_id"),
         inverseJoinColumns = @JoinColumn(name = "user_id")
     )
-    private List<UserEntity> users;
+    private List<UserEntity> customer;
 
     @Column(name = "discount_max_uses_per_user")
     private Integer maxUsesPerUser;
 
     @Column(name = "discount_min_order_value")
-    private Number minOrderValue;
+    private Double minOrderValue;
 
     @ManyToOne
     @JoinColumn(name = "shop_id")

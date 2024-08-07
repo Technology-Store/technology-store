@@ -5,7 +5,6 @@ import java.util.Set;
 
 import com.winnguyen1905.technologystore.common.DiscountAppliesType;
 import com.winnguyen1905.technologystore.common.DiscountType;
-import com.winnguyen1905.technologystore.entity.ShopEntity;
 import com.winnguyen1905.technologystore.util.annotation.FutureInstant;
 
 import jakarta.validation.constraints.NotBlank;

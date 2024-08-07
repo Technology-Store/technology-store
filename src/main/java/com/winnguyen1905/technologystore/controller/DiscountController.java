@@ -10,6 +10,8 @@ import com.winnguyen1905.technologystore.util.SecurityUtils;
 
 import jakarta.validation.Valid;
 
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.data.domain.Pageable;
@@ -37,8 +39,7 @@ public class DiscountController {
     @GetMapping("/{code}/{shop-id}")
     public ResponseEntity<DiscountDTO> getAllDiscountCodeWithProduct(
         Pageable pageable,
-        @PathVariable String code,
-        @PathVariable("shop-id") UUID shopId
+        @PathVariable String code, @PathVariable("shop-id") UUID shopId
     ) {
         return ResponseEntity.ok(this.discountService.handleGetAllDiscountCodeWithProducts(code, shopId, pageable));
     }
@@ -47,13 +48,20 @@ public class DiscountController {
     public ResponseEntity<DiscountDTO> getAllDiscountCodesbyShop(Pageable pageable, @PathVariable("shop-id") UUID shopId) {
         return ResponseEntity.ok(this.discountService.handleGetAllDiscountCodesByShop(shopId, pageable));
     }
+
+    @PostMapping("/apply")
+    public ResponseEntity<?> postMethodName(@RequestBody Map<String, UUID> body) {
+        UUID cartId = body.get("cart_id");
+        UUID discountId = body.get("discount_id");
+        return ResponseEntity.ok().body(null);
+    }
+    
     
     // API FOR SHOPOWNER
 
     @PostMapping
     public ResponseEntity<DiscountDTO> createDiscountCode(@RequestBody @Valid DiscountDTO discountDTO) {
-        UUID shopId = SecurityUtils.getCurrentUserId()
-                .orElseThrow(() -> new CustomRuntimeException("Not found username"));
+        UUID shopId = SecurityUtils.getCurrentUserId().orElseThrow(() -> new CustomRuntimeException("Not found username"));
         return ResponseEntity.status(HttpStatus.CREATED.value())
                 .body(this.discountService.handleCreateDiscountCode(discountDTO, shopId));
     }
