@@ -3,6 +3,8 @@ package com.winnguyen1905.technologystore.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.winnguyen1905.technologystore.entity.base.BaseEntityAudit;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

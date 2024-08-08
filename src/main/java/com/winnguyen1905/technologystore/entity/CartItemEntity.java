@@ -1,5 +1,7 @@
 package com.winnguyen1905.technologystore.entity;
 
+import com.winnguyen1905.technologystore.entity.base.BaseEntityAudit;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

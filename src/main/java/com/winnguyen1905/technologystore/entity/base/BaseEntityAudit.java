@@ -1,4 +1,4 @@
-package com.winnguyen1905.technologystore.entity;
+package com.winnguyen1905.technologystore.entity.base;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

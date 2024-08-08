@@ -1,4 +1,6 @@
 package com.winnguyen1905.technologystore.entity;
+import com.winnguyen1905.technologystore.entity.base.BaseEntityAudit;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;

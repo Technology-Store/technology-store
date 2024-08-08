@@ -2,6 +2,8 @@ package com.winnguyen1905.technologystore.entity;
 
 import java.util.List;
 
+import com.winnguyen1905.technologystore.entity.base.BaseEntityAudit;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

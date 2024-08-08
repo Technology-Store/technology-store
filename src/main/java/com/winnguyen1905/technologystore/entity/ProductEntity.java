@@ -6,6 +6,7 @@ import java.util.Set;
 
 import com.fasterxml.jackson.annotation.*;
 import com.winnguyen1905.technologystore.common.ProductTypeConstant;
+import com.winnguyen1905.technologystore.entity.base.BaseEntityAudit;
 
 import jakarta.persistence.*;
 import lombok.*;

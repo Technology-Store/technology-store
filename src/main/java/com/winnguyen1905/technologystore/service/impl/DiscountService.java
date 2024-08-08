@@ -21,6 +21,7 @@ import com.winnguyen1905.technologystore.entity.DiscountEntity;
 import com.winnguyen1905.technologystore.entity.ProductEntity;
 import com.winnguyen1905.technologystore.entity.UserEntity;
 import com.winnguyen1905.technologystore.exception.CustomRuntimeException;
+import com.winnguyen1905.technologystore.model.dto.CartDTO;
 import com.winnguyen1905.technologystore.model.dto.DiscountDTO;
 import com.winnguyen1905.technologystore.model.dto.ProductDTO;
 import com.winnguyen1905.technologystore.model.request.DiscountSearchRequest;
@@ -108,9 +109,8 @@ public class DiscountService implements IDiscountService {
 
     @Override
     public DiscountDTO handleGetAllDiscountCodeWithProducts(String code, UUID shopId, Pageable pageable) {
-        DiscountEntity discount = this.discountRepository.findByCodeAndShopId(code, shopId);
-        if (discount == null || !discount.getIsActive())
-            throw new CustomRuntimeException("Not found discount with code " + code);
+        DiscountEntity discount = this.discountRepository.findByCodeAndShopIdOrCreatedBy(code, shopId, "baokhung2k4");
+        if (discount == null || !discount.getIsActive()) throw new CustomRuntimeException("Not found discount with code " + code);
 
         if (discount.getAppliesTo().equals(DiscountAppliesType.ALL)) {
             List<ProductEntity> products = this.productRepository.findAllByShopIdAndIsPublishedTrue(shopId, pageable);
@@ -157,8 +157,8 @@ public class DiscountService implements IDiscountService {
                 ? discount.getValue()
                 : totalPrice * (1 - discount.getValue() / 100);
         return ApplyDiscountResponse.builder()
-                .totalPrice(totalPrice)
-                .finalPrice(finalPrice).build();
+                .finalPrice(finalPrice).totalPrice(totalPrice)
+                .cart(this.modelMapper.map(cart, CartDTO.class)).build();
     }
 
     @Override

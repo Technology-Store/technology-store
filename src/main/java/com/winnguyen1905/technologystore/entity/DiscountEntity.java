@@ -5,6 +5,7 @@ import java.util.Set;
 
 import com.winnguyen1905.technologystore.common.DiscountAppliesType;
 import com.winnguyen1905.technologystore.common.DiscountType;
+import com.winnguyen1905.technologystore.entity.base.BaseEntityAudit;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
