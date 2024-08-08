@@ -14,7 +14,7 @@ public interface IDiscountService {
 
     DiscountDTO handleGetAllDiscountCodesByShop(UUID shopId, Pageable pageable);
 
-    DiscountDTO handleGetAllDiscountCodeWithProducts(String code, UUID shopId, Pageable pageable);
+    DiscountDTO handleGetAllProductsRelatedToDiscountCode(DiscountDTO discountDTO, Pageable pageable);
 
     ApplyDiscountResponse handleApplyDiscountForCart(DiscountDTO discountDTO, UUID customerId);
 

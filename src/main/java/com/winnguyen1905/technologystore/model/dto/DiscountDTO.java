@@ -3,6 +3,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.winnguyen1905.technologystore.common.DiscountAppliesType;
 import com.winnguyen1905.technologystore.common.DiscountType;
 import com.winnguyen1905.technologystore.util.annotation.FutureInstant;
@@ -45,4 +46,6 @@ public class DiscountDTO extends AbstractDTO<DiscountDTO> {
     private DiscountAppliesType appliesTo;
 
     private Set<ProductDTO> products;
+
+    private ProductDTO productList;
 }

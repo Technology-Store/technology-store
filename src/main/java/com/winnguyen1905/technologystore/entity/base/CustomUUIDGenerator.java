@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.id.IdentifierGenerator;
 
+// I use custom uuid for easier mock test
 public class CustomUUIDGenerator implements IdentifierGenerator {
 
     @Override

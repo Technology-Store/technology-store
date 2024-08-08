@@ -48,9 +48,9 @@ public class CartService implements ICartService {
     @Override
     public CartDTO handleAddCart(CartDTO cartDTO, UUID customerId) {
         // Find shop and customer of this CART
-        UserEntity shop = this.userRepository.findByIdOrUsername(customerId, "baokhung2k4") // Note: changeID cartDTO.getShop().getId()
+        UserEntity shop = this.userRepository.findById(cartDTO.getShop().getId()) // Note: changeID cartDTO.getShop().getId()
                 .orElseThrow(() -> new CustomRuntimeException("Not found shop id " + cartDTO.getShop().getId()));
-        UserEntity customer = this.userRepository.findByIdOrUsername(customerId, "baokhung2k4")
+        UserEntity customer = this.userRepository.findById(customerId)
             .orElseThrow(() -> new CustomRuntimeException("Not found customer id " + customerId));
 
         // Product is existing ?
@@ -60,8 +60,9 @@ public class CartService implements ICartService {
         // The customer and shopowner has CART together before ?
         cartDTO.setCartItems(null);
         cartItemDTO.setProduct(null);
-        // CartEntity cart = this.cartRepository.findByShopIdAndCustomerId(cartDTO.getShop().getId(), customerId).orElse(null); // REAL
-        CartEntity cart = this.cartRepository.findByCreatedBy("baokhung2k4").orElse(null); // FAKE
+
+        CartEntity cart = this.cartRepository.findByShopIdAndCustomerId(cartDTO.getShop().getId(), customerId).orElse(null); // REAL
+        // CartEntity cart = this.cartRepository.findByCreatedBy("baokhung2k4").orElse(null); // FAKE
 
         // If no we construct new cart and add new product into this cart
         if (cart == null) {

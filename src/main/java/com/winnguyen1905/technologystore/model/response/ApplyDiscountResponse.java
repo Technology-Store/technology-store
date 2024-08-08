@@ -12,6 +12,7 @@ import lombok.Setter;
 @Builder
 public class ApplyDiscountResponse extends AbstractDTO<ApplyDiscountResponse> {
     private CartDTO cart;
+    private double amount;
     private double totalPrice;
     private double finalPrice;
 }

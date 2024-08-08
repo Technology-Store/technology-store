@@ -31,16 +31,16 @@ public class AbstractDTO<T> implements Serializable {
     private String updatedDate;
     private String createdBy;
     private String updatedBy;
-    private int maxPageItems;
-    private int page;
-    private int size;
+    private Integer maxPageItems;
+    private Integer page;
+    private Integer size;
     @JsonProperty("results")
     private List<T> content;
     private T object;
-    private int totalElements;
-    private int totalPages;
+    private Integer totalElements;
+    private Integer totalPages;
     // private String tableId;
-    // private integer limit;
-    // private integer totalItem;
+    // private Integereger limit;
+    // private Integereger totalItem;
     // private String searchValue;
 }

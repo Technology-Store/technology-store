@@ -1,5 +1,7 @@
 package com.winnguyen1905.technologystore.entity;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -47,13 +49,13 @@ public class DiscountEntity extends BaseEntityAudit {
     @Column(name = "discount_uses_count")
     private int usesCount;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
         name = "discount_users_used",
         joinColumns = @JoinColumn(name = "discount_id"),
         inverseJoinColumns = @JoinColumn(name = "user_id")
     )
-    private List<UserEntity> customer;
+    private List<UserEntity> customer = new ArrayList<>();
 
     @Min(value = 1)
     @Column(name = "discount_max_uses_per_user")
@@ -74,13 +76,13 @@ public class DiscountEntity extends BaseEntityAudit {
     @Column(name = "discount_applies_to")
     private DiscountAppliesType appliesTo;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
         name = "discount_products",
         joinColumns = @JoinColumn(name = "discount_id"),
         inverseJoinColumns = @JoinColumn(name = "product_id")
     )
-    private Set<ProductEntity> products;
+    private Set<ProductEntity> products = new HashSet<>();
 
     // @ManyToMany(mappedBy = "discounts")
     // private List<CartEntity> carts;

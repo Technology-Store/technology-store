@@ -39,12 +39,10 @@ public class DiscountController {
 
     // PUBLIC API
 
-    @GetMapping("/{code}/{shop-id}")
-    public ResponseEntity<DiscountDTO> getAllDiscountCodeWithProducts(
-        Pageable pageable,
-        @PathVariable String code, @PathVariable("shop-id") UUID shopId
-    ) {
-        return ResponseEntity.ok(this.discountService.handleGetAllDiscountCodeWithProducts(code, shopId, pageable));
+    @GetMapping("/")
+    public ResponseEntity<DiscountDTO> getAllDiscountCodeWithProducts(Pageable pageable,
+        @RequestBody DiscountDTO discountDTO) {
+        return ResponseEntity.ok(this.discountService.handleGetAllProductsRelatedToDiscountCode(discountDTO, pageable));
     }
 
     @GetMapping("/shop/{shop-id}")
@@ -54,16 +52,22 @@ public class DiscountController {
 
     @PostMapping("/apply")
     public ResponseEntity<ApplyDiscountResponse> getAmountApplyDiscountForCart(@RequestBody DiscountDTO discountDTO) {
-        UUID customerId = SecurityUtils.getCurrentUserId().orElseThrow(() -> new CustomRuntimeException("Not found username"));
+        UUID customerId = SecurityUtils.getCurrentUserId().orElseThrow(() -> new CustomRuntimeException("Not found user"));
         return ResponseEntity.ok().body(this.discountService.handleApplyDiscountForCart(discountDTO, customerId));
     }
-    
+
+    @PostMapping("/cancel")
+    public ResponseEntity<Void> postMethodName(@RequestBody DiscountDTO discountDTO) {
+        UUID customerId = SecurityUtils.getCurrentUserId().orElseThrow(() -> new CustomRuntimeException("Not found user"));
+        this.discountService.handleCancelDiscountForCart(discountDTO, customerId);
+        return ResponseEntity.noContent().build();
+    }
     
     // API FOR SHOPOWNER
 
     @PostMapping
     public ResponseEntity<DiscountDTO> createDiscountCode(@RequestBody @Valid DiscountDTO discountDTO) {
-        UUID shopId = SecurityUtils.getCurrentUserId().orElseThrow(() -> new CustomRuntimeException("Not found username"));
+        UUID shopId = SecurityUtils.getCurrentUserId().orElseThrow(() -> new CustomRuntimeException("Not found user"));
         return ResponseEntity.status(HttpStatus.CREATED.value())
                 .body(this.discountService.handleCreateDiscountCode(discountDTO, shopId));
     }

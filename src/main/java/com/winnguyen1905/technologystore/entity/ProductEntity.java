@@ -1,5 +1,6 @@
 package com.winnguyen1905.technologystore.entity;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -58,16 +59,16 @@ public abstract class ProductEntity extends BaseEntityAudit {
     private UserEntity shop;
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST })
-    private List<InventoryEntity> inventories;
+    private List<InventoryEntity> inventories = new ArrayList<>();
 
     @ManyToMany(mappedBy = "products")
-    private Set<DiscountEntity> discounts;
+    private Set<DiscountEntity> discounts  = new HashSet<>();;
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
-    private List<CartItemEntity> cartItems;
+    private List<CartItemEntity> cartItems = new ArrayList<>();
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.PERSIST)
-    private List<VariationEntity> variations;
+    private List<VariationEntity> variations = new ArrayList<>();
 
     public void addInventory(InventoryEntity inventory) {
         this.inventories.add(inventory);

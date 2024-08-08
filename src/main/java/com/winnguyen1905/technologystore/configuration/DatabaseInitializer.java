@@ -38,8 +38,7 @@ public class DatabaseInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        if (permissionRepository.findAll().size() != 0)
-            return;
+        if (permissionRepository.findAll().size() != 0) return;
 
         // location
         final DistrictEntity district = new DistrictEntity();
@@ -56,7 +55,7 @@ public class DatabaseInitializer implements CommandLineRunner {
         final PermissionEntity permission = new PermissionEntity();
         permission.setApiPath("/api/v1/");
         permission.setCode("admin");
-        permission.setName("Admin full role");
+        permission.setName("Admin full permission");
         permission.setMethod("GET");
 
         // final PermissionEntity permission2 = new PermissionEntity();
@@ -72,7 +71,7 @@ public class DatabaseInitializer implements CommandLineRunner {
         permission.setRoles(List.of(role));
         this.permissionRepository.save(permission);
 
-        // user
+        // User
         UserEntity user = new UserEntity();
         user.setUsername("baokhung2k4");
         user.setPassword(this.passwordEncoder.encode("12345678"));

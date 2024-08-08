@@ -17,7 +17,6 @@ public interface DiscountRepository extends JpaRepository<DiscountEntity, UUID>,
     void deleteByIdIn(List<UUID> ids);
 
     DiscountEntity findByCodeAndShopId(String code, UUID shopId); // REAL
-    DiscountEntity findByCodeAndShopIdOrCreatedBy(String code, UUID shopId, String createdBy); // FAKE
 
     Optional<DiscountEntity> findByIdAndIsActiveTrue(UUID id);
 

@@ -16,7 +16,7 @@ import com.nimbusds.jose.shaded.gson.JsonSerializer;
 
 
 public class InstantTypeAdapter implements JsonSerializer<Instant>, JsonDeserializer<Instant> {
-  private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d::MMM::uuuu HH::mm::ss");
+  private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH-mm-ss a dd-MM-yyyy");
 
   @Override
   public JsonElement serialize(Instant Instant, Type srcType,
