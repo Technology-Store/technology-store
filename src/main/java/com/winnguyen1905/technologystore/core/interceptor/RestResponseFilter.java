@@ -18,10 +18,12 @@ import jakarta.servlet.http.HttpServletResponse;
 @ControllerAdvice
 @SuppressWarnings({"null", "rawtypes"})
 public class RestResponseFilter implements ResponseBodyAdvice<Object> {
+
     @Override
     public boolean supports(MethodParameter returnType, Class converterType) {
         return true;
     }
+    
     @Override
     @Nullable
     public Object beforeBodyWrite(
@@ -41,4 +43,5 @@ public class RestResponseFilter implements ResponseBodyAdvice<Object> {
         }
         return restResponse;
     }
+
 }

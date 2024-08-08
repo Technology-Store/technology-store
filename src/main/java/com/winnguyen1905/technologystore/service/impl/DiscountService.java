@@ -24,6 +24,7 @@ import com.winnguyen1905.technologystore.exception.CustomRuntimeException;
 import com.winnguyen1905.technologystore.model.dto.DiscountDTO;
 import com.winnguyen1905.technologystore.model.dto.ProductDTO;
 import com.winnguyen1905.technologystore.model.request.DiscountSearchRequest;
+import com.winnguyen1905.technologystore.model.response.ApplyDiscountResponse;
 import com.winnguyen1905.technologystore.repository.CartRepository;
 import com.winnguyen1905.technologystore.repository.DiscountRepository;
 import com.winnguyen1905.technologystore.repository.ProductRepository;
@@ -119,7 +120,7 @@ public class DiscountService implements IDiscountService {
     }
 
     @Override
-    public double handleApplyDiscountForCart(DiscountDTO discountDTO, UUID customerId) {
+    public ApplyDiscountResponse handleApplyDiscountForCart(DiscountDTO discountDTO, UUID customerId) {
         UserEntity customer = this.userRepository.findByIdOrUsername(customerId, "baokhung2k4").orElseThrow(() -> new CustomRuntimeException("Not found current user"));
         DiscountEntity discount = this.discountRepository.findByIdAndIsActiveTrue(discountDTO.getId()).orElseThrow(() -> new CustomRuntimeException("Not found discount id " + discountDTO.getId()));
 
@@ -152,8 +153,12 @@ public class DiscountService implements IDiscountService {
         discountRepository.save(discount);
 
         // Get the final total price
-        if(discount.getDiscountType().equals(DiscountType.FIXED_AMOUNT)) return discount.getValue();
-        return totalPrice * (1 - discount.getValue() / 100);
+        double finalPrice = discount.getDiscountType().equals(DiscountType.FIXED_AMOUNT) 
+                ? discount.getValue()
+                : totalPrice * (1 - discount.getValue() / 100);
+        return ApplyDiscountResponse.builder()
+                .totalPrice(totalPrice)
+                .finalPrice(finalPrice).build();
     }
 
     @Override
@@ -162,7 +167,7 @@ public class DiscountService implements IDiscountService {
         DiscountEntity discount = this.discountRepository.findByIdAndIsActiveTrue(discountDTO.getId()).orElseThrow(() -> new CustomRuntimeException("Not found discount id " + discountDTO.getId()));
         // We can add relationship between CART and DISCOUNT for easy to analyze when toggle cart page
         // CartEntity cart = this.cartRepository.findByShopIdAndCustomerId(discount.getShop().getId(), customer.getId()).orElseThrow(() -> new CustomRuntimeException("Not found cart"));
-        
+
         boolean res = discount.getCustomer().remove(customer);
         if(!res) throw new CustomRuntimeException("Cancel discount for cart failed");
         discount.setUsesCount(discount.getUsesCount() - 1);

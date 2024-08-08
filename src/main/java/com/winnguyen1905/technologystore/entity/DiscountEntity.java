@@ -7,6 +7,7 @@ import com.winnguyen1905.technologystore.common.DiscountAppliesType;
 import com.winnguyen1905.technologystore.common.DiscountType;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import lombok.*;
 
 @Entity
@@ -24,6 +25,7 @@ public class DiscountEntity extends BaseEntityAudit {
     @Column(name = "discount_type")
     private DiscountType discountType;
 
+    @Min(value = 0)
     @Column(name = "discount_value")
     private double value;
 
@@ -36,9 +38,11 @@ public class DiscountEntity extends BaseEntityAudit {
     @Column(name = "discount_end_date")
     private Instant endDate;
 
+    @Min(value = 1)
     @Column(name = "discount_max_uses")
     private int maxUses;
     
+    @Min(value = 0)
     @Column(name = "discount_uses_count")
     private int usesCount;
 
@@ -50,9 +54,11 @@ public class DiscountEntity extends BaseEntityAudit {
     )
     private List<UserEntity> customer;
 
+    @Min(value = 1)
     @Column(name = "discount_max_uses_per_user")
     private int maxUsesPerUser;
 
+    @Min(value = 0)
     @Column(name = "discount_min_order_value")
     private double minOrderValue;
 

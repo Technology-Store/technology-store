@@ -39,7 +39,7 @@ public class DiscountController {
     // PUBLIC API
 
     @GetMapping("/{code}/{shop-id}")
-    public ResponseEntity<DiscountDTO> getAllDiscountCodeWithProduct(
+    public ResponseEntity<DiscountDTO> getAllDiscountCodeWithProducts(
         Pageable pageable,
         @PathVariable String code, @PathVariable("shop-id") UUID shopId
     ) {
@@ -52,10 +52,9 @@ public class DiscountController {
     }
 
     @PostMapping("/apply")
-    public ResponseEntity<?> postMethodName(@RequestBody Map<String, UUID> body) {
-        UUID cartId = body.get("cart_id");
-        UUID discountId = body.get("discount_id");
-        return ResponseEntity.ok().body(null);
+    public ResponseEntity<?> postMethodName(@RequestBody DiscountDTO discountDTO) {
+        UUID customerId = SecurityUtils.getCurrentUserId().orElseThrow(() -> new CustomRuntimeException("Not found username"));
+        return ResponseEntity.ok().body(this.discountService.handleApplyDiscountForCart(discountDTO, customerId));
     }
     
     

@@ -20,31 +20,32 @@ import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
 
 @Primary
-@Repository
+@Repository // OUTDATE -----------------------------------------------------
 public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
 
-    @Autowired
     @PersistenceContext(type = PersistenceContextType.TRANSACTION)
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
+
+    public ProductRepositoryCustomImpl(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
 
     public String joinTable(ProductSearchRequest productSearchRequest) {
         StringBuilder result = new StringBuilder(" select * from product ");
         List<String> typeCode = productSearchRequest.getTypeCode();
-        if(typeCode != null && typeCode.size() > 0) {
-            String join = typeCode.stream().
-                map(item -> (" right join " + item.toString() + " on " + item.toString() + "." + item.toString() + "_id = product.id ")).
-                collect(Collectors.joining(" "));
+        if (typeCode != null && typeCode.size() > 0) {
+            String join = typeCode.stream().map(item -> (" right join " + item.toString() + " on " + item.toString()
+                    + "." + item.toString() + "_id = product.id ")).collect(Collectors.joining(" "));
             result.append(join);
         }
         return result.toString();
     }
 
     public static Boolean fieldNameChecking(String fieldName) {
-        return 
-            fieldName.equals("priceFrom") || 
-            fieldName.equals("typeCode") || 
-            fieldName.startsWith("priceTo") || 
-            fieldName.startsWith("more");
+        return fieldName.equals("priceFrom") ||
+                fieldName.equals("typeCode") ||
+                fieldName.startsWith("priceTo") ||
+                fieldName.startsWith("more");
     }
 
     public static String conditionToString(Field field, ProductSearchRequest productSearchRequest) {
@@ -53,9 +54,12 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
             field.setAccessible(true);
             Object x = field.get(productSearchRequest);
             String fieldName = field.getName();
-            if(x == null || fieldNameChecking(fieldName)) result = "";
-            else if(x.getClass().getName().equals("java.lang.String")) result = " and p." + field.getName() + " like '%" + x.toString() + "%' "; 
-            else result = " and p." + field.getName() + " = " + x.toString();
+            if (x == null || fieldNameChecking(fieldName))
+                result = "";
+            else if (x.getClass().getName().equals("java.lang.String"))
+                result = " and p." + field.getName() + " like '%" + x.toString() + "%' ";
+            else
+                result = " and p." + field.getName() + " = " + x.toString();
         } catch (IllegalArgumentException | IllegalAccessException e) {
             e.printStackTrace();
         }
@@ -64,10 +68,8 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
 
     public static void queryNormal(StringBuilder sql, ProductSearchRequest productSearchRequest) {
         Field[] fields = productSearchRequest.getClass().getDeclaredFields();
-        String normalQuery = Arrays.asList(fields).
-            stream().
-            map(item -> conditionToString(item, productSearchRequest)).
-            collect(Collectors.joining(""));
+        String normalQuery = Arrays.asList(fields).stream().map(item -> conditionToString(item, productSearchRequest))
+                .collect(Collectors.joining(""));
         sql.append(normalQuery);
     }
 
@@ -79,11 +81,12 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
     @Transactional
     @SuppressWarnings("unchecked")
     public List<ProductEntity> findAll(ProductSearchRequest productSearchRequest) {
-        StringBuilder sql = new StringBuilder("select p.* from ( " + joinTable(productSearchRequest) + " ) as p where 1 = 1 ");
+        StringBuilder sql = new StringBuilder(
+                "select p.* from ( " + joinTable(productSearchRequest) + " ) as p where 1 = 1 ");
         queryNormal(sql, productSearchRequest);
         System.out.println(sql);
         Query query = entityManager.createNativeQuery(sql.toString(), ProductEntity.class);
         return query.getResultList();
     }
-    
+
 }

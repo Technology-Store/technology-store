@@ -107,4 +107,5 @@ public class CustomSpecification<T> {
     //     };
     // } 
     // Third request parameter filter: Get PermissionEntitys in one of the specified cities
+    
 }

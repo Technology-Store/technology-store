@@ -92,4 +92,5 @@ public class AuthController {
                 .header(HttpHeaders.SET_COOKIE, this.cookieUtils.deleteCookie(SystemConstant.REFRESH_TOKEN).toString())
                 .body(this.authService.handleLogout(username));
     }
+    
 }

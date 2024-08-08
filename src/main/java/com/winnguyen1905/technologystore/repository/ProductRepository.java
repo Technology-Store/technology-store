@@ -21,7 +21,7 @@ public interface ProductRepository extends JpaRepository<ProductEntity, UUID>,
     {
     void deleteByIdIn(List<UUID> ids);
 
-    Page<ProductEntity> findAll(Specification<ProductEntity> spec, Pageable pageable);
+    Page<ProductEntity> findAll(Specification<ProductEntity> specification, Pageable pageable);
     
     List<ProductEntity> findByIdInAndShopId(List<UUID> ids, UUID shopId);
 
