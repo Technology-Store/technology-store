@@ -11,7 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class CustomRuntimeException extends RuntimeException {
     private String message;
-    private Integer statusCode;
+    private int statusCode;
     private Object error;
 
     public CustomRuntimeException(String message) {
@@ -20,7 +20,7 @@ public class CustomRuntimeException extends RuntimeException {
         this.error = "Exception occurs";
     }
 
-    public CustomRuntimeException(String message, Integer statusCode) {
+    public CustomRuntimeException(String message, int statusCode) {
         this.message = message;
         this.statusCode = statusCode;
         this.error = "Exception occurs";

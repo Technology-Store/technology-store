@@ -11,11 +11,11 @@ import lombok.*;
 public class SmartPhoneDTO extends ProductDTO {
     private String os;
 
-    private Integer ram;
+    private int ram;
 
-    private Integer rom;
+    private int rom;
 
-    private Integer pin;
+    private int pin;
 
     private String chipset;
 

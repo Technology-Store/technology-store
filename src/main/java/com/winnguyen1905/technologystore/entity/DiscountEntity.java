@@ -25,7 +25,7 @@ public class DiscountEntity extends BaseEntityAudit {
     private DiscountType discountType;
 
     @Column(name = "discount_value")
-    private Double value;
+    private double value;
 
     @Column(name = "discount_code")
     private String code;
@@ -37,10 +37,10 @@ public class DiscountEntity extends BaseEntityAudit {
     private Instant endDate;
 
     @Column(name = "discount_max_uses")
-    private Integer maxUses;
+    private int maxUses;
     
     @Column(name = "discount_uses_count")
-    private Integer usesCount;
+    private int usesCount;
 
     @ManyToMany
     @JoinTable(
@@ -51,10 +51,10 @@ public class DiscountEntity extends BaseEntityAudit {
     private List<UserEntity> customer;
 
     @Column(name = "discount_max_uses_per_user")
-    private Integer maxUsesPerUser;
+    private int maxUsesPerUser;
 
     @Column(name = "discount_min_order_value")
-    private Double minOrderValue;
+    private double minOrderValue;
 
     @ManyToOne
     @JoinColumn(name = "shop_id")
@@ -74,6 +74,9 @@ public class DiscountEntity extends BaseEntityAudit {
         inverseJoinColumns = @JoinColumn(name = "product_id")
     )
     private Set<ProductEntity> products;
+
+    // @ManyToMany(mappedBy = "discounts")
+    // private List<CartEntity> carts;
 
     public void addProduct(ProductEntity product) {
         this.products.add(product);

@@ -15,11 +15,13 @@ public interface IDiscountService {
 
     DiscountDTO handleGetAllDiscountCodeWithProducts(String code, UUID shopId, Pageable pageable);
 
-    Number handleApplyDiscountForCart(UUID discountId, UUID customerId);
+    double handleApplyDiscountForCart(DiscountDTO discountDTO, UUID customerId);
 
     Boolean handleVerifyDiscountCode(UUID id);
 
     void handleDeleteDiscountCode(UUID id);
 
     void handleCancelDiscountCode(UUID id, String username);
+
+    void handleCancelDiscountForCart(DiscountDTO discountDTO, UUID customerId);
 }

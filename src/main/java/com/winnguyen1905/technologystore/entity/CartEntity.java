@@ -12,6 +12,14 @@ import lombok.Setter;
 @Entity
 @Table(name = "carts")
 public class CartEntity extends BaseEntityAudit {
+
+    // @ManyToMany
+    // @JoinTable(
+    //     name = "cart_discounts",
+    //     joinColumns = @JoinColumn(name = "cart_id"),
+    //     inverseJoinColumns = @JoinColumn(name = "discount_id")
+    // )
+    // private List<DiscountEntity> discounts;
     
     @ManyToOne
     @JoinColumn(name = "customer_id")

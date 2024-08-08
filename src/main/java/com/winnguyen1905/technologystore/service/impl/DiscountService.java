@@ -52,9 +52,9 @@ public class DiscountService implements IDiscountService {
 
     @Override
     public DiscountDTO handleCreateDiscountCode(DiscountDTO discountDTO, UUID shopId) {
-        UserEntity shop = this.userRepository.findByIdOrUsername(shopId, "baokhung2k4")
-                .orElseThrow(() -> new CustomRuntimeException("Not found shop id " + shopId));
-        List<UUID> productIds = discountDTO.getProducts() != null
+        UserEntity shop = this.userRepository.findByIdOrUsername(shopId, "baokhung2k4").orElseThrow(() -> new CustomRuntimeException("Not found shop id " + shopId));
+        List<UUID> productIds = 
+                discountDTO.getProducts() != null
                 ? discountDTO.getProducts().stream().map(item -> item.getId()).toList()
                 : new ArrayList<>();
         discountDTO.setProducts(null);
@@ -62,8 +62,7 @@ public class DiscountService implements IDiscountService {
 
         if (discountDTO.getAppliesTo().equals(DiscountAppliesType.SPECIFIC)) {
             List<ProductEntity> products = this.productRepository.findByIdInAndShopId(productIds, shopId);
-            if (products.size() != productIds.size())
-                throw new CustomRuntimeException("Just found " + products.size() + " / " + productIds.size() + " product");
+            if (products.size() != productIds.size()) throw new CustomRuntimeException("Just found " + products.size() + " / " + productIds.size() + " product");
             for (ProductEntity product : products) {
                 product.addDiscountCode(discount);
                 discount.addProduct(product);
@@ -120,15 +119,15 @@ public class DiscountService implements IDiscountService {
     }
 
     @Override
-    public Double handleApplyDiscountForCart(UUID discountId, UUID customerId) {
+    public double handleApplyDiscountForCart(DiscountDTO discountDTO, UUID customerId) {
         UserEntity customer = this.userRepository.findByIdOrUsername(customerId, "baokhung2k4").orElseThrow(() -> new CustomRuntimeException("Not found current user"));
-        DiscountEntity discount = this.discountRepository.findByIdAndIsActiveTrue(discountId).orElseThrow(() -> new CustomRuntimeException("Not found discount id " + discountId));
+        DiscountEntity discount = this.discountRepository.findByIdAndIsActiveTrue(discountDTO.getId()).orElseThrow(() -> new CustomRuntimeException("Not found discount id " + discountDTO.getId()));
 
-        int 
-        if(discount.getCustomer().contains(customer)) throw new CustomRuntimeException("Use count reach to maximum");
+        // Valid
+        long timeUsed = discount.getCustomer().stream().filter(item -> item.equals(customer)).count();
+        if(discount.getMaxUsesPerUser() == timeUsed) throw new CustomRuntimeException("Use count reach to maximum");
         if(discount.getEndDate().isBefore(Instant.now())) throw new CustomRuntimeException("Discount has been expired");
         if(discount.getUsesCount() >= discount.getMaxUses()) throw new CustomRuntimeException("Discount be used maximum");
-        // Check uses count here...
 
         // Find cart that match with this USER AND DISCOUNT
         CartEntity cart = this.cartRepository.findByShopIdAndCustomerId(discount.getShop().getId(), customer.getId()).orElseThrow(() -> new CustomRuntimeException("Not found cart"));
@@ -137,16 +136,17 @@ public class DiscountService implements IDiscountService {
         List<CartItemEntity> cartItemsSelected = cart.getCartItems().stream().filter(item -> item.getIsSelected()).toList();
 
         // Get total price of all product in the discount program
-        Double totalPrice = 0.0;
+        double totalPrice = 0.0;
         if(discount.getAppliesTo().equals(DiscountAppliesType.SPECIFIC)) {
             for(CartItemEntity cartItem : cartItemsSelected) {
                 if(discount.getProducts().contains(cartItem.getProduct())) totalPrice += cartItem.getQuantity() * cartItem.getProduct().getPrice();
             }
         } else for(CartItemEntity cartItem : cartItemsSelected) totalPrice += cartItem.getQuantity() * cartItem.getProduct().getPrice();
+
         // Reach to the Lowest price possible to be discount
         if(discount.getMinOrderValue() > totalPrice) throw new CustomRuntimeException("The total price of product selected in this cart insufficient");
 
-        // Update discount data before send response
+        // Update discount data before sending response
         discount.getCustomer().add(customer);
         discount.setUsesCount(discount.getUsesCount() - 1);
         discountRepository.save(discount);
@@ -154,6 +154,20 @@ public class DiscountService implements IDiscountService {
         // Get the final total price
         if(discount.getDiscountType().equals(DiscountType.FIXED_AMOUNT)) return discount.getValue();
         return totalPrice * (1 - discount.getValue() / 100);
+    }
+
+    @Override
+    public void handleCancelDiscountForCart(DiscountDTO discountDTO, UUID customerId) {
+        UserEntity customer = this.userRepository.findByIdOrUsername(customerId, "baokhung2k4").orElseThrow(() -> new CustomRuntimeException("Not found current user"));
+        DiscountEntity discount = this.discountRepository.findByIdAndIsActiveTrue(discountDTO.getId()).orElseThrow(() -> new CustomRuntimeException("Not found discount id " + discountDTO.getId()));
+        // We can add relationship between CART and DISCOUNT for easy to analyze when toggle cart page
+        // CartEntity cart = this.cartRepository.findByShopIdAndCustomerId(discount.getShop().getId(), customer.getId()).orElseThrow(() -> new CustomRuntimeException("Not found cart"));
+        
+        boolean res = discount.getCustomer().remove(customer);
+        if(!res) throw new CustomRuntimeException("Cancel discount for cart failed");
+        discount.setUsesCount(discount.getUsesCount() - 1);
+
+        discountRepository.save(discount);
     }
 
 }

@@ -34,6 +34,8 @@ public class DiscountController {
         this.discountService = discountService;
     }
 
+    // API FOR ANNONYMUS USER
+
     // PUBLIC API
 
     @GetMapping("/{code}/{shop-id}")

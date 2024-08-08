@@ -16,10 +16,10 @@ import lombok.*;
 @PrimaryKeyJoinColumn(name = "smartphone_id")
 public class SmartPhoneEntity extends ProductEntity {
     @Column(name = "x_size", nullable = true)
-    private Double xSize;
+    private double xSize;
 
     @Column(name = "y_size", nullable = true)
-    private Double ySize;
+    private double ySize;
 
     @Column(name = "panel_type", nullable = false)
     private String panelType;
@@ -31,13 +31,13 @@ public class SmartPhoneEntity extends ProductEntity {
     private String os;
 
     @Column(name = "ram", nullable = false)
-    private Integer ram;
+    private int ram;
 
     @Column(name = "rom", nullable = false)
-    private Integer rom;
+    private int rom;
 
     @Column(name = "pin", nullable = false)
-    private Integer pin;
+    private int pin;
 
     @Column(name = "chipset", nullable = false)
     private String chipset;

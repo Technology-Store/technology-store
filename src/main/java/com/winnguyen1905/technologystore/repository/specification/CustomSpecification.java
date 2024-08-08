@@ -64,7 +64,7 @@ public class CustomSpecification<T> {
             .get(col));
     }
 
-    public static <T, F> Specification<T> isWithinValueRange(Integer min, Integer max, String col, Pair<Class<F>, String> joining) {
+    public static <T, F> Specification<T> isWithinValueRange(int min, int max, String col, Pair<Class<F>, String> joining) {
         return (root, query, criteriaBuilder) -> criteriaBuilder.between(
             (joining != null ? joinTableManager(joining, root) : root)
             .get(col), min, max);
@@ -76,13 +76,13 @@ public class CustomSpecification<T> {
             .get(col), value);
     }
     
-    public static <T, F> Specification<T> isGreaterThanOrEqual(Double value, String col, Pair<Class<F>, String> joining) {
+    public static <T, F> Specification<T> isGreaterThanOrEqual(double value, String col, Pair<Class<F>, String> joining) {
         return (root, query, criteriaBuilder) -> criteriaBuilder.greaterThanOrEqualTo(
             (joining != null ? joinTableManager(joining, root) : root)
             .get(col), value);
     }
 
-    public static <T, F> Specification<T> isLessThanOrEqual(Double value, String col, Pair<Class<F>, String> joining) {
+    public static <T, F> Specification<T> isLessThanOrEqual(double value, String col, Pair<Class<F>, String> joining) {
         return (root, query, criteriaBuilder) -> criteriaBuilder.lessThanOrEqualTo(
             (joining != null ? joinTableManager(joining, root) : root)
             .get(col), value);

@@ -41,7 +41,7 @@ public class PermissionService implements IPermissionService {
         Specification<PermissionEntity> spec = this.permissionConverter.toPermissionSpec(permissionSearchRequest);
         Page<PermissionEntity> permissions = this.permissionRepository.findAll(spec, pageable);
         PermissionDTO permissionDTOs = this.modelMapper.map(permissions, PermissionDTO.class);
-        permissionDTOs.setPage((Integer) permissions.getNumber() + 1);
+        permissionDTOs.setPage((int) permissions.getNumber() + 1);
         return permissionDTOs;
     }
 

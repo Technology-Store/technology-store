@@ -19,7 +19,7 @@ public class CartItemEntity extends BaseEntityAudit {
     private ProductEntity product;
 
     @Column(name = "quantity")
-    private Integer quantity;
+    private int quantity;
 
     @Column(name = "is_selected")
     private Boolean isSelected;

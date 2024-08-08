@@ -30,13 +30,13 @@ public class DiscountDTO extends AbstractDTO<DiscountDTO> {
     @FutureInstant
     private Instant endDate;
 
-    private Integer maxUses;
+    private int maxUses;
     
-    private Integer usesCount;
+    private int usesCount;
 
     private List<UserDTO> users;
 
-    private Integer maxUsesPerUser;
+    private int maxUsesPerUser;
 
     private Number minOrderValue;
 

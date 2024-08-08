@@ -8,6 +8,6 @@ import lombok.Setter;
 @Getter
 public class CartItemDTO extends AbstractDTO<CartItemDTO> {
     private ProductDTO product;
-    private Integer quantity;
+    private int quantity;
     private Boolean isSelected;
 }

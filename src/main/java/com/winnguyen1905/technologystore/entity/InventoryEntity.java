@@ -18,7 +18,7 @@ import lombok.Setter;
 @Table(name = "inventories")
 public class InventoryEntity extends BaseEntityAudit {
     @Column(name = "inven_stock")
-    private Integer stock;
+    private int stock;
 
     @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "district_id")
