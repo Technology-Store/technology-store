@@ -12,6 +12,7 @@ import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 
 public class MergeUtils {
+    
     public static void mergeObject(Object source, Object target) {
         BeanUtils.copyProperties(source, target, getNullPropertyNames(source));
     }
@@ -27,4 +28,5 @@ public class MergeUtils {
         }
         return nullPropertyNames.toArray(new String[0]);
     }
+
 }

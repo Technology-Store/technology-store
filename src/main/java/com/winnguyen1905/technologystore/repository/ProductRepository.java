@@ -35,7 +35,7 @@ public interface ProductRepository extends JpaRepository<ProductEntity, UUID>, P
     List<ProductEntity> findByIdInAndShopId(List<UUID> ids, UUID shopId); // REAL
 
     List<ProductEntity> findByIdInAndShopIdOrderById(List<UUID> ids, UUID shopId);
-
+   
     Page<ProductEntity> findAllByShopIdAndIsPublishedTrue(UUID shopId, Pageable pageable);
 
 }

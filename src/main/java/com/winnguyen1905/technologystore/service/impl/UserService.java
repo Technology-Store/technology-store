@@ -11,16 +11,14 @@ import com.winnguyen1905.technologystore.model.dto.UserDTO;
 import com.winnguyen1905.technologystore.repository.UserRepository;
 import com.winnguyen1905.technologystore.service.IUserService;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class UserService implements IUserService {
 
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
-
-    public UserService(UserRepository userRepository, ModelMapper modelMapper) {
-        this.userRepository = userRepository;
-        this.modelMapper = modelMapper;
-    }
 
     @Override
     public UserDTO handleGetUserByUsername(String username) {

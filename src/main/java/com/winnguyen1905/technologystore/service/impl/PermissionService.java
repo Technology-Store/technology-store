@@ -23,19 +23,15 @@ import com.winnguyen1905.technologystore.repository.specification.CustomSpecific
 import com.winnguyen1905.technologystore.service.IPermissionService;
 import com.winnguyen1905.technologystore.util.MergeUtils;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class PermissionService implements IPermissionService {
     
     private final ModelMapper modelMapper;
     private final PermissionRepository permissionRepository;
     private final PermissionConverter permissionConverter;
-
-    public PermissionService(ModelMapper modelMapper, PermissionRepository permissionRepository, PermissionConverter permissionConverter) {
-        this.modelMapper = modelMapper;
-        this.permissionRepository = permissionRepository;
-        this.permissionConverter = permissionConverter;
-    }
-
     @Override
     public PermissionDTO handleGetPermissions(PermissionSearchRequest permissionSearchRequest, Pageable pageable) {
         Specification<PermissionEntity> spec = this.permissionConverter.toPermissionSpec(permissionSearchRequest);

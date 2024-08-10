@@ -21,7 +21,8 @@ public class CheckoutReviewDTO extends AbstractDTO<CheckoutReviewDTO> {
     public static class CheckoutItemDTO {
         private CartDTO cartDTO;
         private Set<DiscountDTO> discounts;
+        private DiscountDTO bestVoucher;
         private PriceStatisticsDTO PriceStatisticsDTO;
     }
-
+    
 }

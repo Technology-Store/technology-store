@@ -2,7 +2,7 @@ package com.winnguyen1905.technologystore.util;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.winnguyen1905.technologystore.common.ApplyDiscountType;
 import com.winnguyen1905.technologystore.entity.CartItemEntity;
@@ -21,14 +21,12 @@ public class DiscountUtils {
     }
 
     public static Double totalPriceOfAllProductInDiscountProgram(DiscountEntity discount, List<CartItemEntity> cartItemsSelected) {
-        Double totalPriceOfAllProductInDiscountProgram = 0.0;
-        if(discount.getAppliesTo().equals(ApplyDiscountType.SPECIFIC)) {
-            for (CartItemEntity cartItem : cartItemsSelected) {
-                if(discount.getProducts().contains(cartItem.getProduct()))
-                    totalPriceOfAllProductInDiscountProgram += cartItem.getQuantity() * cartItem.getProduct().getPrice();
-            }
-        } else for (CartItemEntity cartItem : cartItemsSelected)
-                totalPriceOfAllProductInDiscountProgram += cartItem.getQuantity() * cartItem.getProduct().getPrice();
-        return totalPriceOfAllProductInDiscountProgram;
+        return cartItemsSelected.stream()
+            .collect(Collectors.summingDouble(
+                cartItem ->
+                    discount.getProducts().contains(cartItem.getProduct()) || discount.getAppliesTo().equals(ApplyDiscountType.ALL) 
+                        ? cartItem.getQuantity() * cartItem.getProduct().getPrice() 
+                        : 0.0)
+            );
     }
 }

@@ -20,13 +20,18 @@ import com.winnguyen1905.technologystore.entity.UserEntity;
 import com.winnguyen1905.technologystore.exception.CustomRuntimeException;
 import com.winnguyen1905.technologystore.model.dto.CartDTO;
 import com.winnguyen1905.technologystore.model.dto.CartItemDTO;
+import com.winnguyen1905.technologystore.model.dto.PriceStatisticsDTO;
 import com.winnguyen1905.technologystore.repository.CartItemRepository;
 import com.winnguyen1905.technologystore.repository.CartRepository;
 import com.winnguyen1905.technologystore.repository.ProductRepository;
 import com.winnguyen1905.technologystore.repository.UserRepository;
 import com.winnguyen1905.technologystore.service.ICartService;
+import com.winnguyen1905.technologystore.util.ProductUtils;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class CartService implements ICartService {
 
     private final CartRepository cartRepository;
@@ -34,18 +39,6 @@ public class CartService implements ICartService {
     private final CartItemRepository cartItemRepository;
     private final ModelMapper modelMapper;
     private final ProductRepository productRepository;
-    private final UserConverter userConverter;
-
-    public CartService(CartItemRepository cartItemRepository, CartRepository cartRepository,
-            UserRepository userRepository, ModelMapper modelMapper, ProductRepository productRepository,
-            UserConverter userConverter) {
-        this.cartRepository = cartRepository;
-        this.userRepository = userRepository;
-        this.cartItemRepository = cartItemRepository;
-        this.modelMapper = modelMapper;
-        this.productRepository = productRepository;
-        this.userConverter = userConverter;
-    }
 
     @Override
     public CartDTO handleAddCart(CartDTO cartDTO, UUID customerId) {
@@ -86,6 +79,23 @@ public class CartService implements ICartService {
     public CartDTO handleGetCartById(UUID cartId, UUID customerId) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'handleGetCartById'");
+    }
+
+    @Override
+    public PriceStatisticsDTO handleGetPriceStatisticsOfCart(CartDTO cartDTO, UUID customerId) {
+        UserEntity user = this.userRepository.findById(customerId)
+                .orElseThrow(() -> new CustomRuntimeException("Not found customer id " + customerId));
+        CartEntity cart = this.cartRepository.findById(cartDTO.getId())
+                .orElseThrow(() -> new CustomRuntimeException("Not found cart id " + cartDTO.getId()));
+        if(!cart.getCustomer().getId().equals(user.getId())) throw new CustomRuntimeException("Not found cart id " + cartDTO.getId());
+        List<CartItemEntity> cartItemsSelected = cart.getCartItems().stream().filter(item -> item.getIsSelected()).toList();
+        Double totalPriceOfAllProduct = ProductUtils.totalPriceOfAllProduct(cartItemsSelected);
+        return PriceStatisticsDTO.builder()
+                .amountProductReduced(0.0)
+                .amountShipReduced(0.0)
+                .finalPrice(totalPriceOfAllProduct)
+                .totalShipPrice(0.0) // Handle after -------------------------------------------------
+                .totalDiscountVoucher(0.0).build();
     }
 
     @Override

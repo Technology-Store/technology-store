@@ -19,4 +19,6 @@ public class PriceStatisticsDTO extends AbstractDTO<PriceStatisticsDTO> {
     private Double amountProductReduced;
 
     private Double finalPrice;
+
+    private DiscountDTO bestVoucher;
 }

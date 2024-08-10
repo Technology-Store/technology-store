@@ -7,6 +7,7 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public final class StringUtils {
+
     public static Boolean isNullOrEmpty(String s) {
         return s.equals("") || s == null;
     }
@@ -49,4 +50,5 @@ public final class StringUtils {
 
         return camelCaseString.toString();
     }
+    
 }

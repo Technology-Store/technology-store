@@ -32,22 +32,17 @@ import com.winnguyen1905.technologystore.service.IProductService;
 import com.winnguyen1905.technologystore.util.MergeUtils;
 import com.winnguyen1905.technologystore.util.NormalSpecificationUtils;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class ProductService implements IProductService {
 
     private final ProductRepository productRepository;
     private final ProductConverter productConverter;
     private final ModelMapper modelMapper;
     private final UserRepository userRepository;
-
-    public ProductService(ProductRepository productRepository,
-            ProductConverter productConverter, ModelMapper modelMapper, UserRepository userRepository) {
-        this.productRepository = productRepository;
-        this.productConverter = productConverter;
-        this.modelMapper = modelMapper;
-        this.userRepository = userRepository;
-    }
 
     @Override
     public ProductDTO handleAddProduct(ProductRequest productRequest, UUID shopId) {

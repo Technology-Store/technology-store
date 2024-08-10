@@ -21,13 +21,13 @@ public class PermissionInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String 
+        String
             path = (String) request.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE),
             requestURI = request.getRequestURI(),
             httpMethod = request.getMethod();
         if(SecurityUtils.getCurrentUsersPermissions().isPresent()) {
             List<PermissionDTO> permissionDTOs = SecurityUtils.getCurrentUsersPermissions().get()
-                .stream().map(item -> StringToPermissionUtils.toPermission(item)).toList();
+                    .stream().map(stringPermission -> StringToPermissionUtils.toPermission(stringPermission)).toList();
             Boolean isAllow = permissionDTOs.stream().anyMatch(item -> (item.getApiPath().equals(path) && item.getMethod().equals(httpMethod)) || item.getApiPath().equals("/api/v1/"));
             if(isAllow == false) throw new CustomRuntimeException("Cannot use endpoint " + path, 403, "Forbidden");
         }

@@ -30,7 +30,7 @@ public class CustomSpecification<T> {
         return null;
     }
 
-    public static <T, F> Join<T, ?> joIntegerableManager(Pair<Class<F>, String> joining, Root<T> root) {
+    public static <T, F> Join<T, ?> joinManager(Pair<Class<F>, String> joining, Root<T> root) {
         if(joining.getSecond().endsWith("_O")) {
             String finalName = joining.getSecond().substring(0, joining.getSecond().indexOf("_O")) + "s";
             Join<T, F> join = root.join(finalName);
@@ -48,49 +48,49 @@ public class CustomSpecification<T> {
 
     public static <T, F> Specification<T> isValueLike(String stringLike, String col, Pair<Class<F>, String> joining) {
         return (root, query, builder) -> builder.like(
-            (joining != null ? joIntegerableManager(joining, root) : root)
+            (joining != null ? joinManager(joining, root) : root)
             .get(col), "%" + stringLike + "%");
     }
     
     public static <T, F> Specification<T> isTrue(Boolean value, String col, Pair<Class<F>, String> joining) {
         return (root, query, builder) -> builder.isTrue(
-            (joining != null ? joIntegerableManager(joining, root) : root)
+            (joining != null ? joinManager(joining, root) : root)
             .get(col));
     }
 
     public static <T, F> Specification<T> isFalse(Boolean value, String col, Pair<Class<F>, String> joining) {
         return (root, query, builder) -> builder.isFalse(
-            (joining != null ? joIntegerableManager(joining, root) : root)
+            (joining != null ? joinManager(joining, root) : root)
             .get(col));
     }
 
     public static <T, F> Specification<T> isWithinValueRange(Integer min, Integer max, String col, Pair<Class<F>, String> joining) {
         return (root, query, criteriaBuilder) -> criteriaBuilder.between(
-            (joining != null ? joIntegerableManager(joining, root) : root)
+            (joining != null ? joinManager(joining, root) : root)
             .get(col), min, max);
     }
 
     public static <T, F> Specification<T> isEqualValue(Object value, String col, Pair<Class<F>, String> joining) {
         return (root, query, criteriaBuilder) -> criteriaBuilder.equal(
-            (joining != null ? joIntegerableManager(joining, root) : root)
+            (joining != null ? joinManager(joining, root) : root)
             .get(col), value);
     }
     
     public static <T, F> Specification<T> isGreaterThanOrEqual(Double value, String col, Pair<Class<F>, String> joining) {
         return (root, query, criteriaBuilder) -> criteriaBuilder.greaterThanOrEqualTo(
-            (joining != null ? joIntegerableManager(joining, root) : root)
+            (joining != null ? joinManager(joining, root) : root)
             .get(col), value);
     }
 
     public static <T, F> Specification<T> isLessThanOrEqual(Double value, String col, Pair<Class<F>, String> joining) {
         return (root, query, criteriaBuilder) -> criteriaBuilder.lessThanOrEqualTo(
-            (joining != null ? joIntegerableManager(joining, root) : root)
+            (joining != null ? joinManager(joining, root) : root)
             .get(col), value);
     }
 
     public static <T, F> Specification<T> isInList(List<String> list, String col, Pair<Class<F>, String> joining) {
         return (root, query, criteriaBuilder) ->
-            (joining != null ? joIntegerableManager(joining, root) : root)
+            (joining != null ? joinManager(joining, root) : root)
             .get(col).in(list);
     }
     /*

@@ -57,12 +57,7 @@ public class SecurityUtils {
         }
         return null;
     }
-
-    /**
-     * Get the JWT of the current user.
-     *
-     * @return the JWT of the current user.
-     */
+    
     public static Optional<String> getCurrentUserJWT() {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         return Optional.ofNullable(securityContext.getAuthentication())
@@ -70,22 +65,6 @@ public class SecurityUtils {
             .map(authentication -> (String) authentication.getCredentials());
     }
 
-    /**
-     * Check if a user is authenticated.
-     *
-     * @return true if the user is authenticated, false otherwise.
-     */
-    // public static boolean isAuthenticated() {
-    //     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    //     return authentication != null && getAuthorities(authentication).noneMatch(AuthoritiesConstants.ANONYMOUS::equals);
-    // }
-
-    /**
-     * Checks if the current user has any of the authorities.
-     *
-     * @param authorities the authorities to check.
-     * @return true if the current user has any of the authorities, false otherwise.
-     */
     public static boolean hasCurrentUserAnyOfAuthorities(String... authorities) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return (
@@ -93,22 +72,10 @@ public class SecurityUtils {
         );
     }
 
-    /**
-     * Checks if the current user has none of the authorities.
-     *
-     * @param authorities the authorities to check.
-     * @return true if the current user has none of the authorities, false otherwise.
-     */
     public static boolean hasCurrentUserNoneOfAuthorities(String... authorities) {
         return !hasCurrentUserAnyOfAuthorities(authorities);
     }
 
-    /**
-     * Checks if the current user has a specific authority.
-     *
-     * @param authority the authority to check.
-     * @return true if the current user has the authority, false otherwise.
-     */
     public static boolean hasCurrentUserThisAuthority(String authority) {
         return hasCurrentUserAnyOfAuthorities(authority);
     }

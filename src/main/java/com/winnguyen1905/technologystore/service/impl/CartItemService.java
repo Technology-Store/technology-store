@@ -13,19 +13,16 @@ import com.winnguyen1905.technologystore.repository.CartItemRepository;
 import com.winnguyen1905.technologystore.repository.UserRepository;
 import com.winnguyen1905.technologystore.service.ICartItemService;
 
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class CartItemService implements ICartItemService {
 
     private final CartItemRepository cartItemRepository;
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
-
-    public CartItemService(CartItemRepository cartItemRepository, UserRepository userRepository,
-            ModelMapper modelMapper) {
-        this.cartItemRepository = cartItemRepository;
-        this.userRepository = userRepository;
-        this.modelMapper = modelMapper;
-    }
 
     @Override
     public CartItemDTO handleUpdateCartItem(CartItemDTO cartItemDTO, UUID customerId) {

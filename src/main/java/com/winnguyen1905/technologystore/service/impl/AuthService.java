@@ -28,9 +28,12 @@ import com.winnguyen1905.technologystore.util.AuthenticationUtils;
 import com.winnguyen1905.technologystore.util.JwtUtils;
 
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class AuthService implements IAuthService {
 
     private final UserRepository userRepository;
@@ -41,25 +44,6 @@ public class AuthService implements IAuthService {
     private final AuthenResponseConverter authenResponseConverter;
     private final RoleRepository roleRepository;
     private final AuthenticationUtils authenticationUtils;
-
-    public AuthService(UserRepository userRepository,
-        UserConverter userConverter,
-        AuthenticationUtils authenticationUtils,
-        PasswordEncoder passwordEncoder,
-        JwtUtils jwtUtils,
-        ModelMapper modelMapper,
-        AuthenResponseConverter authenResponseConverter,
-        RoleRepository roleRepository
-    ) {
-        this.userRepository = userRepository;
-        this.userConverter = userConverter;
-        this.authenticationUtils = authenticationUtils;
-        this.passwordEncoder = passwordEncoder;
-        this.jwtUtils = jwtUtils;
-        this.modelMapper = modelMapper;
-        this.authenResponseConverter = authenResponseConverter;
-        this.roleRepository = roleRepository;
-    }
 
 
     @Override
