@@ -33,5 +33,4 @@ public class LaptopEntity extends ProductEntity {
 
     // @Column(name = "gpu", nullable = false)
     // private String gpu;
-
 }

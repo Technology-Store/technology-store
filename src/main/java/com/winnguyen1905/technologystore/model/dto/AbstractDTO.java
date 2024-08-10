@@ -23,22 +23,36 @@ import lombok.Setter;
 @JsonInclude(value = Include.NON_NULL)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public abstract class AbstractDTO<T> implements Serializable {
+
     private static final long serialVersionUID = 7213600440729202783L;
+
     private UUID id;
+
     @JsonFormat(pattern = "HH-mm-ss a dd-MM-yyyy", timezone = "GMT+7")
     private String createdDate;
+
     @JsonFormat(pattern = "HH-mm-ss a dd-MM-yyyy", timezone = "GMT+7")
     private String updatedDate;
+
     private String createdBy;
+
     private String updatedBy;
+
     private Integer maxPageItems;
+
     private Integer page;
+
     private Integer size;
+
     @JsonProperty("results")
     private List<T> content;
+
     private T object;
+
     private Integer totalElements;
+
     private Integer totalPages;
+
     // private String tableId;
     // private Integereger limit;
     // private Integereger totalItem;

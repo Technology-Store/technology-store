@@ -1,6 +1,8 @@
 package com.winnguyen1905.technologystore.entity;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.winnguyen1905.technologystore.entity.base.BaseEntityAudit;
 
@@ -22,12 +24,12 @@ public class InventoryEntity extends BaseEntityAudit {
     @Column(name = "inven_stock")
     private Integer stock;
 
-    @ManyToOne(cascade = {CascadeType.ALL})
-    @JoinColumn(name = "district_id")
-    private DistrictEntity district;
+    @ManyToOne
+    @JoinColumn(name = "address_id")
+    private AddressEntity address;
 
     @OneToMany(mappedBy = "inventory")
-    private List<ReservationEntity> reservations;
+    private Set<ReservationEntity> reservations = new HashSet<>();
 
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "product_id")

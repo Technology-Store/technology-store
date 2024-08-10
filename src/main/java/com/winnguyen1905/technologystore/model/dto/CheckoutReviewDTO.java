@@ -11,10 +11,17 @@ import lombok.Setter;
 @Setter
 @Builder
 public class CheckoutReviewDTO extends AbstractDTO<CheckoutReviewDTO> {
-    private List<CartDTO> cartDTOs;
-    // global discount
-    private Double totalPrice;
-    private Double totalShipPrice;
-    private Double totalDiscountVoucher;
-    private Double finalPrice;
+
+    private List<CheckoutItemDTO> checkoutItemDTOs;
+    private PriceStatisticsDTO PriceStatisticsDTO;
+
+    @Getter
+    @Setter
+    @Builder
+    public static class CheckoutItemDTO {
+        private CartDTO cartDTO;
+        private Set<DiscountDTO> discounts;
+        private PriceStatisticsDTO PriceStatisticsDTO;
+    }
+
 }

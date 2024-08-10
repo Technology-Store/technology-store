@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.winnguyen1905.technologystore.common.ApplyDiscountStatus;
 import com.winnguyen1905.technologystore.exception.CustomRuntimeException;
 import com.winnguyen1905.technologystore.model.dto.DiscountDTO;
-import com.winnguyen1905.technologystore.model.response.ApplyDiscountResponse;
+import com.winnguyen1905.technologystore.model.dto.PriceStatisticsDTO;
 import com.winnguyen1905.technologystore.service.IDiscountService;
 import com.winnguyen1905.technologystore.util.SecurityUtils;
 
@@ -52,11 +52,11 @@ public class DiscountController {
     }
 
     @PostMapping("/apply")
-    public ResponseEntity<ApplyDiscountResponse> getAmountApplyDiscountForCart(@RequestBody DiscountDTO discountDTO) {
+    public ResponseEntity<PriceStatisticsDTO> getAmountApplyDiscountForCart(@RequestBody DiscountDTO discountDTO) {
         UUID customerId = SecurityUtils.getCurrentUserId()
                 .orElseThrow(() -> new CustomRuntimeException("Not found user"));
         return ResponseEntity.ok().body(
-                this.discountService.handleApplyDiscountForCart(discountDTO, customerId, ApplyDiscountStatus.REVIEW));
+                this.discountService.handleApplyDiscountCode(discountDTO, customerId, ApplyDiscountStatus.REVIEW));
     }
 
     @PostMapping("/cancel")
