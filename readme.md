@@ -1,5 +1,5 @@
 # Technology Store
-## Dự án "Tech store ecommerce multi shop owner"
+## Dự án "multi-store e-commerce"
 
 ### Mục tiêu 1: Phát triển hệ thống thương mại điện tử đa gian hàng, có khả năng xử lý lượng đồng thời cao (high of concurrency) 
 Redis được sử dụng để xử lý lượng đặt hàng cao bằng cách áp dụng mô hình optimistic locking. Khi nhiều người dùng cùng lúc đặt mua sản phẩm, hệ thống sử dụng Redis để lưu trữ và truy xuất nhanh dữ liệu tồn kho. Mỗi khi có yêu cầu đặt hàng, hệ thống sẽ kiểm tra phiên bản dữ liệu trong Redis trước khi cập nhật điều này là để bảo vệ tính toàn vẹn tài nguyên,...coming soon
