@@ -71,7 +71,7 @@ public class ProductService implements IProductService {
         List<ProductEntity> newDataOfProducts = productRequests.stream()
                 .map(item -> (ProductEntity) this.productConverter.toProductEntity(item))
                 .sorted(Comparator.comparing(ProductEntity::getId)).collect(Collectors.toList());
-        for (int i = 0; i < products.size(); i++) {
+        for (Integer i = 0; i < products.size(); i++) {
             ProductEntity oldData = products.get(i), newData = newDataOfProducts.get(i);
             this.modelMapper.map(newData, oldData);
             products.set(i, oldData);

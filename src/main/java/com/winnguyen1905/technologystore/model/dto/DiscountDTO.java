@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.winnguyen1905.technologystore.common.DiscountAppliesType;
+import com.winnguyen1905.technologystore.common.ApplyDiscountType;
 import com.winnguyen1905.technologystore.common.DiscountType;
 import com.winnguyen1905.technologystore.util.annotation.FutureInstant;
 
@@ -37,13 +37,13 @@ public class DiscountDTO extends AbstractDTO<DiscountDTO> {
 
     private List<UserDTO> users;
 
-    private int maxUsesPerUser;
+    private Integer maxUsesPerUser;
 
-    private Number minOrderValue;
+    private Double minOrderValue;
 
     private Boolean isActive;
 
-    private DiscountAppliesType appliesTo;
+    private ApplyDiscountType appliesTo;
 
     private Set<ProductDTO> products;
 

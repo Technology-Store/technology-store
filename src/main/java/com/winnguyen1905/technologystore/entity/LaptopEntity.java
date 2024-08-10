@@ -14,19 +14,19 @@ import lombok.*;
 public class LaptopEntity extends ProductEntity {
 
     // @Column(name = "size", nullable = false)
-    // private double size;
+    // private Double size;
 
     // @Column(name = "os", nullable = false)
     // private String os;
 
     // @Column(name = "ram", nullable = false)
-    // private int ram;
+    // private Integer ram;
 
     // @Column(name = "rom", nullable = false)
-    // private int rom;
+    // private Integer rom;
 
     // @Column(name = "pin", nullable = false)
-    // private int pin;
+    // private Integer pin;
 
     // @Column(name = "cpu", nullable = false)
     // private String cpu;

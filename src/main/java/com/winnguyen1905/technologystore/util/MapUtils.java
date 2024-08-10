@@ -7,7 +7,7 @@ public class MapUtils {
         Object obj = params.getOrDefault(key, null);
         if(obj != null && !obj.equals("")) {
             if(tClass.getTypeName().equals("java.lang.Long")) return tClass.cast(Long.valueOf(obj.toString()));
-            else if(tClass.getTypeName().equals("java.lang.int")) return tClass.cast(Integer.valueOf(obj.toString()));
+            else if(tClass.getTypeName().equals("java.lang.Integer")) return tClass.cast(Integer.valueOf(obj.toString()));
             else if(tClass.getTypeName().equals("java.lang.String")) return tClass.cast(obj.toString());
         }
         return null;

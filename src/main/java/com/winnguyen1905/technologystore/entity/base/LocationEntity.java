@@ -8,9 +8,11 @@ import lombok.Setter;
 @Setter
 @MappedSuperclass
 public abstract class LocationEntity extends BaseEntityAudit {
+    
     @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = "code", nullable = false)
     private String code;
+
 }

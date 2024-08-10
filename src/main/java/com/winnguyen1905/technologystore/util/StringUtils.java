@@ -22,7 +22,7 @@ public final class StringUtils {
 
         String[] parts = snakeCaseString.split("_");
 
-        for (int i = 0; i < parts.length; i++) {
+        for (Integer i = 0; i < parts.length; i++) {
             String part = parts[i];
             if (i == 0) {
                 camelCaseString.append(part.toLowerCase());

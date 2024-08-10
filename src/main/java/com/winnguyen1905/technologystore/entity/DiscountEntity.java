@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.winnguyen1905.technologystore.common.DiscountAppliesType;
+import com.winnguyen1905.technologystore.common.ApplyDiscountType;
 import com.winnguyen1905.technologystore.common.DiscountType;
 import com.winnguyen1905.technologystore.entity.base.BaseEntityAudit;
 
@@ -30,7 +30,7 @@ public class DiscountEntity extends BaseEntityAudit {
 
     @Min(value = 0)
     @Column(name = "discount_value")
-    private double value;
+    private Double value;
 
     @Column(name = "discount_code")
     private String code;
@@ -63,7 +63,7 @@ public class DiscountEntity extends BaseEntityAudit {
 
     @Min(value = 0)
     @Column(name = "discount_min_order_value")
-    private double minOrderValue;
+    private Double minOrderValue;
 
     @ManyToOne
     @JoinColumn(name = "shop_id")
@@ -74,7 +74,7 @@ public class DiscountEntity extends BaseEntityAudit {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "discount_applies_to")
-    private DiscountAppliesType appliesTo;
+    private ApplyDiscountType appliesTo;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -94,7 +94,7 @@ public class DiscountEntity extends BaseEntityAudit {
     @PrePersist
     public void prePersist() {
         this.setDiscountType(this.discountType == null ? DiscountType.FIXED_AMOUNT : this.discountType);
-        this.setAppliesTo(this.appliesTo == null ? DiscountAppliesType.ALL : this.appliesTo);
+        this.setAppliesTo(this.appliesTo == null ? ApplyDiscountType.ALL : this.appliesTo);
         this.setIsActive(this.isActive == null ? false : this.isActive);
         super.prePersist();
     }

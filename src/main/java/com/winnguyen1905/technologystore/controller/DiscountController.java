@@ -3,6 +3,7 @@ package com.winnguyen1905.technologystore.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.winnguyen1905.technologystore.common.ApplyDiscountStatus;
 import com.winnguyen1905.technologystore.exception.CustomRuntimeException;
 import com.winnguyen1905.technologystore.model.dto.DiscountDTO;
 import com.winnguyen1905.technologystore.model.response.ApplyDiscountResponse;
@@ -24,7 +25,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
 @RestController
 @RequestMapping("${release.api.prefix}/discounts")
 public class DiscountController {
@@ -41,28 +41,32 @@ public class DiscountController {
 
     @GetMapping("/")
     public ResponseEntity<DiscountDTO> getAllDiscountCodeWithProducts(Pageable pageable,
-        @RequestBody DiscountDTO discountDTO) {
+            @RequestBody DiscountDTO discountDTO) {
         return ResponseEntity.ok(this.discountService.handleGetAllProductsRelatedToDiscountCode(discountDTO, pageable));
     }
 
     @GetMapping("/shop/{shop-id}")
-    public ResponseEntity<DiscountDTO> getAllDiscountCodesbyShop(Pageable pageable, @PathVariable("shop-id") UUID shopId) {
+    public ResponseEntity<DiscountDTO> getAllDiscountCodesbyShop(Pageable pageable,
+            @PathVariable("shop-id") UUID shopId) {
         return ResponseEntity.ok(this.discountService.handleGetAllDiscountCodesByShop(shopId, pageable));
     }
 
     @PostMapping("/apply")
     public ResponseEntity<ApplyDiscountResponse> getAmountApplyDiscountForCart(@RequestBody DiscountDTO discountDTO) {
-        UUID customerId = SecurityUtils.getCurrentUserId().orElseThrow(() -> new CustomRuntimeException("Not found user"));
-        return ResponseEntity.ok().body(this.discountService.handleApplyDiscountForCart(discountDTO, customerId));
+        UUID customerId = SecurityUtils.getCurrentUserId()
+                .orElseThrow(() -> new CustomRuntimeException("Not found user"));
+        return ResponseEntity.ok().body(
+                this.discountService.handleApplyDiscountForCart(discountDTO, customerId, ApplyDiscountStatus.REVIEW));
     }
 
     @PostMapping("/cancel")
     public ResponseEntity<Void> postMethodName(@RequestBody DiscountDTO discountDTO) {
-        UUID customerId = SecurityUtils.getCurrentUserId().orElseThrow(() -> new CustomRuntimeException("Not found user"));
+        UUID customerId = SecurityUtils.getCurrentUserId()
+                .orElseThrow(() -> new CustomRuntimeException("Not found user"));
         this.discountService.handleCancelDiscountForCart(discountDTO, customerId);
         return ResponseEntity.noContent().build();
     }
-    
+
     // API FOR SHOPOWNER
 
     @PostMapping
@@ -71,5 +75,5 @@ public class DiscountController {
         return ResponseEntity.status(HttpStatus.CREATED.value())
                 .body(this.discountService.handleCreateDiscountCode(discountDTO, shopId));
     }
-    
+
 }

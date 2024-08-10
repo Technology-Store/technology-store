@@ -1,10 +1,12 @@
 package com.winnguyen1905.technologystore.service.impl;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.function.Function;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -47,45 +49,35 @@ public class CartService implements ICartService {
 
     @Override
     public CartDTO handleAddCart(CartDTO cartDTO, UUID customerId) {
-        // Find shop and customer of this CART
+        // Valid
         UserEntity shop = this.userRepository.findById(cartDTO.getShop().getId()) // Note: changeID cartDTO.getShop().getId()
                 .orElseThrow(() -> new CustomRuntimeException("Not found shop id " + cartDTO.getShop().getId()));
         UserEntity customer = this.userRepository.findById(customerId)
-            .orElseThrow(() -> new CustomRuntimeException("Not found customer id " + customerId));
+                .orElseThrow(() -> new CustomRuntimeException("Not found customer id " + customerId));
 
         // Product is existing ?
         CartItemDTO cartItemDTO = cartDTO.getCartItems().get(0);
         ProductEntity product = this.productRepository.findById(cartItemDTO.getProduct().getId()).orElseThrow(() -> new CustomRuntimeException("Not found product id " + cartItemDTO.getProduct().getId()));
 
         // The customer and shopowner has CART together before ?
+        CartEntity cart = this.cartRepository.findByShopIdAndCustomerId(cartDTO.getShop().getId(), customerId).orElse(null); // REAL
+
         cartDTO.setCartItems(null);
         cartItemDTO.setProduct(null);
-
-        CartEntity cart = this.cartRepository.findByShopIdAndCustomerId(cartDTO.getShop().getId(), customerId).orElse(null); // REAL
-        // CartEntity cart = this.cartRepository.findByCreatedBy("baokhung2k4").orElse(null); // FAKE
-
-        // If no we construct new cart and add new product into this cart
-        if (cart == null) {
+        if (cart == null) { // If no we construct new cart and add new product Integero this cart
             CartItemEntity cartItem = this.modelMapper.map(cartItemDTO, CartItemEntity.class);
-            cartItem.setProduct(product);
             cart = this.modelMapper.map(cartDTO, CartEntity.class);
-            cartItem.setCart(cart);
-            cart.addCartItems(cartItem);
-            cart.setShop(shop);
-            cart.setCustomer(customer);
-        } else {
-        // Else we will check whether this product has exist in any cart-item in this cart
+            cartItem.fillInRelationShipData(cart, product);
+            cart.fillInRelationShipData(customer, shop, List.of(cartItem));
+        } else { // Else we will check whether this product has exist in any cart-item in this cart
             CartItemEntity cartItem = this.cartItemRepository.findByCartIdAndProductId(cart.getId(), product.getId()).orElse(null);
-            // We will create new cart-item
-            if (cartItem == null) {
+            if (cartItem == null) { // We will create new cart-item
                 cartItem = this.modelMapper.map(cartItemDTO, CartItemEntity.class);
-                cartItem.setProduct(product);
-                cartItem.setCart(cart);
-                cart.addCartItems(cartItem);
-            }
-            // We adding quantity into cart-item existing
-            else cartItem.setQuantity(cartItem.getQuantity() + cartItemDTO.getQuantity()); 
+                cartItem.fillInRelationShipData(cart, product);
+                cart.fillInRelationShipData(customer, shop, List.of(cartItem));
+            } else cartItem.setQuantity(cartItem.getQuantity() + 1); // We adding quantity into cart-item existing
         }
+
         cart = this.cartRepository.save(cart);
         return this.modelMapper.map(cart, CartDTO.class);
     }
@@ -97,9 +89,9 @@ public class CartService implements ICartService {
     }
 
     @Override
-    public CartDTO handleGetAllCart(UUID customerId, Pageable pageable) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'handleGetAllCart'");
+    public CartDTO handleGetMyCarts(UUID customerId, Pageable pageable) {
+        Page<CartEntity> cartPage = this.cartRepository.findAllByCustomerId(customerId, pageable);
+        return this.modelMapper.map(cartPage, CartDTO.class);
     }
 
 }

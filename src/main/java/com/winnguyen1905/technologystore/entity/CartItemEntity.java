@@ -21,11 +21,15 @@ public class CartItemEntity extends BaseEntityAudit {
     private ProductEntity product;
 
     @Column(name = "quantity")
-    private int quantity;
+    private Integer quantity;
 
     @Column(name = "is_selected")
     private Boolean isSelected;
 
     // Variation
 
+    public void fillInRelationShipData(CartEntity cart, ProductEntity product) {
+        this.cart = cart;
+        this.product = product;
+    }
 }

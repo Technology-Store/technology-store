@@ -13,7 +13,7 @@ import lombok.*;
 @JsonInclude(value = Include.NON_NULL)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class RestResponse<T> {
-    private int statusCode;
+    private Integer statusCode;
     private String error;
     private Object message;
     private T Data;

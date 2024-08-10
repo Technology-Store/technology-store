@@ -13,7 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.winnguyen1905.technologystore.common.DiscountAppliesType;
+import com.winnguyen1905.technologystore.common.ApplyDiscountType;
+import com.winnguyen1905.technologystore.common.ApplyDiscountStatus;
 import com.winnguyen1905.technologystore.common.DiscountType;
 import com.winnguyen1905.technologystore.entity.CartEntity;
 import com.winnguyen1905.technologystore.entity.CartItemEntity;
@@ -61,7 +62,7 @@ public class DiscountService implements IDiscountService {
         discountDTO.setProducts(null);
         DiscountEntity discount = this.modelMapper.map(discountDTO, DiscountEntity.class);
 
-        if (discountDTO.getAppliesTo().equals(DiscountAppliesType.SPECIFIC)) {
+        if (discountDTO.getAppliesTo().equals(ApplyDiscountType.SPECIFIC)) {
             List<ProductEntity> products = this.productRepository.findByIdInAndShopId(productIds, shopId);
             if (products.size() != productIds.size()) throw new CustomRuntimeException("Just found " + products.size() + " / " + productIds.size() + " product");
             for (ProductEntity product : products) {
@@ -113,7 +114,7 @@ public class DiscountService implements IDiscountService {
 
         ProductDTO productDTO = new ProductDTO();
 
-        if(discount.getAppliesTo().equals(DiscountAppliesType.ALL)) {
+        if(discount.getAppliesTo().equals(ApplyDiscountType.ALL)) {
             Page<ProductEntity> productPages = this.productRepository.findAllByShopIdAndIsPublishedTrue(discount.getShop().getId(), pageable);
             productDTO = this.modelMapper.map(productPages, ProductDTO.class);
         } else {
@@ -129,11 +130,11 @@ public class DiscountService implements IDiscountService {
     }
 
     @Override
-    public ApplyDiscountResponse handleApplyDiscountForCart(DiscountDTO discountDTO, UUID customerId) {
+    public ApplyDiscountResponse handleApplyDiscountForCart(DiscountDTO discountDTO, UUID customerId, ApplyDiscountStatus ApplyDiscountStatus) {
+        // Valid
         UserEntity customer = this.userRepository.findByIdOrUsername(customerId, "baokhung2k4").orElseThrow(() -> new CustomRuntimeException("Not found current user"));
         DiscountEntity discount = this.discountRepository.findByIdAndIsActiveTrue(discountDTO.getId()).orElseThrow(() -> new CustomRuntimeException("Not found discount id " + discountDTO.getId()));
 
-        // Valid
         long timeUsed = discount.getCustomer().stream().filter(item -> item.equals(customer)).count();
         if(discount.getMaxUsesPerUser() <= timeUsed) throw new CustomRuntimeException("Use count reach to maximum");
         if(discount.getEndDate().isBefore(Instant.now())) throw new CustomRuntimeException("Discount has been expired");
@@ -146,37 +147,39 @@ public class DiscountService implements IDiscountService {
         List<CartItemEntity> cartItemsSelected = cart.getCartItems().stream().filter(item -> item.getIsSelected()).toList();
 
         // Get total price of all product in the discount program
-        double totalPriceOfApprovedProduct = 0.0, totalPriceOfAllProduct = 0.0;
-        if(discount.getAppliesTo().equals(DiscountAppliesType.SPECIFIC)) {
-            for(CartItemEntity cartItem : cartItemsSelected) {
+        Double totalPriceOfApprovedProduct = 0.0, totalPriceOfAllProduct = 0.0;
+        if(discount.getAppliesTo().equals(ApplyDiscountType.SPECIFIC)) {
+            for (CartItemEntity cartItem : cartItemsSelected) {
                 if(discount.getProducts().contains(cartItem.getProduct()))
                     totalPriceOfApprovedProduct += cartItem.getQuantity() * cartItem.getProduct().getPrice();
                 totalPriceOfAllProduct += cartItem.getQuantity() * cartItem.getProduct().getPrice();
             }
         } else {
-            for(CartItemEntity cartItem : cartItemsSelected)
+            for (CartItemEntity cartItem : cartItemsSelected)
                 totalPriceOfApprovedProduct += cartItem.getQuantity() * cartItem.getProduct().getPrice();
             totalPriceOfAllProduct = totalPriceOfApprovedProduct;
         }
 
         // Reach to the Lowest price possible to be discount
-        if(discount.getMinOrderValue() > totalPriceOfApprovedProduct) throw new CustomRuntimeException("The total price of product selected in this cart insufficient");
+        if (discount.getMinOrderValue() > totalPriceOfApprovedProduct) throw new CustomRuntimeException("The total price of product selected in this cart insufficient");
 
-        // Update discount data before sending response
-        discount.getCustomer().add(customer);
-        discount.setUsesCount(discount.getUsesCount() + 1);
-        discountRepository.save(discount);
+        // Update data before sending response
+        if(ApplyDiscountStatus.equals(ApplyDiscountStatus.COMMIT)) {
+            discount.getCustomer().add(customer);
+            discount.setUsesCount(discount.getUsesCount() + 1);
+            discountRepository.save(discount);
+        }
 
         // Get the final total price
-        double finalPrice = 
+        Double finalPrice = 
                 discount.getDiscountType().equals(DiscountType.FIXED_AMOUNT) 
                 ? discount.getValue()
                 : totalPriceOfAllProduct - totalPriceOfApprovedProduct * discount.getValue() / 100;
-        return ApplyDiscountResponse.builder()
-                .finalPrice(finalPrice)
+        return ApplyDiscountResponse
+                .builder().finalPrice(finalPrice)
                 .totalPrice(totalPriceOfAllProduct)
-                .amount(totalPriceOfAllProduct - finalPrice)
-                .cart(this.modelMapper.map(cart, CartDTO.class)).build();
+                .amountReduced(totalPriceOfAllProduct - finalPrice)
+                .cart(ApplyDiscountStatus.equals(ApplyDiscountStatus.REVIEW) ? this.modelMapper.map(cart, CartDTO.class) : null).build();
     }
 
     @Override

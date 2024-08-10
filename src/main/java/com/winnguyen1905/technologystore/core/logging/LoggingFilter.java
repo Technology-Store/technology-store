@@ -13,7 +13,7 @@ import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 
-//component that allows you to intercept the incoming and outgoing HTTP messages at the level of the servlet container.
+//component that allows you to Integerercept the incoming and outgoing HTTP messages at the level of the servlet container.
 @Component
 public class LoggingFilter implements Filter {
     private static final Logger LOGGER = LoggerFactory.getLogger(RestTemplateFilter.class);

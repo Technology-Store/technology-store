@@ -7,7 +7,7 @@ import lombok.*;
 @Setter
 @Getter
 public class InventoryDTO extends AbstractDTO<InventoryDTO> {
-    private int stock;
+    private Integer stock;
 
     private DistrictDTO district;
 

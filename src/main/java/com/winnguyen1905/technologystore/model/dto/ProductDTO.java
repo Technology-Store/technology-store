@@ -15,7 +15,7 @@ public class ProductDTO extends AbstractDTO<ProductDTO> {
 
     private String description;
 
-    private double price;
+    private Double price;
 
     private String brand;
 

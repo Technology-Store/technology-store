@@ -32,10 +32,10 @@ public class NormalSpecificationUtils<D> {
                 }
                 if(value instanceof Number num) {
                     if(fieldName.endsWith("From"))  
-                        specList.add(CustomSpecification.isGreaterThanOrEqual((double) num, fieldName.substring(0, fieldName.length() - 4), null));
+                        specList.add(CustomSpecification.isGreaterThanOrEqual((Double) num, fieldName.substring(0, fieldName.length() - 4), null));
                     else if(fieldName.endsWith("To"))
-                        specList.add(CustomSpecification.isLessThanOrEqual((double) num, fieldName.substring(0, fieldName.length() - 2), null));
-                    else specList.add(CustomSpecification.isEqualValue((int) num, fieldName, null));
+                        specList.add(CustomSpecification.isLessThanOrEqual((Double) num, fieldName.substring(0, fieldName.length() - 2), null));
+                    else specList.add(CustomSpecification.isEqualValue((Integer) num, fieldName, null));
                     return;
                 }
             } catch (Exception e) {e.printStackTrace();}

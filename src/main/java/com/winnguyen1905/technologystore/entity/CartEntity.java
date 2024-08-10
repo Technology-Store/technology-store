@@ -1,7 +1,9 @@
 package com.winnguyen1905.technologystore.entity;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.winnguyen1905.technologystore.entity.base.BaseEntityAudit;
 
@@ -21,7 +23,7 @@ public class CartEntity extends BaseEntityAudit {
     //     joinColumns = @JoinColumn(name = "cart_id"),
     //     inverseJoinColumns = @JoinColumn(name = "discount_id")
     // )
-    // private List<DiscountEntity> discounts;
+    // private Set<DiscountEntity> discounts = new HashSet<>();
     
     @ManyToOne
     @JoinColumn(name = "customer_id")
@@ -36,6 +38,12 @@ public class CartEntity extends BaseEntityAudit {
 
     public void addCartItems(CartItemEntity cartItemEntity) {
         this.cartItems.add(cartItemEntity);
+    }
+
+    public void fillInRelationShipData(UserEntity customer, UserEntity shop, List<CartItemEntity> cartItems) {
+        this.customer = customer;
+        this.shop = shop;
+        this.cartItems = cartItems;
     }
 
 }

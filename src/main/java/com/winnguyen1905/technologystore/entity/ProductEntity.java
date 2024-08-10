@@ -37,7 +37,7 @@ public abstract class ProductEntity extends BaseEntityAudit {
     private String description;
 
     @Column(name = "p_price", nullable = false)
-    private double price;
+    private Double price;
 
     @Column(name = "p_type", insertable = false, updatable = false)
     private String productType;
@@ -62,7 +62,7 @@ public abstract class ProductEntity extends BaseEntityAudit {
     private List<InventoryEntity> inventories = new ArrayList<>();
 
     @ManyToMany(mappedBy = "products")
-    private Set<DiscountEntity> discounts  = new HashSet<>();;
+    private Set<DiscountEntity> discounts  = new HashSet<>();
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private List<CartItemEntity> cartItems = new ArrayList<>();

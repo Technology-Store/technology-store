@@ -9,11 +9,11 @@ import lombok.*;
 public class ProductRequest extends ProductDTO {
     private String os;
 
-    private int ram;
+    private Integer ram;
 
-    private int rom;
+    private Integer rom;
 
-    private int pin;
+    private Integer pin;
 
     private String cpu;
 
@@ -21,9 +21,9 @@ public class ProductRequest extends ProductDTO {
 
     private String chipset;
 
-    private double xSize;
+    private Double xSize;
 
-    private double ySize;
+    private Double ySize;
 
     private String panelType;
 

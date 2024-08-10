@@ -13,19 +13,19 @@ public class ProductSearchRequest extends AbstractDTO<ProductSearchRequest> {
 
     private String name;
 
-    private double priceFrom;
+    private Double priceFrom;
 
-    private double priceTo;
+    private Double priceTo;
 
     private String brand;
 
     private String os;
 
-    private int ram;
+    private Integer ram;
 
-    private int rom;
+    private Integer rom;
 
-    private int pin;
+    private Integer pin;
 
     private String cpu;
 
@@ -33,9 +33,9 @@ public class ProductSearchRequest extends AbstractDTO<ProductSearchRequest> {
 
     private String chipset;
 
-    private double xSize;
+    private Double xSize;
 
-    private double ySize;
+    private Double ySize;
 
     private String panelType;
 

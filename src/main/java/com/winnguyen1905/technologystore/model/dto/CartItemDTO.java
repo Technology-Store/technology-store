@@ -1,6 +1,5 @@
 package com.winnguyen1905.technologystore.model.dto;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,6 +7,7 @@ import lombok.Setter;
 @Getter
 public class CartItemDTO extends AbstractDTO<CartItemDTO> {
     private ProductDTO product;
-    private int quantity;
+    private Integer oldQuantity;
+    private Integer quantity;
     private Boolean isSelected;
 }

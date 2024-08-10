@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import org.springframework.data.domain.Pageable;
 
+import com.winnguyen1905.technologystore.common.ApplyDiscountStatus;
 import com.winnguyen1905.technologystore.model.dto.DiscountDTO;
 import com.winnguyen1905.technologystore.model.response.ApplyDiscountResponse;
 
@@ -16,7 +17,7 @@ public interface IDiscountService {
 
     DiscountDTO handleGetAllProductsRelatedToDiscountCode(DiscountDTO discountDTO, Pageable pageable);
 
-    ApplyDiscountResponse handleApplyDiscountForCart(DiscountDTO discountDTO, UUID customerId);
+    ApplyDiscountResponse handleApplyDiscountForCart(DiscountDTO discountDTO, UUID customerId, ApplyDiscountStatus ApplyDiscountStatus);
 
     Boolean handleVerifyDiscountCode(UUID id);
 
