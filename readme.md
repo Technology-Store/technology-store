@@ -12,6 +12,6 @@ Phát triển hệ thống bảo mật nâng cao sử dụng token pair access/r
 Tự động phát hiện bất thường và disconnect anonymous trong việc xử lý refresh token không hợp lệ
 Triển khai AWS-S3 security server sevice và toàn diện về ES2
 
-### Mục tiêu 4: Phát triển kiến trúc elesticsearch tối ưu hóa trãi nghiệm search filter.
+### Mục tiêu 4: Phát triển kiến trúc Elasticsearch tối ưu hóa trãi nghiệm search filter.
 
 ### Mục tiêu 5: Phát triển Nested comment, hệ thống realtime-communication.
