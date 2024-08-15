@@ -1,7 +1,6 @@
 package com.winnguyen1905.technologystore.entity;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 
 import com.winnguyen1905.technologystore.entity.base.BaseEntityAudit;
 

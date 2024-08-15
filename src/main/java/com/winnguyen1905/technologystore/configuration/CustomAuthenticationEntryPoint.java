@@ -3,7 +3,6 @@ package com.winnguyen1905.technologystore.configuration;
 import java.io.IOException;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationEntryPoint;
@@ -18,6 +17,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @Component
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
+
     private final AuthenticationEntryPoint delegate = new BearerTokenAuthenticationEntryPoint();
     private final ObjectMapper objectMapper;
 
@@ -42,4 +42,5 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
                 .build();
         this.objectMapper.writeValue(response.getWriter(), res);
     }
+    
 }

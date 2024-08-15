@@ -1,6 +1,8 @@
 package com.winnguyen1905.technologystore.entity;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.winnguyen1905.technologystore.entity.UserEntity;
 import com.winnguyen1905.technologystore.entity.base.BaseEntityAudit;
@@ -28,8 +30,8 @@ public class RoleEntity extends BaseEntityAudit {
         joinColumns = @JoinColumn(name = "role_id"),
         inverseJoinColumns = @JoinColumn(name = "permission_id")
     )
-    private List<PermissionEntity> permissions;
+    private Set<PermissionEntity> permissions = new HashSet<>();
 
     @OneToMany(mappedBy = "role")
-    private List<UserEntity> users;
+    private Set<UserEntity> users = new HashSet<>();
 }

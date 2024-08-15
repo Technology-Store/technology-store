@@ -1,6 +1,7 @@
 package com.winnguyen1905.technologystore.service.impl;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
@@ -40,7 +41,7 @@ public class RoleService implements IRoleService {
     public RoleDTO handleCreateRole(RoleDTO roleDTO) {
         RoleEntity role = this.modelMapper.map(roleDTO, RoleEntity.class);
         List<PermissionEntity> permissions = this.permissionRepository.findByCodeIn(roleDTO.getPermissionCodes());
-        role.setPermissions(permissions);
+        role.setPermissions(Set.copyOf(permissions));
         role = this.roleRepository.save(role);
         return this.modelMapper.map(role, RoleDTO.class);
     }

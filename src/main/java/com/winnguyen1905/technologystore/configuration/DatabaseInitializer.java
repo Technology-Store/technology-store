@@ -1,6 +1,7 @@
 package com.winnguyen1905.technologystore.configuration;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.boot.ApplicationArguments;
@@ -67,8 +68,8 @@ public class DatabaseInitializer implements CommandLineRunner {
         final RoleEntity role = new RoleEntity();
         role.setCode("admin");
         role.setName("ADMIN");
-        role.setPermissions(List.of(permission));
-        permission.setRoles(List.of(role));
+        role.setPermissions(Set.of(permission));
+        permission.setRoles(Set.of(role));
         this.permissionRepository.save(permission);
 
         // User

@@ -1,5 +1,9 @@
 package com.winnguyen1905.technologystore.configuration;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.hibernate.collection.spi.PersistentCollection;
 import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -10,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
 public class ModelMapperConfiguration {
     @Bean
     ModelMapper modelMapper() {
+        List<String> excludes = List.of("createdDate", "updatedDate", "createdBy", "updatedBy");
         ModelMapper modelMapper = new ModelMapper();
         modelMapper
             .getConfiguration()
@@ -17,7 +22,11 @@ public class ModelMapperConfiguration {
             .setSkipNullEnabled(true)
             .setPropertyCondition(Conditions.isNotNull())
             .setFieldMatchingEnabled(true)
-            .setMatchingStrategy(MatchingStrategies.STRICT);
+            .setMatchingStrategy(MatchingStrategies.STRICT)
+            .setPropertyCondition(context -> {
+                return !(context.getSource() instanceof PersistentCollection) 
+                    && !excludes.contains(context.getMapping().getLastDestinationProperty().getName());
+            });
         return modelMapper;
     }
 }

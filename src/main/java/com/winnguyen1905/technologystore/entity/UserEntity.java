@@ -59,6 +59,9 @@ public class UserEntity extends BaseEntityAudit {
     @Column(columnDefinition = "MEDIUMTEXT", name = "refresh_token", nullable = true)
     private String refreshToken;
 
+    @OneToMany(mappedBy = "user")
+    private List<CommentEntity> MyComments = new ArrayList<>();
+
     @ManyToOne
     @JoinColumn(name = "role_id")
     private RoleEntity role;

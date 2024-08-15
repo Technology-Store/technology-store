@@ -12,6 +12,7 @@ import com.winnguyen1905.technologystore.service.impl.CartService;
 import com.winnguyen1905.technologystore.util.SecurityUtils;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
 import java.util.UUID;
 
@@ -22,20 +23,14 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("${release.api.prefix}/carts")
 public class CartController {
 
     private final ICartService cartService;
     private final ICartItemService cartItemService;
-
-    public CartController(ICartService cartService, ICartItemService cartItemService) {
-        this.cartService = cartService;
-        this.cartItemService = cartItemService;
-    }
 
     @PostMapping
     public ResponseEntity<CartDTO> addCart(@RequestBody @Valid CartDTO cartDTO) {

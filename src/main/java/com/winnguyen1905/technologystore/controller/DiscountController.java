@@ -11,6 +11,7 @@ import com.winnguyen1905.technologystore.service.IDiscountService;
 import com.winnguyen1905.technologystore.util.SecurityUtils;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 import java.util.Map;
@@ -26,14 +27,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("${release.api.prefix}/discounts")
 public class DiscountController {
 
     private final IDiscountService discountService;
-
-    public DiscountController(IDiscountService discountService) {
-        this.discountService = discountService;
-    }
 
     // API FOR ANNONYMUS USER
 

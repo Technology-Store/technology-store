@@ -1,6 +1,8 @@
 package com.winnguyen1905.technologystore.entity;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.winnguyen1905.technologystore.entity.base.BaseEntityAudit;
 import com.winnguyen1905.technologystore.util.StringUtils;
@@ -36,7 +38,7 @@ public class PermissionEntity extends BaseEntityAudit {
     private String module;
 
     @ManyToMany(mappedBy = "permissions", cascade = CascadeType.PERSIST)
-    private List<RoleEntity> roles;
+    private Set<RoleEntity> roles = new HashSet<>();
 
     @PrePersist
     public void prePersist() {

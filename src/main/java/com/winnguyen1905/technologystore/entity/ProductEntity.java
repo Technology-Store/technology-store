@@ -70,21 +70,8 @@ public abstract class ProductEntity extends BaseEntityAudit {
     @OneToMany(mappedBy = "product", cascade = CascadeType.PERSIST)
     private List<VariationEntity> variations = new ArrayList<>();
 
-    public void addInventory(InventoryEntity inventory) {
-        this.inventories.add(inventory);
-    }
-
-    public void addCartItem(CartItemEntity cartItemEntity) {
-        this.cartItems.add(cartItemEntity);
-    }
-
-    public void removeInventory(InventoryEntity inventory) {
-        this.inventories.remove(inventory);
-    }
-
-    public void addDiscountCode(DiscountEntity discount) {
-        this.discounts.add(discount);
-    }
+    @OneToMany(mappedBy = "product")
+    private List<CommentEntity> comments = new ArrayList<>();
 
     @PrePersist
     public void prePersist() {

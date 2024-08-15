@@ -45,7 +45,7 @@ public abstract class AbstractDTO<T> implements Serializable {
     private Integer size;
 
     @JsonProperty("results")
-    private List<T> content;
+    private List<T> contents;
 
     private T object;
 
