@@ -17,18 +17,15 @@ import com.winnguyen1905.technologystore.repository.RoleRepository;
 import com.winnguyen1905.technologystore.service.IRoleService;
 import com.winnguyen1905.technologystore.util.MergeUtils;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class RoleService implements IRoleService {
 
     private final RoleRepository roleRepository;
     private final ModelMapper modelMapper;
     private final PermissionRepository permissionRepository;
-
-    public RoleService(RoleRepository roleRepository, ModelMapper modelMapper, PermissionRepository permissionRepository) {
-        this.roleRepository = roleRepository;
-        this.modelMapper = modelMapper;
-        this.permissionRepository = permissionRepository;
-    }
 
     @Override
     public RoleDTO handleGetRoleById(UUID id) {

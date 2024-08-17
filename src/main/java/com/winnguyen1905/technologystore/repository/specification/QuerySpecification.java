@@ -1,15 +1,23 @@
 package com.winnguyen1905.technologystore.repository.specification;
 
+import java.time.Instant;
 import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
+
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.util.Pair;
+
+import com.winnguyen1905.technologystore.common.SystemConstant;
+
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Path;
 import jakarta.persistence.criteria.Root;
 
-public class CustomSpecification<T> {
+public class QuerySpecification<T> {
 
-    public CustomSpecification() {}
+    public QuerySpecification() {}
 
     // public static <F> Class<F> constructInstance(Pair<Class<F>, String> joining) throws Exception {
     //     String entityName = StringUtils.convertSnakeToCamelCase(joining) + "Entity";
@@ -93,12 +101,16 @@ public class CustomSpecification<T> {
             (joining != null ? joinManager(joining, root) : root)
             .get(col).in(list);
     }
-    /*
-        Second request parameter filter: Get PermissionEntitys that have doctors with a specific speciality.
-        This will require us to first join the PermissionEntity and doctor tables (OneToMany), and then applying the filter.
-        To do this One to Many join (one PermissionEntity has many doctors), we need to use the Join criteria to accomplish it
-     */
 
+    public static <T, F> Specification<T> isNotDeleted() {
+        return (root, query, criteriaBuilder) -> 
+                criteriaBuilder.isFalse(root.get(SystemConstant.DELETED_FIELD_NAME));
+    }
+
+    public static <T, F> Specification<T> byId(UUID id) {
+        return (root, query, criteriaBuilder) ->
+                criteriaBuilder.equal(root.get("id"), id);
+    }
 
     // public static Specification<PermissionEntity> hasDoctorInSpeciality(String speciality) {
     //     return (root, query, builder) -> {

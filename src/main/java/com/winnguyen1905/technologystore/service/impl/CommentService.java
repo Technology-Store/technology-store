@@ -1,9 +1,12 @@
 package com.winnguyen1905.technologystore.service.impl;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.winnguyen1905.technologystore.entity.CommentEntity;
@@ -38,16 +41,9 @@ public class CommentService implements ICommentService {
         CommentEntity comment = this.modelMapper.map(commentDTO, CommentEntity.class);
         
         if(commentDTO.getParentComment() != null) {
-
-        } else {
-            CommentEntity lastestParentComment = this.commentRepository.findOneWithHighestRightAndProductId(product.getId());
-            if(lastestParentComment != null) {
-                comment.setLeft(lastestParentComment.getRight() + 1);
-                comment.setRight(lastestParentComment.getRight() + 2);
-            } else {
-                comment.setLeft(1);
-                comment.setRight(2);
-            }
+            CommentEntity parentComment = this.commentRepository.findById(commentDTO.getParentComment().getId())
+                    .orElseThrow(() -> new CustomRuntimeException("Not found parent comment id " + commentDTO.getParentComment().getId()));
+            comment.setParentComment(parentComment);
         }
 
         comment.setUser(user);
@@ -55,6 +51,20 @@ public class CommentService implements ICommentService {
         this.commentRepository.save(comment);
 
         return this.modelMapper.map(comment, CommentDTO.class);
+    }
+
+    @Override
+    public CommentDTO handleFetchCommentByParentComment(CommentDTO commentDTO, Pageable pageable) {
+        Page<CommentEntity> comment = this.commentRepository.findAllByParentCommentId(commentDTO.getId(), pageable);
+        return this.modelMapper.map(comment, CommentDTO.class);
+    }
+
+    @Override
+    public void handleDeleteComment(CommentDTO commentDTO, UUID customerId) {
+        CommentEntity comment = this.commentRepository.findById(commentDTO.getId())
+                .orElseThrow(() -> new CustomRuntimeException("Not found parent comment id " + commentDTO.getId()));
+        if(!comment.getUser().getId().equals(customerId)) throw new CustomRuntimeException("Not found comment");
+        this.commentRepository.delete(comment);
     }
 
 }

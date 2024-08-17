@@ -5,8 +5,10 @@ import java.util.List;
 
 import com.winnguyen1905.technologystore.entity.base.BaseEntityAudit;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -28,20 +30,14 @@ public class CommentEntity extends BaseEntityAudit {
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "comment_parent_id")
     private CommentEntity parentComment;
 
-    @OneToMany(mappedBy = "parentComment")
+    @OneToMany(mappedBy = "parentComment", cascade = { CascadeType.ALL })
     private List<CommentEntity> ChildComments = new ArrayList<>();
 
     @Column(name = "comment_content", columnDefinition = "MEDIUMTEXT")
     private String content;
-
-    @Column(name = "comment_left")
-    private Integer left;
-
-    @Column(name = "comment_right")
-    private Integer right;
     
 }

@@ -10,13 +10,16 @@ import com.winnguyen1905.technologystore.util.SecurityUtils;
 import com.winnguyen1905.technologystore.util.annotation.MetaMessage;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 @RestController
@@ -82,6 +85,14 @@ public class ProductController {
         UUID userId = SecurityUtils.getCurrentUserId()
                 .orElseThrow(() -> new CustomRuntimeException("Not found userId", 403));
         return ResponseEntity.ok(this.productService.handleChangeProductStatus(ids, userId));
+    }
+
+    @DeleteMapping("/{ids}")
+    public ResponseEntity<Void> getMethodName(@PathVariable Set<UUID> ids) {
+        UUID shopId = SecurityUtils.getCurrentUserId()
+                .orElseThrow(() -> new CustomRuntimeException("Not found userId", 403));
+        this.productService.handleDeleteProducts(List.copyOf(ids), shopId);
+        return ResponseEntity.noContent().build();
     }
 
     // API FOR SHOP ADMIN---------------------------------------------------------

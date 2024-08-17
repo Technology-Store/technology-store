@@ -1,8 +1,6 @@
 package com.winnguyen1905.technologystore.entity.base;
 
 import org.hibernate.annotations.GenericGenerator;
-import org.modelmapper.internal.bytebuddy.dynamic.loading.ClassReloadingStrategy.Strategy;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -23,6 +21,9 @@ public abstract class BaseEntity implements Serializable {
     @GeneratedValue(generator = "custom-uuid")
     @GenericGenerator(name = "custom-uuid", strategy = "com.winnguyen1905.technologystore.entity.base.CustomUUIDGenerator")
     private UUID id;
+
+    @Column(name = "is_deleted", updatable = true)
+    private Boolean isDeleted;
     
     @Override
     public boolean equals(Object o) {

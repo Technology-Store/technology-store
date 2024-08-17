@@ -15,21 +15,17 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.winnguyen1905.technologystore.common.SystemConstant;
 import com.winnguyen1905.technologystore.converter.ProductConverter;
 import com.winnguyen1905.technologystore.entity.InventoryEntity;
 import com.winnguyen1905.technologystore.entity.ProductEntity;
-import com.winnguyen1905.technologystore.entity.ShopEntity;
 import com.winnguyen1905.technologystore.entity.UserEntity;
 import com.winnguyen1905.technologystore.exception.CustomRuntimeException;
 import com.winnguyen1905.technologystore.model.dto.ProductDTO;
 import com.winnguyen1905.technologystore.model.request.ProductRequest;
 import com.winnguyen1905.technologystore.model.request.ProductSearchRequest;
-import com.winnguyen1905.technologystore.repository.InventoryRepository;
 import com.winnguyen1905.technologystore.repository.ProductRepository;
 import com.winnguyen1905.technologystore.repository.UserRepository;
 import com.winnguyen1905.technologystore.service.IProductService;
-import com.winnguyen1905.technologystore.util.MergeUtils;
 import com.winnguyen1905.technologystore.util.NormalSpecificationUtils;
 
 import lombok.RequiredArgsConstructor;
@@ -104,5 +100,11 @@ public class ProductService implements IProductService {
         if (!product.getIsPublished())
             throw new CustomRuntimeException("Not found product id " + id.toString());
         return this.productConverter.toProductDTO(product);
+    }
+
+    @Override
+    public void handleDeleteProducts(List<UUID> ids, UUID shopId) {
+        List<ProductEntity> products = this.productRepository.findByIdInAndShopId(ids, shopId);
+        this.productRepository.softDeleteMany(products);
     }
 }

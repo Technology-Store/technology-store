@@ -49,6 +49,8 @@ public abstract class AbstractDTO<T> implements Serializable {
 
     private T object;
 
+    private Boolean isDeleted;
+
     private Integer totalElements;
 
     private Integer totalPages;

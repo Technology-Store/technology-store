@@ -11,8 +11,14 @@ import com.winnguyen1905.technologystore.model.request.ProductSearchRequest;
 
 public interface IProductService {
     ProductDTO handleAddProduct(ProductRequest productRequest, UUID shopId);
+
     List<ProductDTO> handleUpdateProducts(List<ProductRequest> productRequests, UUID shopId);
+
     List<ProductDTO> handleChangeProductStatus(List<UUID> ids, UUID shopId);
+
     ProductDTO handleGetAllProducts(ProductSearchRequest productSearchRequest, Pageable pageable);
+
     ProductDTO handleGetProduct(UUID id);
+
+    void handleDeleteProducts(List<UUID> ids, UUID shopId);
 }

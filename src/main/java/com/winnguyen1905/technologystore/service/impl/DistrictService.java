@@ -12,16 +12,14 @@ import com.winnguyen1905.technologystore.model.dto.DistrictDTO;
 import com.winnguyen1905.technologystore.repository.DistrictRepository;
 import com.winnguyen1905.technologystore.service.IDistrictService;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class DistrictService implements IDistrictService {
     
     private final DistrictRepository districtRepository;
     private final ModelMapper modelMapper;
-
-    public DistrictService(DistrictRepository districtRepository, ModelMapper modelMapper) {
-        this.districtRepository = districtRepository;
-        this.modelMapper = modelMapper;
-    }
 
     @Override
     public DistrictDTO handleAddDistrict(DistrictDTO districtDTO) {

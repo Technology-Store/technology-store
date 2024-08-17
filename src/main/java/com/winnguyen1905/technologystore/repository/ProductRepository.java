@@ -17,10 +17,12 @@ import org.springframework.stereotype.Repository;
 import com.winnguyen1905.technologystore.entity.DiscountEntity;
 import com.winnguyen1905.technologystore.entity.ProductEntity;
 import com.winnguyen1905.technologystore.repository.custom.ProductRepositoryCustom;
+import com.winnguyen1905.technologystore.repository.custom.SoftDeleteRepository;
 import com.winnguyen1905.technologystore.repository.rewriter.ProductQueryRewriter;
 
 @Repository
-public interface ProductRepository extends JpaRepository<ProductEntity, UUID>, ProductRepositoryCustom, JpaSpecificationExecutor<ProductEntity> {
+public interface ProductRepository extends SoftDeleteRepository<ProductEntity, UUID>, JpaRepository<ProductEntity, UUID>, ProductRepositoryCustom, JpaSpecificationExecutor<ProductEntity> {
+
     void deleteByIdIn(List<UUID> ids);
 
     Page<ProductEntity> findAll(Specification<ProductEntity> specification, Pageable pageable);

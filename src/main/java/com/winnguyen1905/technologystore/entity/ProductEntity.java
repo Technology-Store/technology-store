@@ -5,6 +5,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.annotations.Where;
+
 import com.fasterxml.jackson.annotation.*;
 import com.winnguyen1905.technologystore.common.ProductTypeConstant;
 import com.winnguyen1905.technologystore.entity.base.BaseEntityAudit;
@@ -17,6 +21,8 @@ import lombok.*;
 @Setter
 @Entity
 @Table(name = "products")
+@SQLRestriction("is_deleted <> true")
+@SQLDelete(sql = "UPDATE products SET is_deleted = TRUE WHERE ID=? and VERSION=?")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "p_type", discriminatorType = DiscriminatorType.STRING)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -27,6 +33,9 @@ import lombok.*;
 })
 public abstract class ProductEntity extends BaseEntityAudit {
 
+    @Version
+    private Integer version;
+    
     @Column(name = "p_name", nullable = false)
     private String name;
 

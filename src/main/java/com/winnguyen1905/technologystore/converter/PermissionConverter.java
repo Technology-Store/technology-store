@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.winnguyen1905.technologystore.entity.PermissionEntity;
 import com.winnguyen1905.technologystore.model.request.PermissionSearchRequest;
-import com.winnguyen1905.technologystore.repository.specification.CustomSpecification;
+import com.winnguyen1905.technologystore.repository.specification.QuerySpecification;
 
 
 @Component
@@ -23,7 +23,7 @@ public class PermissionConverter {
                 field.setAccessible(true);
                 Object value = field.get(permissionSearchRequest);
                 if(value.getClass().getName().equals("java.lang.String"))
-                specList.add(CustomSpecification.isValueLike((String) value, fieldName, null));
+                specList.add(QuerySpecification.isValueLike((String) value, fieldName, null));
             } catch (Exception e) {
                 e.printStackTrace();
             }

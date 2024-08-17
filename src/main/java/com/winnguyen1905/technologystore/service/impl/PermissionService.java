@@ -19,7 +19,7 @@ import com.winnguyen1905.technologystore.model.dto.AbstractDTO;
 import com.winnguyen1905.technologystore.model.dto.PermissionDTO;
 import com.winnguyen1905.technologystore.model.request.PermissionSearchRequest;
 import com.winnguyen1905.technologystore.repository.PermissionRepository;
-import com.winnguyen1905.technologystore.repository.specification.CustomSpecification;
+import com.winnguyen1905.technologystore.repository.specification.QuerySpecification;
 import com.winnguyen1905.technologystore.service.IPermissionService;
 import com.winnguyen1905.technologystore.util.MergeUtils;
 
@@ -32,6 +32,7 @@ public class PermissionService implements IPermissionService {
     private final ModelMapper modelMapper;
     private final PermissionRepository permissionRepository;
     private final PermissionConverter permissionConverter;
+    
     @Override
     public PermissionDTO handleGetPermissions(PermissionSearchRequest permissionSearchRequest, Pageable pageable) {
         Specification<PermissionEntity> spec = this.permissionConverter.toPermissionSpec(permissionSearchRequest);

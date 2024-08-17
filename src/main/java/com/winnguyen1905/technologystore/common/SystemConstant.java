@@ -24,4 +24,6 @@ public class SystemConstant {
 
     public static final String TO_DTO = "dto";
     public static final String TO_ENTITY = "entity";
+
+    public static final String DELETED_FIELD_NAME = "deletedDate";
 }

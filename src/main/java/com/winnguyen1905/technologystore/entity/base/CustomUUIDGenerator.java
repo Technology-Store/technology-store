@@ -16,5 +16,5 @@ public class CustomUUIDGenerator implements IdentifierGenerator {
             return entity.getId();
         } else return UUID.randomUUID();
     }
-    
+
 }

@@ -6,7 +6,7 @@ import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreRemove;
 import jakarta.persistence.PreUpdate;
-import jakarta.persistence.Transient;
+import jakarta.persistence.Version;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,6 +14,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.winnguyen1905.technologystore.util.SecurityUtils;
 
 import java.time.Instant;
@@ -25,9 +26,11 @@ import java.util.Objects;
 @EntityListeners(AuditingEntityListener.class)
 public abstract class BaseEntityAudit extends BaseEntity implements IBaseAction {
 
+    @JsonIgnore
     @Column(name = "created_by", nullable = true)
     private String createdBy;
 
+    @JsonIgnore
     @Column(name = "updated_by", nullable = true)
     private String updatedBy;
 
@@ -38,9 +41,6 @@ public abstract class BaseEntityAudit extends BaseEntity implements IBaseAction 
     @UpdateTimestamp
     @Column(name = "updated_date", updatable = true)
     private Instant updatedDate;
-
-    @Column(name = "is_deleted", updatable = true)
-    private Boolean isDeleted;
 
     @Override
     public boolean equals(Object o) {
@@ -56,8 +56,7 @@ public abstract class BaseEntityAudit extends BaseEntity implements IBaseAction 
 
     @Override
     public int hashCode() {
-        return
-            Objects.hash(super.hashCode(), createdBy, updatedBy, createdDate, updatedDate);
+        return Objects.hash(super.hashCode(), createdBy, updatedBy, createdDate, updatedDate);
     }
 
     public String findSystemUser() {

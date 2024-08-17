@@ -24,8 +24,9 @@ public class ModelMapperConfiguration {
             .setFieldMatchingEnabled(true)
             .setMatchingStrategy(MatchingStrategies.STRICT)
             .setPropertyCondition(context -> {
-                return !(context.getSource() instanceof PersistentCollection) 
-                    && !excludes.contains(context.getMapping().getLastDestinationProperty().getName());
+                return 
+                    // !(context.getSource() instanceof PersistentCollection) &&
+                    !excludes.contains(context.getMapping().getLastDestinationProperty().getName());
             });
         return modelMapper;
     }

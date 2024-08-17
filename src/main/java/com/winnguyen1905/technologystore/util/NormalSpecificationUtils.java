@@ -8,7 +8,7 @@ import java.util.List;
 import org.springframework.data.jpa.domain.Specification;
 
 import com.winnguyen1905.technologystore.model.dto.AbstractDTO;
-import com.winnguyen1905.technologystore.repository.specification.CustomSpecification;
+import com.winnguyen1905.technologystore.repository.specification.QuerySpecification;
 
 public class NormalSpecificationUtils<D> {
     public static <T, D> List<Specification<D>> toNormalSpec(T tSearchRequest) {
@@ -22,27 +22,27 @@ public class NormalSpecificationUtils<D> {
                 if(value == null || fieldName.indexOf("Id") != -1) return;
                 
                 if(value instanceof Boolean bl) {
-                    if(bl == true) specList.add(CustomSpecification.isTrue((Boolean) value, fieldName, null));
-                    else specList.add(CustomSpecification.isFalse((Boolean) value, fieldName, null));
+                    if(bl == true) specList.add(QuerySpecification.isTrue((Boolean) value, fieldName, null));
+                    else specList.add(QuerySpecification.isFalse((Boolean) value, fieldName, null));
                     return;
                 }
                 if(value instanceof String str) {
-                    specList.add(CustomSpecification.isValueLike((String) str, fieldName, null));
+                    specList.add(QuerySpecification.isValueLike((String) str, fieldName, null));
                     return;
                 }
                 if(value instanceof Number num) {
                     if(fieldName.endsWith("From"))  
-                        specList.add(CustomSpecification.isGreaterThanOrEqual((Double) num, fieldName.substring(0, fieldName.length() - 4), null));
+                        specList.add(QuerySpecification.isGreaterThanOrEqual((Double) num, fieldName.substring(0, fieldName.length() - 4), null));
                     else if(fieldName.endsWith("To"))
-                        specList.add(CustomSpecification.isLessThanOrEqual((Double) num, fieldName.substring(0, fieldName.length() - 2), null));
-                    else specList.add(CustomSpecification.isEqualValue((Integer) num, fieldName, null));
+                        specList.add(QuerySpecification.isLessThanOrEqual((Double) num, fieldName.substring(0, fieldName.length() - 2), null));
+                    else specList.add(QuerySpecification.isEqualValue((Integer) num, fieldName, null));
                     return;
                 }
             } catch (Exception e) {e.printStackTrace();}
         });
         if(tSearchRequest instanceof AbstractDTO abstractDTO) {
-            if(abstractDTO.getCreatedBy() != null) specList.add(CustomSpecification.isEqualValue(abstractDTO.getCreatedBy(), "createdBy", null));
-            if(abstractDTO.getUpdatedBy() != null) specList.add(CustomSpecification.isEqualValue(abstractDTO.getUpdatedBy(), "updateBy", null));
+            if(abstractDTO.getCreatedBy() != null) specList.add(QuerySpecification.isEqualValue(abstractDTO.getCreatedBy(), "createdBy", null));
+            if(abstractDTO.getUpdatedBy() != null) specList.add(QuerySpecification.isEqualValue(abstractDTO.getUpdatedBy(), "updateBy", null));
         }
         return specList;
     }
