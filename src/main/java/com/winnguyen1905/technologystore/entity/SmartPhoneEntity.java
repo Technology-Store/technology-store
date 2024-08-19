@@ -43,14 +43,14 @@ public class SmartPhoneEntity extends ProductEntity {
     private String chipset;
 
     @PrePersist
-    public void prePersist() {
+    protected void prePersist() {
         StringBuilder slg = new StringBuilder(SlugUtils.slugGenerator(this));
         super.setSlug(slg.toString());
         super.prePersist();
     }
 
     @PreUpdate
-    public void preUpdate() {
+    protected void preUpdate() {
         StringBuilder slg = new StringBuilder(SlugUtils.slugGenerator(this));
         super.setSlug(slg.toString());
         super.preUpdate();

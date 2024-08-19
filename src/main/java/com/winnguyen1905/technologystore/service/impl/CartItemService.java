@@ -13,7 +13,6 @@ import com.winnguyen1905.technologystore.repository.CartItemRepository;
 import com.winnguyen1905.technologystore.repository.UserRepository;
 import com.winnguyen1905.technologystore.service.ICartItemService;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 @Service

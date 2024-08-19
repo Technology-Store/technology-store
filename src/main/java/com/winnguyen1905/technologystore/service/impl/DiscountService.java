@@ -124,6 +124,7 @@ public class DiscountService implements IDiscountService {
     }
 
     @Override
+    @Transactional
     public PriceStatisticsDTO handleApplyDiscountCode(DiscountDTO discountDTO, UUID customerId, ApplyDiscountStatus applyDiscountStatus) {
         // Valid
         UserEntity customer = this.userRepository.findById(customerId).orElseThrow(() -> new CustomRuntimeException("Not found current user"));

@@ -83,14 +83,14 @@ public abstract class ProductEntity extends BaseEntityAudit {
     private List<CommentEntity> comments = new ArrayList<>();
 
     @PrePersist
-    public void prePersist() {
+    protected void prePersist() {
         this.isDraft = true;
         this.isPublished = false;
         super.prePersist();
     }
 
     @PreUpdate
-    public void preUpdate() {
+    protected void preUpdate() {
         super.preUpdate();
     }
 

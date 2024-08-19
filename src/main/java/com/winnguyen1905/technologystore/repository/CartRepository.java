@@ -15,4 +15,5 @@ public interface CartRepository extends JpaRepository<CartEntity, UUID> {
     Optional<CartEntity> findByShopIdAndCustomerId(UUID shopId, UUID customerId);
     Optional<CartEntity> findByCreatedBy(String createdBy);
     Page<CartEntity> findAllByCustomerId(UUID customerId, Pageable pageable);
+    Optional<CartEntity> findByIdAndCustomerId(UUID id, UUID customerId);
 }

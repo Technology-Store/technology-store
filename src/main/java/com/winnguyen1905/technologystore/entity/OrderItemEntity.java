@@ -21,4 +21,7 @@ public class OrderItemEntity extends BaseEntityAudit {
 
     @Column(name = "quantity")
     private Integer quantity;
+
+    @Column(name = "price")
+    private Double price;
 }

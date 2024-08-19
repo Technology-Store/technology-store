@@ -22,6 +22,9 @@ public class ShopEntity extends UserEntity {
     @OneToMany(mappedBy = "shop", fetch = FetchType.LAZY)
     private List<InventoryEntity> inventories;
 
+    @OneToMany(mappedBy = "shop", fetch = FetchType.LAZY)
+    private List<OrderEntity> orders;
+
     // @OneToMany(mappedBy = "shop")
     // private List<CartEntity> carts;
 

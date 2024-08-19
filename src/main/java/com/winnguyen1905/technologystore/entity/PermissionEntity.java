@@ -1,7 +1,6 @@
 package com.winnguyen1905.technologystore.entity;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import com.winnguyen1905.technologystore.entity.base.BaseEntityAudit;
@@ -21,7 +20,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "permissions")
 public class PermissionEntity extends BaseEntityAudit {
-    
+
     @Column(nullable = true, name = "name")
     private String name;
 
@@ -41,7 +40,7 @@ public class PermissionEntity extends BaseEntityAudit {
     private Set<RoleEntity> roles = new HashSet<>();
 
     @PrePersist
-    public void prePersist() {
+    protected void prePersist() {
         String create = this.apiPath + " " + this.method + " " + this.module;
         this.code = StringUtils.convertCamelToSnake(create);
     }

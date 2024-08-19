@@ -24,7 +24,7 @@ import java.util.Objects;
 @Setter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public abstract class BaseEntityAudit extends BaseEntity implements IBaseAction {
+public abstract class BaseEntityAudit extends BaseEntity {
 
     @JsonIgnore
     @Column(name = "created_by", nullable = true)
@@ -64,18 +64,18 @@ public abstract class BaseEntityAudit extends BaseEntity implements IBaseAction 
     }
 
     @PrePersist
-    public void prePersist() {
+    protected void prePersist() {
         this.setIsDeleted(false);
         this.setCreatedBy(findSystemUser());
     }
 
     @PreUpdate
-    public void preUpdate() {
+    protected void preUpdate() {
         this.setUpdatedBy(findSystemUser());
     }
 
     @PreRemove
-    public void preRemove() {
+    protected void preRemove() {
         // this.setUpdatedBy(findSystemUser());
     }
 

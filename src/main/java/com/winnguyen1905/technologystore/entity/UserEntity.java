@@ -66,8 +66,11 @@ public class UserEntity extends BaseEntityAudit {
     @JoinColumn(name = "role_id")
     private RoleEntity role;
 
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
+    private List<OrderEntity> orders;
+
     @PrePersist
-    public void prePersist() {
+    protected void prePersist() {
         this.status = true;
     }
 

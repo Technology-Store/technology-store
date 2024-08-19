@@ -3,7 +3,6 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.winnguyen1905.technologystore.common.ApplyDiscountType;
 import com.winnguyen1905.technologystore.common.DiscountType;
 import com.winnguyen1905.technologystore.util.annotation.FutureInstant;

@@ -1,7 +1,6 @@
 package com.winnguyen1905.technologystore.configuration;
 
 import java.time.Instant;
-import java.time.LocalDate;
 import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Value;

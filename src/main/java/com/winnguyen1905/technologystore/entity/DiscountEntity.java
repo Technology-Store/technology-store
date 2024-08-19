@@ -18,6 +18,10 @@ import lombok.*;
 @Setter
 @Table(name = "discounts")
 public class DiscountEntity extends BaseEntityAudit {
+
+    @Version
+    private Integer version;
+
     @Column(name = "discount_name")
     private String name;
 
@@ -92,7 +96,7 @@ public class DiscountEntity extends BaseEntityAudit {
     }
     
     @PrePersist
-    public void prePersist() {
+    protected void prePersist() {
         this.setDiscountType(this.discountType == null ? DiscountType.FIXED_AMOUNT : this.discountType);
         this.setAppliesTo(this.appliesTo == null ? ApplyDiscountType.ALL : this.appliesTo);
         this.setIsActive(this.isActive == null ? false : this.isActive);

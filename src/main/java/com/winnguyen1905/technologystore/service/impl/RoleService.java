@@ -5,7 +5,6 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.winnguyen1905.technologystore.entity.PermissionEntity;
