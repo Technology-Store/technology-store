@@ -41,4 +41,5 @@ public class DistrictService implements IDistrictService {
         return districts.stream()
                 .map(item -> this.modelMapper.map(item, DistrictDTO.class)).toList();
     }
+    
 }

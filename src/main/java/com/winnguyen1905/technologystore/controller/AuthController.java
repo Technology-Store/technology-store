@@ -26,11 +26,13 @@ import com.winnguyen1905.technologystore.util.SecurityUtils;
 import com.winnguyen1905.technologystore.util.annotation.MetaMessage;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("${release.api.prefix}/auth")
 public class AuthController {
 
@@ -38,14 +40,6 @@ public class AuthController {
     private final IUserService userService;
     private final JwtDecoder jwtDecoder;
     private final CookieUtils cookieUtils;
-
-    public AuthController(IAuthService authService, IUserService userService, 
-        JwtDecoder jwtDecoder, CookieUtils cookieUtils) {
-        this.authService = authService;
-        this.userService = userService;
-        this.jwtDecoder = jwtDecoder;
-        this.cookieUtils = cookieUtils;
-    }
 
     @PostMapping("/login")
     @MetaMessage(message = "Login success")

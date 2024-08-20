@@ -1,5 +1,6 @@
 package com.winnguyen1905.technologystore.entity;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -10,6 +11,6 @@ import lombok.Setter;
 @Entity
 @Table(name = "customers")
 public class CustomerEntity extends UserEntity {
-    // @OneToMany(mappedBy = "customer")
-    // private List<CartEntity> carts;
+    @OneToMany(mappedBy = "customer")
+    Set<ReservationEntity> reservations = new HashSet<>();
 }

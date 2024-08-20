@@ -83,13 +83,18 @@ public class CartService implements ICartService {
 
     @Override
     public PriceStatisticsDTO handleGetPriceStatisticsOfCart(CartDTO cartDTO, UUID customerId) {
-        UserEntity user = this.userRepository.findById(customerId)
-                .orElseThrow(() -> new CustomRuntimeException("Not found customer id " + customerId));
-        CartEntity cart = this.cartRepository.findById(cartDTO.getId())
-                .orElseThrow(() -> new CustomRuntimeException("Not found cart id " + cartDTO.getId()));
+        UserEntity user = this.userRepository.findById(customerId).orElseThrow(() -> new CustomRuntimeException("Not found customer id " + customerId));
+        CartEntity cart = this.cartRepository.findById(cartDTO.getId()).orElseThrow(() -> new CustomRuntimeException("Not found cart id " + cartDTO.getId()));
         if(!cart.getCustomer().getId().equals(user.getId())) throw new CustomRuntimeException("Not found cart id " + cartDTO.getId());
-        List<CartItemEntity> cartItemsSelected = cart.getCartItems().stream().filter(item -> item.getIsSelected()).toList();
+
+        // get selected item and check is out of stock ?
+        List<CartItemEntity> cartItemsSelected = cart.getCartItems().stream().filter(item -> {
+            if(item.getProduct().getInventories().stream().allMatch(inven -> inven.getStock() == 0)) throw new CustomRuntimeException("out of stock of product id: " + item.getProduct().getId());
+            return item.getIsSelected();
+        }).toList();
+
         Double totalPriceOfAllProduct = ProductUtils.totalPriceOfAllProduct(cartItemsSelected);
+
         return PriceStatisticsDTO.builder()
                 .amountProductReduced(0.0)
                 .amountShipReduced(0.0)
@@ -102,6 +107,12 @@ public class CartService implements ICartService {
     public CartDTO handleGetMyCarts(UUID customerId, Pageable pageable) {
         Page<CartEntity> cartPage = this.cartRepository.findAllByCustomerId(customerId, pageable);
         return this.modelMapper.map(cartPage, CartDTO.class);
+    }
+
+    @Override
+    public Boolean handleValidateCart(CartDTO cartDTO, UUID customerId) {
+        
+        return true;
     }
 
 }

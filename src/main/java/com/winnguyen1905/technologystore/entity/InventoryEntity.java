@@ -32,7 +32,7 @@ public class InventoryEntity extends BaseEntityAudit {
     @JoinColumn(name = "address_id")
     private AddressEntity address;
 
-    @OneToMany(mappedBy = "inventory")
+    @OneToMany(mappedBy = "inventory", cascade = CascadeType.ALL)
     private Set<ReservationEntity> reservations = new HashSet<>();
 
     @ManyToOne(cascade = CascadeType.MERGE)
@@ -42,4 +42,5 @@ public class InventoryEntity extends BaseEntityAudit {
     @ManyToOne
     @JoinColumn(name = "shop_id")
     private UserEntity shop;
+    
 }

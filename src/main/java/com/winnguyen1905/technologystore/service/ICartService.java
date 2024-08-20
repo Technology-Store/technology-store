@@ -11,5 +11,6 @@ public interface ICartService {
     CartDTO handleGetMyCarts(UUID customerId, Pageable pageable);
     CartDTO handleAddCart(CartDTO cartDTO, UUID customerId);
     CartDTO handleGetCartById(UUID cartId, UUID customerId);
+    Boolean handleValidateCart(CartDTO cartDTO, UUID customerId);
     PriceStatisticsDTO handleGetPriceStatisticsOfCart(CartDTO cartDTO, UUID customerId);
 }

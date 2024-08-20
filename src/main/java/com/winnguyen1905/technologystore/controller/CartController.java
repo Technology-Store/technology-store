@@ -8,7 +8,6 @@ import com.winnguyen1905.technologystore.model.dto.CartDTO;
 import com.winnguyen1905.technologystore.model.dto.CartItemDTO;
 import com.winnguyen1905.technologystore.service.ICartItemService;
 import com.winnguyen1905.technologystore.service.ICartService;
-import com.winnguyen1905.technologystore.service.impl.CartService;
 import com.winnguyen1905.technologystore.util.SecurityUtils;
 
 import jakarta.validation.Valid;

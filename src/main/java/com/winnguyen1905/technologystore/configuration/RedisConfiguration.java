@@ -12,19 +12,19 @@ import org.springframework.data.redis.core.RedisTemplate;
 @Configuration
 public class RedisConfiguration {
 
-    @Value("${spring.data.redis.host}")
-    private String host;
-
-    @Value("${spring.data.redis.port}")
-    private String port;
+    // @Bean
+    // JedisConnectionFactory jedisConnectionFactory() {
+    //     RedisStandaloneConfiguration config = new RedisStandaloneConfiguration(host, Integer.parseInt(port));
+    //     return new JedisConnectionFactory(config);
+    // }
 
     @Bean
-    public RedisConnectionFactory redisConnectionFactory() {
-        return new LettuceConnectionFactory(new RedisStandaloneConfiguration(host, Integer.parseInt(port)));
+    RedisConnectionFactory redisConnectionFactory() {
+        return new LettuceConnectionFactory(new RedisStandaloneConfiguration());
     }
 
     @Bean
-    RedisTemplate<String, Object> redisTemplate(JedisConnectionFactory connectionFactory) {
+    RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory connectionFactory) {
         RedisTemplate<String, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(connectionFactory);
         return template;

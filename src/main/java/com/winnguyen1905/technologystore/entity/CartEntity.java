@@ -24,6 +24,9 @@ public class CartEntity extends BaseEntityAudit {
     //     inverseJoinColumns = @JoinColumn(name = "discount_id")
     // )
     // private Set<DiscountEntity> discounts = new HashSet<>();
+
+    @Version
+    private Long version;
     
     @ManyToOne
     @JoinColumn(name = "customer_id")

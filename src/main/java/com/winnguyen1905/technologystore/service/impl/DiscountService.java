@@ -156,6 +156,7 @@ public class DiscountService implements IDiscountService {
         return PriceStatisticsDTO
                 .builder().finalPrice(finalPrice)
                 .totalPrice(totalPriceOfAllProduct)
+                .bestVoucher(discountDTO)
                 .amountProductReduced(totalPriceOfAllProduct - finalPrice)
                 // .cart(applyDiscountStatus.equals(ApplyDiscountStatus.REVIEW) ? this.modelMapper.map(cart, CartDTO.class) : null)
                 .build();
