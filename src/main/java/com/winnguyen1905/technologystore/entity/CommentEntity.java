@@ -38,6 +38,6 @@ public class CommentEntity extends BaseEntityAudit {
     private List<CommentEntity> ChildComments = new ArrayList<>();
 
     @Column(name = "comment_content", columnDefinition = "MEDIUMTEXT")
-    private String content;
+    private String description;
     
 }

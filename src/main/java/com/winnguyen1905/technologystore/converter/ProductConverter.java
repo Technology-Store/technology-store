@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.security.InvalidAlgorithmParameterException;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -22,8 +23,6 @@ import com.winnguyen1905.technologystore.exception.CustomRuntimeException;
 import com.winnguyen1905.technologystore.model.dto.LaptopDTO;
 import com.winnguyen1905.technologystore.model.dto.ProductDTO;
 import com.winnguyen1905.technologystore.model.dto.SmartPhoneDTO;
-
-import io.jsonwebtoken.lang.Arrays;
 
 @Component
 public class ProductConverter {

@@ -99,6 +99,7 @@ public class CartService implements ICartService {
                 .amountProductReduced(0.0)
                 .amountShipReduced(0.0)
                 .finalPrice(totalPriceOfAllProduct)
+                .totalPrice(totalPriceOfAllProduct)
                 .totalShipPrice(0.0) // Handle after -------------------------------------------------
                 .totalDiscountVoucher(0.0).build();
     }

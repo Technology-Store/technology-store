@@ -7,6 +7,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 public class PageUtils {
+    
     public static <T> Page<T> paginateList(List<T> list, Pageable pageable) {
         Integer pageSize = pageable.getPageSize();
         Integer currentPage = pageable.getPageNumber();
@@ -22,4 +23,5 @@ public class PageUtils {
 
         return new PageImpl<>(paginatedList, pageable, list.size());
     }
+
 }

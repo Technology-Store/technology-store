@@ -16,7 +16,7 @@ public class CommentDTO extends AbstractDTO<CommentDTO> {
 
     private List<CommentDTO> ChildComments;
 
-    private String content;
+    private String description;
 
     private Integer left;
 

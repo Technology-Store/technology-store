@@ -1,14 +1,8 @@
 package com.winnguyen1905.technologystore.exception;
 
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
-import javax.naming.AuthenticationException;
-
 import org.apache.coyote.BadRequestException;
-import org.hibernate.NonUniqueResultException;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.InvalidDataAccessResourceUsageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -17,11 +11,9 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
-
 import com.winnguyen1905.technologystore.model.response.RestResponse;
 
-@RestControllerAdvice
+// @RestControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public ResponseEntity<RestResponse<Object>> validationError(MethodArgumentNotValidException ex) {

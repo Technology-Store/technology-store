@@ -23,16 +23,16 @@ import lombok.Setter;
 public class InventoryEntity extends BaseEntityAudit {
 
     @Version
-    private Integer version;
+    private int version;
 
     @Column(name = "inven_stock")
-    private Integer stock;
+    private int stock;
 
     @ManyToOne
     @JoinColumn(name = "address_id")
     private AddressEntity address;
 
-    @OneToMany(mappedBy = "inventory", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "inventory", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<ReservationEntity> reservations = new HashSet<>();
 
     @ManyToOne(cascade = CascadeType.MERGE)

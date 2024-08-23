@@ -84,8 +84,8 @@ public abstract class ProductEntity extends BaseEntityAudit {
 
     @PrePersist
     protected void prePersist() {
-        this.isDraft = true;
-        this.isPublished = false;
+        this.isDraft = false;
+        this.isPublished = true;
         super.prePersist();
     }
 

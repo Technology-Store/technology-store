@@ -1,8 +1,5 @@
 package com.winnguyen1905.technologystore.model.dto;
 
-import java.util.UUID;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Getter;

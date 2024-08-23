@@ -1,12 +1,9 @@
 package com.winnguyen1905.technologystore.repository.specification;
 
-import java.time.Instant;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.util.Pair;
 
 import com.winnguyen1905.technologystore.common.SystemConstant;
@@ -19,16 +16,9 @@ public class QuerySpecification<T> {
 
     public QuerySpecification() {}
 
-    // public static <F> Class<F> constructInstance(Pair<Class<F>, String> joining) throws Exception {
-    //     String entityName = StringUtils.convertSnakeToCamelCase(joining) + "Entity";
-    //     Class<F> clazz = (Class<F>) Class.forName("com.winnguyen1905.technologystore.entity." + entityName);
-    //     return clazz;
-    // }
-
-    // public static <T, F> Join<T, F> performJoin(Class<F> fClass, Root<T> root, Pair<Class<F>, String> joining) {
-    //     Join<T, F> join = root.join(joining + "s");
-    //     return join;
-    // }
+    public static <T, F>  Specification<T> construct() {
+        return (root, query, builder) -> builder.isNotNull(root.get("id"));
+    }
 
     public static <T, F> Join<T, F> oneToMany(Pair<Class<F>, String> joining, Root<T> root) {
         return null;
@@ -48,10 +38,6 @@ public class QuerySpecification<T> {
             Join<T, F> join = root.join(finalName);
             return join;
         }
-    }
-
-    public static <T, F>  Specification<T> construct() {
-        return (root, query, builder) -> builder.isNotNull(root.get("id"));
     }
 
     public static <T, F> Specification<T> isValueLike(String stringLike, String col, Pair<Class<F>, String> joining) {

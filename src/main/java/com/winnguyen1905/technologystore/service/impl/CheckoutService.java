@@ -19,6 +19,7 @@ import com.winnguyen1905.technologystore.model.dto.CheckoutDTO;
 import com.winnguyen1905.technologystore.model.dto.PriceStatisticsDTO;
 import com.winnguyen1905.technologystore.repository.CartItemRepository;
 import com.winnguyen1905.technologystore.repository.CartRepository;
+import com.winnguyen1905.technologystore.repository.OrderItemRepository;
 import com.winnguyen1905.technologystore.repository.OrderRepository;
 import com.winnguyen1905.technologystore.service.ICartService;
 import com.winnguyen1905.technologystore.service.ICheckoutService;
@@ -36,9 +37,9 @@ public class CheckoutService implements ICheckoutService {
     private final IDiscountService discountService;
     private final ICartService cartService;
     private final IInventoryService inventoryService;
-    private final CartItemRepository cartItemRepository;
     private final OrderRepository orderRepository;
     private final CartRepository cartRepository;
+    private final OrderItemRepository orderItemRepository;
     private final ModelMapper modelMapper;
 
     @Override
@@ -61,14 +62,13 @@ public class CheckoutService implements ICheckoutService {
     @Override
     @Transactional
     public void handleCreateOrder(CheckoutDTO checkout, UUID customerId) {
-
         for(CheckoutDTO.CheckoutItemDTO checkoutItem : checkout.getCheckoutItems()) {
             // Get statistic price for each shop products
             PriceStatisticsDTO statisticsItem = checkoutItem.getDiscounts().stream()
                     .map(discountDTO -> this.discountService.handleApplyDiscountCode(discountDTO, customerId, ApplyDiscountStatus.REVIEW))
                     .min(Comparator.comparing(PriceStatisticsDTO::getFinalPrice))
                     .orElse(null);
-            
+
             if(statisticsItem != null) statisticsItem = this.discountService.handleApplyDiscountCode(statisticsItem.getBestVoucher(), customerId, ApplyDiscountStatus.COMMIT);
             else if(statisticsItem == null) statisticsItem = this.cartService.handleGetPriceStatisticsOfCart(checkoutItem.getCart(), customerId);
 
@@ -90,14 +90,16 @@ public class CheckoutService implements ICheckoutService {
             OrderEntity order = this.modelMapper.map(statisticsItem, OrderEntity.class);
             order.setCustomer(cart.getCustomer());
             order.setShop(cart.getShop());
-            order.setOrderItems(orderItems);
+            orderItems.stream().forEach(item -> item.setOrder(order));
 
             // Remove cart item selected
             cart.getCartItems().removeAll(cartItemsSelected);
+            cartItemsSelected.stream().forEach(item -> item.setCart(null));
 
             // Save data
             this.cartRepository.save(cart);
             this.orderRepository.save(order);
+            this.orderItemRepository.saveAll(orderItems);
         }
     }
 

@@ -1,9 +1,19 @@
 package com.winnguyen1905.technologystore.service.impl;
 
+import java.time.Duration;
+import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.SessionCallback;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.serializer.RedisSerializer;
+import org.springframework.lang.Nullable;
+import org.springframework.dao.DataAccessException;
+import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.RedisCallback;
+import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.stereotype.Service;
 
 import com.winnguyen1905.technologystore.entity.InventoryEntity;
@@ -22,35 +32,35 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class InventoryService implements IInventoryService {
 
-    private final RedisTemplate<String, Object> redisTemplate;
+    private final RedisTemplate<String, Integer> redisTemplate;
     private final InventoryRepository inventoryRepository;
     private final ReservationRepository reservationRepository;
-    private final String prefixProduct = "product_id:";
-    private static final Integer MAX_RETRIES = 10;
+    private final String INVENTORY_KEY = "inventory:";
+    private final Integer MAX_RETRIES = 10;
     private final UserRepository userRepository;
 
     @Override
+    @SuppressWarnings({ "null", "unchecked", "rawtypes" })
     public Boolean isAccessStock(InventoryEntity inventory, Integer quantity) {
-        ProductEntity product = inventory.getProduct();
+        String key = this.INVENTORY_KEY + inventory.getId();
+        if(redisTemplate.opsForValue().get(key) == null) redisTemplate.opsForValue().set(key, inventory.getStock(), Duration.ofSeconds(60));
 
-        String key = this.prefixProduct + product.getId();
-        Boolean isExistKey = this.redisTemplate.hasKey(key);
+        SessionCallback<List<Object>> sessionCallback = new SessionCallback<List<Object>>() {
+            @Override
+            @Nullable
+            public List<Object> execute(RedisOperations operations) throws DataAccessException {
+                Integer stock = (Integer) operations.opsForValue().get(key);
 
-        if(!Boolean.TRUE.equals(isExistKey)) this.redisTemplate.opsForValue().set(key, inventory.getStock());
-        Boolean ans = false;
-        for(int i = 0; i < this.MAX_RETRIES && !false; i++) {
-            ans = (Boolean) this.redisTemplate.execute((RedisCallback<Object>) connection -> {
-                connection.watch(key.getBytes());
-                Integer currentQuantity = (Integer) this.redisTemplate.opsForValue().get(key);
+                if(stock < quantity) return null;
 
-                if(currentQuantity < quantity) return false;
-                this.redisTemplate.multi();
-                this.redisTemplate.opsForValue().set(key, currentQuantity - quantity);
-
-                return this.redisTemplate.exec() != null;
-            });
-        }
-        return ans;
+                operations.watch(key);
+                operations.multi();
+                operations.opsForValue().set(key, stock - quantity);
+                return operations.exec();
+            }
+        };
+        SessionCallback<List<Object>> result = sessionCallback;
+        return result != null;
     }
 
     @Override

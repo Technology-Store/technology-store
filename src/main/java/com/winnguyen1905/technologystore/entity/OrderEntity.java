@@ -31,7 +31,7 @@ public class OrderEntity extends BaseEntityAudit {
     private String orderCode;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "order_status", nullable = false, length = 20)
+    @Column(name = "order_status", length = 20)
     private OrderStatus orderStatus;
 
     @Enumerated(EnumType.STRING)
@@ -68,7 +68,8 @@ public class OrderEntity extends BaseEntityAudit {
 
     @PrePersist
     protected void prePersist() {
-        super.prePersist();   
+        this.orderStatus = OrderStatus.SPENDING;
+        super.prePersist();
     }
 
 }
