@@ -10,6 +10,6 @@ import com.winnguyen1905.technologystore.entity.CartItemEntity;
 
 @Repository
 public interface CartItemRepository extends JpaRepository<CartItemEntity, UUID> {
-    Optional<CartItemEntity> findByCartIdAndProductId(UUID cartId, UUID productId);
+    Optional<CartItemEntity> findByCartIdAndVariationId(UUID cartId, UUID productId);
     Optional<CartItemEntity> findByCreatedBy(String createdBy);
 }

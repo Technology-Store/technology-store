@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class PermissionDTO extends AbstractDTO<PermissionDTO> {
+public class PermissionDTO extends BaseObjectDTO<PermissionDTO> {
     private String name;
 
     private String code;

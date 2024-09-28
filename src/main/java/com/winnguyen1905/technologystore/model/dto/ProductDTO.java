@@ -6,24 +6,20 @@ import lombok.*;
 
 @Getter
 @Setter
-public class ProductDTO extends AbstractDTO<ProductDTO> {
-    private String productType;
-
+public class ProductDTO extends BaseObjectDTO<ProductDTO> {
     private String name;
 
     private String thumb;
+
+    private String productType;
 
     private String description;
 
     private Double price;
 
-    private String brand;
-
     private String slug;
 
-    private Boolean isDraft;
-    
-    private Boolean isPublished;
+    private ProductAttribute productAttributes;
 
-    private List<InventoryDTO> inventories;
+    private List<VariationDTO> variations;
 }

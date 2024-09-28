@@ -6,10 +6,7 @@ import lombok.*;
 
 @Setter
 @Getter
-public class InventoryDTO extends AbstractDTO<InventoryDTO> {
+public class InventoryDTO extends BaseObjectDTO<InventoryDTO> {
     private Integer stock;
-
     private DistrictDTO district;
-
-    private List<ReservationDTO> reservations;
 }

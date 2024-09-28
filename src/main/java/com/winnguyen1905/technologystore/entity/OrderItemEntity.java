@@ -16,8 +16,8 @@ public class OrderItemEntity extends BaseEntityAudit {
     private OrderEntity order;
 
     @ManyToOne
-    @JoinColumn(name = "product_id")
-    private ProductEntity product;
+    @JoinColumn(name = "variation_id")
+    private VariationEntity productVariation;
 
     @Column(name = "quantity")
     private Integer quantity;

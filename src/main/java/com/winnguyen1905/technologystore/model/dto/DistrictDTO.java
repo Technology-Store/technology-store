@@ -6,7 +6,7 @@ import lombok.*;
 
 @Setter
 @Getter
-public class DistrictDTO extends AbstractDTO<DistrictDTO> {
+public class DistrictDTO extends BaseObjectDTO<DistrictDTO> {
     private UUID id;
     private String name;
     private String code;

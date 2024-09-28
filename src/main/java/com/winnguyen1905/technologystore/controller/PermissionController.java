@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.winnguyen1905.technologystore.common.SystemConstant;
 import com.winnguyen1905.technologystore.model.dto.PermissionDTO;
-import com.winnguyen1905.technologystore.model.request.PermissionSearchRequest;
+import com.winnguyen1905.technologystore.model.request.SearchPermissionRequest;
 import com.winnguyen1905.technologystore.service.IPermissionService;
 
 import java.net.URL;
@@ -38,7 +38,7 @@ public class PermissionController {
 
     @GetMapping
     public ResponseEntity<PermissionDTO> getPermissions(
-        @ModelAttribute(SystemConstant.MODEL) PermissionSearchRequest permissionSearchRequest,
+        @ModelAttribute(SystemConstant.MODEL) SearchPermissionRequest permissionSearchRequest,
         Pageable pageable
     ) {
         return ResponseEntity.ok().body(

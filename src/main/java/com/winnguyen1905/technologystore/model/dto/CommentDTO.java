@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CommentDTO extends AbstractDTO<CommentDTO> {
+public class CommentDTO extends BaseObjectDTO<CommentDTO> {
 
     private ProductDTO product;
 

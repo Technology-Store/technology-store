@@ -1,7 +1,5 @@
 package com.winnguyen1905.technologystore.entity;
 
-import java.util.List;
-
 import com.winnguyen1905.technologystore.common.ProductTypeConstant;
 import com.winnguyen1905.technologystore.util.SlugUtils;
 
@@ -11,10 +9,10 @@ import lombok.*;
 @Entity
 @Getter
 @Setter
-@Table(name = "smartphones")
-@DiscriminatorValue(ProductTypeConstant.SMARTPHONE)
-@PrimaryKeyJoinColumn(name = "smartphone_id")
-public class SmartPhoneEntity extends ProductEntity {
+@Table(name = "electronics")
+@DiscriminatorValue(ProductTypeConstant.ELECTRONIC)
+@PrimaryKeyJoinColumn(name = "electronic_id")
+public class ElectronicEntity extends ProductEntity {
     @Column(name = "x_size", nullable = true)
     private Double xSize;
 

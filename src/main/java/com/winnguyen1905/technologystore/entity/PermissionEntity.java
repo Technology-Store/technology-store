@@ -36,6 +36,10 @@ public class PermissionEntity extends BaseEntityAudit {
     @Column(nullable = true, name = "module")
     private String module;
 
+    private Integer left;
+
+    private Integer right;
+
     @ManyToMany(mappedBy = "permissions", cascade = CascadeType.PERSIST)
     private Set<RoleEntity> roles = new HashSet<>();
 

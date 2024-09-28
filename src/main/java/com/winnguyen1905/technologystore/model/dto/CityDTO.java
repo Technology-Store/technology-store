@@ -7,7 +7,7 @@ import lombok.*;
 @Setter
 @Getter
 @Builder
-public class CityDTO extends AbstractDTO<CityDTO> {
+public class CityDTO extends BaseObjectDTO {
     private UUID id;
     private String name;
     private String code;

@@ -24,7 +24,7 @@ import java.util.Objects;
 @Setter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public abstract class BaseEntityAudit extends BaseEntity {
+public class BaseEntityAudit extends BaseEntity {
 
     @JsonIgnore
     @Column(name = "created_by", nullable = true)

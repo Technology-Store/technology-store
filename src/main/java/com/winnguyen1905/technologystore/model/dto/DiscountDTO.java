@@ -12,7 +12,7 @@ import lombok.*;
 
 @Setter
 @Getter
-public class DiscountDTO extends AbstractDTO<DiscountDTO> {
+public class DiscountDTO extends BaseObjectDTO<DiscountDTO> {
     private String name;
 
     private String description;
@@ -24,7 +24,6 @@ public class DiscountDTO extends AbstractDTO<DiscountDTO> {
     @NotBlank
     private String code;
 
-    @FutureInstant
     private Instant startDate;
 
     @FutureInstant

@@ -39,14 +39,4 @@ public class CartEntity extends BaseEntityAudit {
     @OneToMany(mappedBy = "cart", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     private List<CartItemEntity> cartItems = new ArrayList<>();
 
-    public void addCartItems(CartItemEntity cartItemEntity) {
-        this.cartItems.add(cartItemEntity);
-    }
-
-    public void fillInRelationShipData(UserEntity customer, UserEntity shop, List<CartItemEntity> cartItems) {
-        this.customer = customer;
-        this.shop = shop;
-        this.cartItems = cartItems;
-    }
-
 }

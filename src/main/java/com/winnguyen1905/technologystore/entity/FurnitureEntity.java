@@ -8,11 +8,10 @@ import lombok.*;
 @Entity
 @Getter
 @Setter
-@Table(name = "laptops")
-@DiscriminatorValue(ProductTypeConstant.LAPTOP)
-@PrimaryKeyJoinColumn(name = "laptop_id")
-public class LaptopEntity extends ProductEntity {
-
+@Table(name = "furnitures")
+@DiscriminatorValue(ProductTypeConstant.FURNITURE)
+@PrimaryKeyJoinColumn(name = "furniture_id")
+public class FurnitureEntity extends ProductEntity {
     // @Column(name = "size", nullable = false)
     // private Double size;
 

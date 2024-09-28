@@ -6,11 +6,13 @@ import org.springframework.data.domain.Pageable;
 
 import com.winnguyen1905.technologystore.model.dto.CartDTO;
 import com.winnguyen1905.technologystore.model.dto.PriceStatisticsDTO;
+import com.winnguyen1905.technologystore.model.request.AddToCartRequest;
+import com.winnguyen1905.technologystore.model.response.PaginationResponse;
 
 public interface ICartService {
-    CartDTO handleGetMyCarts(UUID customerId, Pageable pageable);
-    CartDTO handleAddCart(CartDTO cartDTO, UUID customerId);
+    PaginationResponse<CartDTO> handleGetCarts(UUID customerId, Pageable pageable);
+    void handleAddToCart(UUID customerId, AddToCartRequest addToCartRequest);
     CartDTO handleGetCartById(UUID cartId, UUID customerId);
     Boolean handleValidateCart(CartDTO cartDTO, UUID customerId);
-    PriceStatisticsDTO handleGetPriceStatisticsOfCart(CartDTO cartDTO, UUID customerId);
+    PriceStatisticsDTO handleGetPriceStatisticsOfCart(UUID customerId, UUID cartId);
 }

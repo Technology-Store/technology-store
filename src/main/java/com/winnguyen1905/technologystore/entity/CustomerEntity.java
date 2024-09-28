@@ -11,6 +11,6 @@ import lombok.Setter;
 @Entity
 @Table(name = "customers")
 public class CustomerEntity extends UserEntity {
-    @OneToMany(mappedBy = "customer")
-    Set<ReservationEntity> reservations = new HashSet<>();
+    // @OneToMany(mappedBy = "customer")
+    // Set<ReservationEntity> reservations = new HashSet<>();
 }

@@ -6,9 +6,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.winnguyen1905.technologystore.exception.CustomRuntimeException;
 import com.winnguyen1905.technologystore.model.dto.CartDTO;
 import com.winnguyen1905.technologystore.model.dto.CartItemDTO;
+import com.winnguyen1905.technologystore.model.request.AddToCartRequest;
 import com.winnguyen1905.technologystore.service.ICartItemService;
 import com.winnguyen1905.technologystore.service.ICartService;
 import com.winnguyen1905.technologystore.util.SecurityUtils;
+import com.winnguyen1905.technologystore.util.annotation.MetaMessage;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -32,25 +34,26 @@ public class CartController {
     private final ICartItemService cartItemService;
 
     @PostMapping
-    public ResponseEntity<CartDTO> addCart(@RequestBody @Valid CartDTO cartDTO) {
+    @MetaMessage(message = "Add product to cart successfully")
+    public ResponseEntity<CartDTO> addToCart(@RequestBody @Valid AddToCartRequest addToCartRequest) {
         UUID customerId = SecurityUtils.getCurrentUserId()
                 .orElseThrow(() -> new CustomRuntimeException("Not found user"));
-        return ResponseEntity.status(HttpStatus.CREATED.value())
-                .body(this.cartService.handleAddCart(cartDTO, customerId));
+        return ResponseEntity.status(HttpStatus.CREATED.value()).body(this.cartService.handleAddToCart(customerId, addToCartRequest));
     }
 
     @PatchMapping
+    @MetaMessage(message = "Update cart successfully")
     public ResponseEntity<CartItemDTO> updateCartItem(@RequestBody CartItemDTO cartItemDTO) {
         UUID customerId = SecurityUtils.getCurrentUserId()
                 .orElseThrow(() -> new CustomRuntimeException("Not found user"));
         return ResponseEntity.ok().body(this.cartItemService.handleUpdateCartItem(cartItemDTO, customerId));
     }
 
-    @GetMapping("/")
+    @GetMapping
+    @MetaMessage(message = "Get my card successfully")
     public ResponseEntity<CartDTO> getMethodName(Pageable pageable) {
         UUID customerId = SecurityUtils.getCurrentUserId().orElseThrow(() -> new CustomRuntimeException("Not found user"));
-        return ResponseEntity.ok().body(this.cartService.handleGetMyCarts(customerId, pageable));
+        return ResponseEntity.ok().body(this.cartService.handleGetMyCartDetails(customerId, pageable));
     }
-    
 
 }

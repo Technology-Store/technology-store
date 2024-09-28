@@ -1,28 +1,21 @@
 package com.winnguyen1905.technologystore.service.impl;
 
 import java.time.Duration;
-import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.SessionCallback;
-import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.data.redis.serializer.RedisSerializer;
+import org.springframework.data.redis.core.SessionCallback; 
 import org.springframework.lang.Nullable;
-import org.springframework.dao.DataAccessException;
-import org.springframework.data.redis.connection.RedisConnection;
-import org.springframework.data.redis.core.RedisCallback;
+import org.springframework.dao.DataAccessException; 
 import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.stereotype.Service;
 
 import com.winnguyen1905.technologystore.entity.InventoryEntity;
-import com.winnguyen1905.technologystore.entity.ProductEntity;
 import com.winnguyen1905.technologystore.entity.ReservationEntity;
 import com.winnguyen1905.technologystore.entity.UserEntity;
 import com.winnguyen1905.technologystore.exception.CustomRuntimeException;
 import com.winnguyen1905.technologystore.repository.InventoryRepository;
-import com.winnguyen1905.technologystore.repository.ReservationRepository;
 import com.winnguyen1905.technologystore.repository.UserRepository;
 import com.winnguyen1905.technologystore.service.IInventoryService;
 
@@ -34,9 +27,7 @@ public class InventoryService implements IInventoryService {
 
     private final RedisTemplate<String, Integer> redisTemplate;
     private final InventoryRepository inventoryRepository;
-    private final ReservationRepository reservationRepository;
     private final String INVENTORY_KEY = "inventory:";
-    private final Integer MAX_RETRIES = 10;
     private final UserRepository userRepository;
 
     @Override
@@ -46,8 +37,7 @@ public class InventoryService implements IInventoryService {
         if(redisTemplate.opsForValue().get(key) == null) redisTemplate.opsForValue().set(key, inventory.getStock(), Duration.ofSeconds(60));
 
         SessionCallback<List<Object>> sessionCallback = new SessionCallback<List<Object>>() {
-            @Override
-            @Nullable
+            @Nullable @Override
             public List<Object> execute(RedisOperations operations) throws DataAccessException {
                 Integer stock = (Integer) operations.opsForValue().get(key);
 
@@ -59,6 +49,7 @@ public class InventoryService implements IInventoryService {
                 return operations.exec();
             }
         };
+
         SessionCallback<List<Object>> result = sessionCallback;
         return result != null;
     }

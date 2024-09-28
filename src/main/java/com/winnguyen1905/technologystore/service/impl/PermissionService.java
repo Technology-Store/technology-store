@@ -15,9 +15,9 @@ import org.springframework.stereotype.Service;
 import com.winnguyen1905.technologystore.converter.PermissionConverter;
 import com.winnguyen1905.technologystore.entity.PermissionEntity;
 import com.winnguyen1905.technologystore.exception.CustomRuntimeException;
-import com.winnguyen1905.technologystore.model.dto.AbstractDTO;
+import com.winnguyen1905.technologystore.model.dto.BaseObjectDTO;
 import com.winnguyen1905.technologystore.model.dto.PermissionDTO;
-import com.winnguyen1905.technologystore.model.request.PermissionSearchRequest;
+import com.winnguyen1905.technologystore.model.request.SearchPermissionRequest;
 import com.winnguyen1905.technologystore.repository.PermissionRepository;
 import com.winnguyen1905.technologystore.repository.specification.QuerySpecification;
 import com.winnguyen1905.technologystore.service.IPermissionService;
@@ -34,7 +34,7 @@ public class PermissionService implements IPermissionService {
     private final PermissionConverter permissionConverter;
     
     @Override
-    public PermissionDTO handleGetPermissions(PermissionSearchRequest permissionSearchRequest, Pageable pageable) {
+    public PermissionDTO handleGetPermissions(SearchPermissionRequest permissionSearchRequest, Pageable pageable) {
         Specification<PermissionEntity> spec = this.permissionConverter.toPermissionSpec(permissionSearchRequest);
         Page<PermissionEntity> permissions = this.permissionRepository.findAll(spec, pageable);
         PermissionDTO permissionDTOs = this.modelMapper.map(permissions, PermissionDTO.class);
@@ -47,8 +47,7 @@ public class PermissionService implements IPermissionService {
         return this.modelMapper.map(
             this.permissionRepository.findById(id)
                 .orElseThrow(() -> new CustomRuntimeException("Not found permission by id " + id))
-            , PermissionDTO.class
-        );
+            , PermissionDTO.class);
     }
 
     @Override

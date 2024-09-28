@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class CartItemDTO extends AbstractDTO<CartItemDTO> {
+public class CartItemDTO extends AbstractDTO {
     private ProductDTO product;
     private Integer oldQuantity;
     private Integer quantity;

@@ -48,6 +48,9 @@ public class OrderEntity extends BaseEntityAudit {
     @OneToMany(mappedBy = "order", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
     private List<OrderItemEntity> orderItems = new ArrayList<>();
 
+    @OneToMany(mappedBy = "order", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.EAGER)
+    private List<ReservationEntity> reservations = new ArrayList<>();
+
     @Column(name = "total_price", nullable = false)
     private Double totalPrice;
 

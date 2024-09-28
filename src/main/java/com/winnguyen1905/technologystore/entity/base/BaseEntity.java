@@ -12,7 +12,7 @@ import java.util.UUID;
 @Setter
 @Getter
 @MappedSuperclass
-public abstract class BaseEntity implements Serializable {
+public class BaseEntity implements Serializable {
 
     private static final long serialVersionUID = -863164858986274318L;
 

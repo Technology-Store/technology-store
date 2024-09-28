@@ -19,10 +19,13 @@ import com.winnguyen1905.technologystore.converter.ProductConverter;
 import com.winnguyen1905.technologystore.entity.InventoryEntity;
 import com.winnguyen1905.technologystore.entity.ProductEntity;
 import com.winnguyen1905.technologystore.entity.UserEntity;
+import com.winnguyen1905.technologystore.entity.VariationEntity;
 import com.winnguyen1905.technologystore.exception.CustomRuntimeException;
 import com.winnguyen1905.technologystore.model.dto.ProductDTO;
-import com.winnguyen1905.technologystore.model.request.ProductRequest;
-import com.winnguyen1905.technologystore.model.request.ProductSearchRequest;
+import com.winnguyen1905.technologystore.model.request.AddProductRequest;
+import com.winnguyen1905.technologystore.model.request.SearchProductRequest;
+import com.winnguyen1905.technologystore.model.request.UpdateProductRequest;
+import com.winnguyen1905.technologystore.model.response.PaginationResponse;
 import com.winnguyen1905.technologystore.repository.ProductRepository;
 import com.winnguyen1905.technologystore.repository.UserRepository;
 import com.winnguyen1905.technologystore.service.IProductService;
@@ -35,29 +38,38 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ProductService implements IProductService {
 
-    private final ProductRepository productRepository;
-    private final ProductConverter productConverter;
     private final ModelMapper modelMapper;
     private final UserRepository userRepository;
+    private final ProductConverter productConverter;
+    private final ProductRepository productRepository;
 
     @Override
-    public ProductDTO handleAddProduct(ProductRequest productRequest, UUID shopId) {
-        ProductEntity product = productConverter.toProductEntity(productRequest);
-        UserEntity shop = this.userRepository.findByIdOrUsername(shopId, "baokhung2k4").orElseThrow(() -> new CustomRuntimeException("not found shop id " + shopId));
+    public ProductDTO handleAddProduct(AddProductRequest addProductRequest, UUID shopId) {
+        UserEntity shop = this.userRepository.findById(shopId)
+                .orElseThrow(() -> new CustomRuntimeException("Not found shop id " + shopId));
+        ProductEntity product = this.productConverter.toProductEntity(addProductRequest);
         product.setShop(shop);
-        for(InventoryEntity inventory : product.getInventories()) {
-            inventory.setProduct(product);
-            inventory.setShop(shop);
+
+        for (VariationEntity variation : product.getVariations()) {
+            variation.setInventories(variation.getInventories());
+            product.getVariations().add(variation);
         }
+
         product = this.productRepository.save(product);
         return this.productConverter.toProductDTO(product);
     }
 
+    public ProductDTO handleUpdateProduct(UpdateProductRequest updateProductRequest) {
+        return null;
+    }
+
     @Override
-    public List<ProductDTO> handleUpdateProducts(List<ProductRequest> productRequests, UUID shopId) {
+    public List<ProductDTO> handleUpdateManyProducts(List<AddProductRequest> productRequests, UUID shopId) {
         List<UUID> ids = productRequests.stream().map(item -> item.getId()).toList();
         List<ProductEntity> products = this.productRepository.findByIdInAndShopIdOrderById(ids, shopId);
-        if(products.size() != ids.size()) throw new CustomRuntimeException("Cannot update because " + products.size() + " of " + ids.size() + " product be found");
+        if (products.size() != ids.size())
+            throw new CustomRuntimeException(
+                    "Cannot update because " + products.size() + " of " + ids.size() + " product be found");
 
         List<ProductEntity> newDataOfProducts = productRequests.stream()
                 .map(item -> (ProductEntity) this.productConverter.toProductEntity(item))
@@ -72,10 +84,10 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public ProductDTO handleGetAllProducts(ProductSearchRequest productSearchRequest, Pageable pageable) {
+    public PaginationResponse<ProductDTO> handleGetAllProducts(SearchProductRequest productSearchRequest, Pageable pageable) {
         List<Specification<ProductEntity>> specList = NormalSpecificationUtils.toNormalSpec(productSearchRequest);
         Page<ProductEntity> productPages = this.productRepository.findAll(Specification.allOf(specList), pageable);
-        return this.modelMapper.map(productPages, ProductDTO.class);
+        return this.modelMapper.map(productPages, PaginationResponse.class);
     }
 
     @Override

@@ -18,6 +18,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "shippings")
 public class ShippingEntity extends BaseEntityAudit {
+
     @Column(name = "shipping_tracking_number", length = 100)
     private String trackingNumber;
 
@@ -34,4 +35,5 @@ public class ShippingEntity extends BaseEntityAudit {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     private OrderEntity order;
+    
 }

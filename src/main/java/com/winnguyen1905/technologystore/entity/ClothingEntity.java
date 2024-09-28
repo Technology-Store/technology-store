@@ -8,7 +8,9 @@ import lombok.*;
 @Entity
 @Getter
 @Setter
-@Table(name = "smartwatchs")
-@DiscriminatorValue(ProductTypeConstant.SMARTWATCH)
-@PrimaryKeyJoinColumn(name = "smartwatch_id")
-public class SmartWatchEntity extends ProductEntity {}
+@Table(name = "clothings")
+@DiscriminatorValue(ProductTypeConstant.CLOTHING)
+@PrimaryKeyJoinColumn(name = "clothing_id")
+public class ClothingEntity extends ProductEntity {
+    
+}

@@ -3,8 +3,8 @@ package com.winnguyen1905.technologystore.controller;
 import com.winnguyen1905.technologystore.common.SystemConstant;
 import com.winnguyen1905.technologystore.exception.CustomRuntimeException;
 import com.winnguyen1905.technologystore.model.dto.ProductDTO;
-import com.winnguyen1905.technologystore.model.request.ProductRequest;
-import com.winnguyen1905.technologystore.model.request.ProductSearchRequest;
+import com.winnguyen1905.technologystore.model.request.AddProductRequest;
+import com.winnguyen1905.technologystore.model.request.SearchProductRequest;
 import com.winnguyen1905.technologystore.service.IProductService;
 import com.winnguyen1905.technologystore.util.SecurityUtils;
 import com.winnguyen1905.technologystore.util.annotation.MetaMessage;
@@ -37,7 +37,7 @@ public class ProductController {
     @GetMapping("/")
     @MetaMessage(message = "Get all product with filter success")
     public ResponseEntity<ProductDTO> getAllProducts(Pageable pageable,
-        @ModelAttribute(SystemConstant.MODEL) ProductSearchRequest productSearchRequest
+        @ModelAttribute(SystemConstant.MODEL) SearchProductRequest productSearchRequest
     ) {
         productSearchRequest.setIsDraft(false);
         productSearchRequest.setIsPublished(true);
@@ -54,7 +54,7 @@ public class ProductController {
 
     @PostMapping
     @MetaMessage(message = "add new product success")
-    public ResponseEntity<ProductDTO> addProduct(@RequestBody ProductRequest productRequest) {
+    public ResponseEntity<ProductDTO> addProduct(@RequestBody AddProductRequest productRequest) {
         UUID userId = SecurityUtils.getCurrentUserId()
                 .orElseThrow(() -> new CustomRuntimeException("Not found userId", 403));
         return ResponseEntity.status(HttpStatus.CREATED.value()).body(this.productService.handleAddProduct(productRequest, userId));
@@ -63,7 +63,7 @@ public class ProductController {
     @GetMapping("/my-product")
     @MetaMessage(message = "get all my product with filter success")
     public ResponseEntity<ProductDTO> getAllMyProducts(Pageable pageable,
-        @ModelAttribute(SystemConstant.MODEL) ProductSearchRequest productSearchRequest
+        @ModelAttribute(SystemConstant.MODEL) SearchProductRequest productSearchRequest
     ) {
         String shopOwner = SecurityUtils.getCurrentUserLogin()
                 .orElseThrow(() -> new CustomRuntimeException("Not found username", 403));
@@ -73,10 +73,10 @@ public class ProductController {
 
     @PatchMapping
     @MetaMessage(message = "get all my product with filter success")
-    public ResponseEntity<List<ProductDTO>> updateProducts(@RequestBody List<ProductRequest> productRequests) {
+    public ResponseEntity<List<ProductDTO>> updateProducts(@RequestBody List<AddProductRequest> productRequests) {
         UUID userId = SecurityUtils.getCurrentUserId()
                 .orElseThrow(() -> new CustomRuntimeException("Not found userId", 403));
-        return ResponseEntity.ok(this.productService.handleUpdateProducts(productRequests, userId));
+        return ResponseEntity.ok(this.productService.handleUpdateManyProducts(productRequests, userId));
     }
 
     @PatchMapping("/change-status/{ids}")

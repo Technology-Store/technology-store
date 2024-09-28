@@ -7,8 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class PriceStatisticsDTO extends AbstractDTO<PriceStatisticsDTO> {
-    // private CartDTO cart;
+public class PriceStatisticsDTO extends AbstractDTO {
     private Double totalPrice;
     private Double totalShipPrice;
     private Double totalDiscountVoucher;

@@ -1,14 +1,10 @@
 package com.winnguyen1905.technologystore.configuration;
 
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.winnguyen1905.technologystore.entity.CityEntity;

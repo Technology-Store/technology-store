@@ -2,13 +2,13 @@ package com.winnguyen1905.technologystore.model.request;
 
 import java.util.List;
 
-import com.winnguyen1905.technologystore.model.dto.AbstractDTO;
+import com.winnguyen1905.technologystore.model.dto.BaseObjectDTO;
 
 import lombok.*;
 
 @Getter
 @Setter
-public class ProductSearchRequest extends AbstractDTO<ProductSearchRequest> {
+public class SearchProductRequest extends BaseObjectDTO<SearchProductRequest> {
     private List<String> typeCode;
 
     private String name;

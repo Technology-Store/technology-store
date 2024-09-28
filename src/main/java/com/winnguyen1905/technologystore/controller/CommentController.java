@@ -22,13 +22,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("${release.api.prefix}/comments")
 public class CommentController {
-
     private final ICommentService commentService;
 
     @PostMapping
@@ -50,6 +47,4 @@ public class CommentController {
         this.commentService.handleDeleteComment(commentDTO, customerId);
         return ResponseEntity.noContent().build();
     }
-    
-
 }

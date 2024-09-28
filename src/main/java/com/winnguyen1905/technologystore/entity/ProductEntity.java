@@ -7,7 +7,6 @@ import java.util.Set;
 
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
-import org.hibernate.annotations.Where;
 
 import com.fasterxml.jackson.annotation.*;
 import com.winnguyen1905.technologystore.common.ProductTypeConstant;
@@ -15,7 +14,6 @@ import com.winnguyen1905.technologystore.entity.base.BaseEntityAudit;
 
 import jakarta.persistence.*;
 import lombok.*;
-
 
 @Getter
 @Setter
@@ -27,9 +25,10 @@ import lombok.*;
 @DiscriminatorColumn(name = "p_type", discriminatorType = DiscriminatorType.STRING)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonSubTypes({
-    @JsonSubTypes.Type(value = SmartPhoneEntity.class, name = ProductTypeConstant.SMARTPHONE),
-    @JsonSubTypes.Type(value = LaptopEntity.class, name = ProductTypeConstant.LAPTOP),
-    @JsonSubTypes.Type(value = SmartWatchEntity.class, name = ProductTypeConstant.SMARTWATCH)
+    @JsonSubTypes.Type(value = ElectronicEntity.class, name = ProductTypeConstant.ELECTRONIC),
+    @JsonSubTypes.Type(value = FurnitureEntity.class, name = ProductTypeConstant.FURNITURE),
+    @JsonSubTypes.Type(value = ClothingEntity.class, name = ProductTypeConstant.CLOTHING),
+    @JsonSubTypes.Type(value = FootwearEntity.class, name = ProductTypeConstant.FOOTWEAR)
 })
 public abstract class ProductEntity extends BaseEntityAudit {
 
@@ -66,9 +65,6 @@ public abstract class ProductEntity extends BaseEntityAudit {
     @ManyToOne
     @JoinColumn(name = "shop_id")
     private UserEntity shop;
-
-    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST })
-    private List<InventoryEntity> inventories = new ArrayList<>();
 
     @ManyToMany(mappedBy = "products")
     private Set<DiscountEntity> discounts  = new HashSet<>();

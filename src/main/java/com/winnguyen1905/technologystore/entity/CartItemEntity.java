@@ -17,19 +17,14 @@ public class CartItemEntity extends BaseEntityAudit {
     private CartEntity cart;
 
     @ManyToOne
-    @JoinColumn(name = "product_id")
-    private ProductEntity product;
+    @JoinColumn(name = "variation_id")
+    private VariationEntity productVariation;
 
     @Column(name = "quantity")
-    private Integer quantity;
+    private Integer quantity = 0;
 
     @Column(name = "is_selected")
     private Boolean isSelected;
 
     // Variation
-
-    public void fillInRelationShipData(CartEntity cart, ProductEntity product) {
-        this.cart = cart;
-        this.product = product;
-    }
 }

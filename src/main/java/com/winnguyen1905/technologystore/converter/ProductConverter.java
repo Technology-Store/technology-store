@@ -1,48 +1,38 @@
 package com.winnguyen1905.technologystore.converter;
 
 import java.lang.reflect.Field;
-import java.security.InvalidAlgorithmParameterException;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.modelmapper.ModelMapper;
-import org.modelmapper.PropertyMap;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.winnguyen1905.technologystore.common.SystemConstant;
-import com.winnguyen1905.technologystore.entity.LaptopEntity;
+import com.winnguyen1905.technologystore.entity.ElectronicEntity;
 import com.winnguyen1905.technologystore.entity.ProductEntity;
-import com.winnguyen1905.technologystore.entity.SmartPhoneEntity;
 import com.winnguyen1905.technologystore.exception.CustomRuntimeException;
-import com.winnguyen1905.technologystore.model.dto.LaptopDTO;
+import com.winnguyen1905.technologystore.model.dto.ElectronicDTO;
 import com.winnguyen1905.technologystore.model.dto.ProductDTO;
-import com.winnguyen1905.technologystore.model.dto.SmartPhoneDTO;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
+@RequiredArgsConstructor
 public class ProductConverter {
 
-    private static Map<String, Class<?>> productRegistry;
+    private final ModelMapper modelMapper;
+    private static final Map<String, Class<?>> productRegistry;
 
     static {
         productRegistry = new HashMap<String, Class<?>>();
-        productRegistry.put("smartphone_dto", SmartPhoneDTO.class);
-        productRegistry.put("smartphone_entity", SmartPhoneEntity.class);
+        productRegistry.put("electronic_dto", ElectronicDTO.class);
+        productRegistry.put("electronic_entity", ElectronicEntity.class);
         
-        productRegistry.put("laptop_dto", LaptopDTO.class);
-        productRegistry.put("laptop_entity", LaptopEntity.class);
-
         // productRegistry.put("smartwatch_dto", SmartPhoneDTO.class);
         // productRegistry.put("smartwatch_entity", SmartPhoneEntity.class);
     }
-
-    @Autowired
-    private ModelMapper modelMapper;
 
     public <D> D toProductEntity(ProductDTO productDTO) {
         try {
@@ -50,6 +40,7 @@ public class ProductConverter {
             if(dClass == null) throw new CustomRuntimeException("Not found product type " + productDTO.getProductType());
             D instanceOfDClass = (D) dClass.getDeclaredConstructor().newInstance();
             this.modelMapper.map(productDTO, instanceOfDClass);
+            this.modelMapper.map(productDTO.getProductAttributes(), instanceOfDClass);
             return instanceOfDClass;
         } catch (Exception e) {
             e.printStackTrace();
@@ -99,17 +90,17 @@ public class ProductConverter {
 
     //         }
     //     })
-        // Field[] fields = object.getClass().getDeclaredFields();
-        // while(object.getClass().getSuperclass() != Object.class) {
-        //     fieldList.addAll(Arrays.asList(object.getClass().getDeclaredFields()));
-        //     object = (D) object.getClass().getSuperclass();
-        // }
-        // modelMapper.addMappings(new PropertyMap<Product, ProductDTO>() {
-        //     @Override
-        //     protected void configure() {
-        //         map().setInventory(source.getInventory()); // Map nested Inventory
-        //     }
-        // });
-        // return object;
+    //     Field[] fields = object.getClass().getDeclaredFields();
+    //     while(object.getClass().getSuperclass() != Object.class) {
+    //         fieldList.addAll(Arrays.asList(object.getClass().getDeclaredFields()));
+    //         object = (D) object.getClass().getSuperclass();
+    //     }
+    //     modelMapper.addMappings(new PropertyMap<Product, ProductDTO>() {
+    //         @Override
+    //         protected void configure() {
+    //             map().setInventory(source.getInventory()); // Map nested Inventory
+    //         }
+    //     });
+    //     return object;
     // }
 }

@@ -37,7 +37,7 @@ public class InventoryEntity extends BaseEntityAudit {
 
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "product_id")
-    private ProductEntity product;
+    private VariationEntity productVariation;
 
     @ManyToOne
     @JoinColumn(name = "shop_id")

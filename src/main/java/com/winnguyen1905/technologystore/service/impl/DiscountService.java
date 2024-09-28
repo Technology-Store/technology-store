@@ -22,7 +22,6 @@ import com.winnguyen1905.technologystore.entity.DiscountEntity;
 import com.winnguyen1905.technologystore.entity.ProductEntity;
 import com.winnguyen1905.technologystore.entity.UserEntity;
 import com.winnguyen1905.technologystore.exception.CustomRuntimeException;
-import com.winnguyen1905.technologystore.model.dto.CartDTO;
 import com.winnguyen1905.technologystore.model.dto.DiscountDTO;
 import com.winnguyen1905.technologystore.model.dto.PriceStatisticsDTO;
 import com.winnguyen1905.technologystore.model.dto.ProductDTO;
@@ -32,7 +31,7 @@ import com.winnguyen1905.technologystore.repository.ProductRepository;
 import com.winnguyen1905.technologystore.repository.UserRepository;
 import com.winnguyen1905.technologystore.service.IDiscountService;
 import com.winnguyen1905.technologystore.util.DiscountUtils;
-import com.winnguyen1905.technologystore.util.PageUtils;
+import com.winnguyen1905.technologystore.util.PaginationUtils;
 import com.winnguyen1905.technologystore.util.ProductUtils;
 
 import lombok.RequiredArgsConstructor;
@@ -112,7 +111,7 @@ public class DiscountService implements IDiscountService {
             Page<ProductEntity> productPages = this.productRepository.findAllByShopIdAndIsPublishedTrue(discount.getShop().getId(), pageable);
             productDTO = this.modelMapper.map(productPages, ProductDTO.class);
         } else {
-            Page<ProductEntity> productPages = PageUtils.paginateList(List.copyOf(discount.getProducts()), pageable);
+            Page<ProductEntity> productPages = PaginationUtils.createPaginationFromDataListAndPageable(List.copyOf(discount.getProducts()), pageable);
             productDTO = this.modelMapper.map(productPages, ProductDTO.class);
         }
 

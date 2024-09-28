@@ -6,17 +6,18 @@ import java.util.UUID;
 import org.springframework.data.domain.Pageable;
 
 import com.winnguyen1905.technologystore.model.dto.ProductDTO;
-import com.winnguyen1905.technologystore.model.request.ProductRequest;
-import com.winnguyen1905.technologystore.model.request.ProductSearchRequest;
+import com.winnguyen1905.technologystore.model.request.AddProductRequest;
+import com.winnguyen1905.technologystore.model.request.SearchProductRequest;
+import com.winnguyen1905.technologystore.model.response.PaginationResponse;
 
 public interface IProductService {
-    ProductDTO handleAddProduct(ProductRequest productRequest, UUID shopId);
+    ProductDTO handleAddProduct(AddProductRequest productRequest, UUID shopId);
 
-    List<ProductDTO> handleUpdateProducts(List<ProductRequest> productRequests, UUID shopId);
+    List<ProductDTO> handleUpdateManyProducts(List<AddProductRequest> productRequests, UUID shopId);
 
     List<ProductDTO> handleChangeProductStatus(List<UUID> ids, UUID shopId);
 
-    ProductDTO handleGetAllProducts(ProductSearchRequest productSearchRequest, Pageable pageable);
+    PaginationResponse<ProductDTO> handleGetAllProducts(SearchProductRequest productSearchRequest, Pageable pageable);
 
     ProductDTO handleGetProduct(UUID id);
 

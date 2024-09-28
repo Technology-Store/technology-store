@@ -11,14 +11,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @Configuration
-public class RedisConfiguration {
-
-    // @Bean
-    // JedisConnectionFactory jedisConnectionFactory() {
-    //     RedisStandaloneConfiguration config = new RedisStandaloneConfiguration(host, Integer.parseInt(port));
-    //     return new JedisConnectionFactory(config);
-    // }
-
+public class RedisConfiguration { 
     @Bean
     RedisConnectionFactory redisConnectionFactory() {
         return new LettuceConnectionFactory(new RedisStandaloneConfiguration());
@@ -31,9 +24,6 @@ public class RedisConfiguration {
         redisTemplate.setEnableTransactionSupport(true);
 
         redisTemplate.setKeySerializer(new StringRedisSerializer());
-        // redisTemplate.setValueSerializer(new StringRedisSerializer());
-
         return redisTemplate;
     }
-
 }

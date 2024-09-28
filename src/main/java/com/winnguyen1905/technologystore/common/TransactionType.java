@@ -8,7 +8,7 @@ public enum TransactionType {
     INSPECTION("inspection"),
     CONSULT("consult");
 
-    private final String transactionType;
+    final String transactionType;
 
     TransactionType(String transactionType) {
         this.transactionType = transactionType;

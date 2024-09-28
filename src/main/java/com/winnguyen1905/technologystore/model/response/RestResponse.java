@@ -14,7 +14,10 @@ import lombok.*;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class RestResponse<T> {
     private Integer statusCode;
+
     private String error;
+
     private Object message;
+    
     private T Data;
 }

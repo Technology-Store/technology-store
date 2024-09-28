@@ -31,7 +31,7 @@ public class ApplicationConfiguration implements WebMvcConfigurer {
     }
 
     @Bean
-    public RestTemplate restTemplate() {
+    RestTemplate restTemplate() {
         final RestTemplate restTemplate = new RestTemplate(
                 new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory()));
         restTemplate.setInterceptors(Collections.singletonList(new RestTemplateFilter()));

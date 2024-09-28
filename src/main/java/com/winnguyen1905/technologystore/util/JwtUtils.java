@@ -24,10 +24,13 @@ import com.winnguyen1905.technologystore.model.dto.PermissionDTO;
 @PropertySource("classpath:application-dev.properties")
 public class JwtUtils {
     public static final MacAlgorithm JWT_ALGORITHM = MacAlgorithm.HS256;
+
     @Autowired
     private JwtEncoder jwtEncoder;
+    
     @Value("${techstore.jwt.access_token-validity-in-seconds}")
     private String jwtAccessTokenExpiration;
+
     @Value("${techstore.jwt.refresh_token-validity-in-seconds}")
     private String jwtRefreshTokenExpiration;
     

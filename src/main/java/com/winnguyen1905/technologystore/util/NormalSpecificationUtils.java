@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.domain.Specification;
 
-import com.winnguyen1905.technologystore.model.dto.AbstractDTO;
+import com.winnguyen1905.technologystore.model.dto.BaseObjectDTO;
 import com.winnguyen1905.technologystore.repository.specification.QuerySpecification;
 
 public class NormalSpecificationUtils<D> {
@@ -40,7 +40,7 @@ public class NormalSpecificationUtils<D> {
                 }
             } catch (Exception e) {e.printStackTrace();}
         });
-        if(tSearchRequest instanceof AbstractDTO abstractDTO) {
+        if(tSearchRequest instanceof BaseObjectDTO abstractDTO) {
             if(abstractDTO.getCreatedBy() != null) specList.add(QuerySpecification.isEqualValue(abstractDTO.getCreatedBy(), "createdBy", null));
             if(abstractDTO.getUpdatedBy() != null) specList.add(QuerySpecification.isEqualValue(abstractDTO.getUpdatedBy(), "updateBy", null));
         }

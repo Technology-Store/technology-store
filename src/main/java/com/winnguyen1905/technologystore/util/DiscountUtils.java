@@ -11,7 +11,6 @@ import com.winnguyen1905.technologystore.entity.UserEntity;
 import com.winnguyen1905.technologystore.exception.CustomRuntimeException;
 
 public class DiscountUtils {
-
     public static Boolean isUsable(DiscountEntity discount, UserEntity customer) {
         long timeUsed = discount.getCustomer().stream().filter(item -> item.equals(customer)).count();
         if(discount.getMaxUsesPerUser() <= timeUsed) throw new CustomRuntimeException("Use count reach to maximum");

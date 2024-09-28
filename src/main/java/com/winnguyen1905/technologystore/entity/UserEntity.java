@@ -1,15 +1,7 @@
 package com.winnguyen1905.technologystore.entity;
 
-import java.beans.Customizer;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -68,6 +60,12 @@ public class UserEntity extends BaseEntityAudit {
 
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     private List<OrderEntity> orders;
+
+    @OneToMany(mappedBy = "sender")
+    private List<NotificationEntity> sents;
+
+    @OneToMany(mappedBy = "receiver")
+    private List<NotificationEntity> receiveds;
 
     @PrePersist
     protected void prePersist() {

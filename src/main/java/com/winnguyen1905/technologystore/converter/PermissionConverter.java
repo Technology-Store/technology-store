@@ -8,13 +8,13 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 import com.winnguyen1905.technologystore.entity.PermissionEntity;
-import com.winnguyen1905.technologystore.model.request.PermissionSearchRequest;
+import com.winnguyen1905.technologystore.model.request.SearchPermissionRequest;
 import com.winnguyen1905.technologystore.repository.specification.QuerySpecification;
 
 
 @Component
 public class PermissionConverter {
-    public Specification<PermissionEntity> toPermissionSpec(PermissionSearchRequest permissionSearchRequest) {
+    public Specification<PermissionEntity> toPermissionSpec(SearchPermissionRequest permissionSearchRequest) {
         Field[] fields = permissionSearchRequest.getClass().getDeclaredFields();
         List<Specification<PermissionEntity>> specList = new ArrayList<>();
         java.util.Arrays.asList(fields).forEach(field -> {

@@ -14,7 +14,7 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class FileDTO extends AbstractDTO<FileDTO> {
+public class FileDTO extends BaseObjectDTO<FileDTO> {
     private String fileName;
     @JsonFormat(pattern = "HH-mm-ss a dd-MM-yyyy", timezone = "GMT+7")
     @JsonProperty("upload_date")

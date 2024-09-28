@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import com.winnguyen1905.technologystore.entity.ProductEntity;
-import com.winnguyen1905.technologystore.model.request.ProductSearchRequest;
+import com.winnguyen1905.technologystore.model.request.SearchProductRequest;
 import com.winnguyen1905.technologystore.repository.custom.ProductRepositoryCustom;
 
 import jakarta.persistence.EntityManager;
@@ -30,7 +30,7 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
         this.entityManager = entityManager;
     }
 
-    public String joinTable(ProductSearchRequest productSearchRequest) {
+    public String joinTable(SearchProductRequest productSearchRequest) {
         StringBuilder result = new StringBuilder(" select * from product ");
         List<String> typeCode = productSearchRequest.getTypeCode();
         if (typeCode != null && typeCode.size() > 0) {
@@ -48,7 +48,7 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
                 fieldName.startsWith("more");
     }
 
-    public static String conditionToString(Field field, ProductSearchRequest productSearchRequest) {
+    public static String conditionToString(Field field, SearchProductRequest productSearchRequest) {
         String result = "";
         try {
             field.setAccessible(true);
@@ -66,21 +66,21 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
         return result;
     }
 
-    public static void queryNormal(StringBuilder sql, ProductSearchRequest productSearchRequest) {
+    public static void queryNormal(StringBuilder sql, SearchProductRequest productSearchRequest) {
         Field[] fields = productSearchRequest.getClass().getDeclaredFields();
         String normalQuery = Arrays.asList(fields).stream().map(item -> conditionToString(item, productSearchRequest))
                 .collect(Collectors.joining(""));
         sql.append(normalQuery);
     }
 
-    public static void querySpecial(StringBuilder sql, ProductSearchRequest productSearchRequest) {
+    public static void querySpecial(StringBuilder sql, SearchProductRequest productSearchRequest) {
 
     }
 
     @Override
     @Transactional
     @SuppressWarnings("unchecked")
-    public List<ProductEntity> findAll(ProductSearchRequest productSearchRequest) {
+    public List<ProductEntity> findAll(SearchProductRequest productSearchRequest) {
         StringBuilder sql = new StringBuilder(
                 "select p.* from ( " + joinTable(productSearchRequest) + " ) as p where 1 = 1 ");
         queryNormal(sql, productSearchRequest);

@@ -1,9 +1,10 @@
 package com.winnguyen1905.technologystore.common;
 
 public class ProductTypeConstant {
-    public static final String SMARTPHONE = "smartphone";
-    public static final String LAPTOP = "laptop";
-    public static final String SMARTWATCH = "smartwatch";
-    public static final String SMARTTIVI = "smarttivi";
-    public static final String EARPHONE = "earphone";
+    public static final String ELECTRONIC = "electronic";
+    public static final String FURNITURE = "furniture";
+    public static final String CLOTHING = "clothing";
+    public static final String FOOTWEAR = "footwear";
+    // public static final String SMARTTIVI = "smarttivi";
+    // public static final String EARPHONE = "earphone";
 }

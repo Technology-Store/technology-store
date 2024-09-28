@@ -21,10 +21,10 @@ public class PermissionInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String
-            path = (String) request.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE),
-            requestURI = request.getRequestURI(),
-            httpMethod = request.getMethod();
+        String path = (String) request.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE);
+        String requestURI = request.getRequestURI();
+        String httpMethod = request.getMethod();
+        
         if(SecurityUtils.getCurrentUsersPermissions().isPresent()) {
             List<PermissionDTO> permissionDTOs = SecurityUtils.getCurrentUsersPermissions().get()
                     .stream().map(stringPermission -> StringToPermissionUtils.toPermission(stringPermission)).toList();

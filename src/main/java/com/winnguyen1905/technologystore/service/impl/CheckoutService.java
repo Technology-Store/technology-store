@@ -50,6 +50,7 @@ public class CheckoutService implements ICheckoutService {
                     .map(discountDTO -> this.discountService.handleApplyDiscountCode(discountDTO, customerId, ApplyDiscountStatus.REVIEW))
                     .min(Comparator.comparing(PriceStatisticsDTO::getFinalPrice))
                     .orElse(null);
+                
             if(statisticsItem == null) statisticsItem = this.cartService.handleGetPriceStatisticsOfCart(checkoutItem.getCart(), customerId);
             priceStatisticsDTO = AccumulateUtils.accumulate(statisticsItem, priceStatisticsDTO);
 
@@ -62,7 +63,7 @@ public class CheckoutService implements ICheckoutService {
     @Override
     @Transactional
     public void handleCreateOrder(CheckoutDTO checkout, UUID customerId) {
-        for(CheckoutDTO.CheckoutItemDTO checkoutItem : checkout.getCheckoutItems()) {
+        for (CheckoutDTO.CheckoutItemDTO checkoutItem : checkout.getCheckoutItems()) {
             // Get statistic price for each shop products
             PriceStatisticsDTO statisticsItem = checkoutItem.getDiscounts().stream()
                     .map(discountDTO -> this.discountService.handleApplyDiscountCode(discountDTO, customerId, ApplyDiscountStatus.REVIEW))
